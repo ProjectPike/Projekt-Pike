@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import BottomNavigation from "../components/layout/BottomNavigation";
 import SearchBar from "../components/layout/SearchBar";
-import MapPlaceholder from "../components/map/MapPlaceholder";
+import MapView from "../components/map/MapView";
 import FishingSheet from "../components/fishing/FishingSheet";
 import LakePage from "./LakePage";
 import SavedPage from "./SavedPage";
@@ -127,7 +127,7 @@ function HomePage() {
   } else {
     pageContent = (
       <main className="home-page">
-        <MapPlaceholder
+        <MapView
           lakes={lakes}
           matchingLakeIds={matchingLakeIds}
           hasSearch={searchQuery.trim().length > 0}
