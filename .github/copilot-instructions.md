@@ -70,3 +70,17 @@ Do not rename components without a reason.
 ## Goal
 
 Build a professional fishing application that could realistically grow over many years.
+
+## Scope control
+
+Prefer the smallest possible change.
+
+Do not redesign or expand the task beyond the explicit request.
+
+Inspect the current implementation before proposing changes.
+
+Reuse existing components and services unless they are clearly unsuitable.
+
+Never recreate functionality that already exists.
+
+When uncertain, preserve existing behavior and ask before expanding scope.
