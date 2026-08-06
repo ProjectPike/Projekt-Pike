@@ -1,4 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import BottomNavigation from "../components/layout/BottomNavigation";
+import SearchBar from "../components/layout/SearchBar";
+import MapPlaceholder from "../components/map/MapPlaceholder";
+import FishingSheet from "../components/fishing/FishingSheet";
+import LakePage from "./LakePage";
+import SavedPage from "./SavedPage";
+import PlaceholderTabPage from "./PlaceholderTabPage";
+import { lakes } from "../data/lakes";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const defaultFishingChoices = {
   place: "Båt",
@@ -6,27 +15,17 @@ const defaultFishingChoices = {
   species: "Gädda",
 };
 
-const lakes = {
-  bolmen: {
-    id: "bolmen",
-    name: "Bolmen",
-    distance: "84 km",
-    region: "Småland",
-    status: "Informationen är ännu inte verifierad",
-  },
-  bunn: {
-    id: "bunn",
-    name: "Bunn",
-    distance: "18 km",
-    region: "Småland",
-    status: "Informationen är ännu inte verifierad",
-  },
-};
-
 function HomePage() {
+  const [activeTab, setActiveTab] = useState("map");
   const [isFishingOpen, setIsFishingOpen] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
-  const [fishingChoices, setFishingChoices] = useState(
+  const [searchQuery, setSearchQuery] = useState("");
+  const [favoriteLakeIds, setFavoriteLakeIds] = useLocalStorage(
+    "project-pike-favorites",
+    [],
+  );
+  const [fishingChoices, setFishingChoices] = useLocalStorage(
+    "project-pike-fishing-choices",
     defaultFishingChoices,
   );
 
@@ -41,291 +40,122 @@ function HomePage() {
     setFishingChoices(defaultFishingChoices);
   }
 
+  function toggleFavorite(lakeId) {
+    setFavoriteLakeIds((currentFavorites) =>
+      currentFavorites.includes(lakeId)
+        ? currentFavorites.filter((id) => id !== lakeId)
+        : [...currentFavorites, lakeId],
+    );
+  }
+
+  function openLake(lake) {
+    setSelectedLake(lake);
+  }
+
+  const matchingLakeIds = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      return Object.keys(lakes);
+    }
+
+    return Object.values(lakes)
+      .filter((lake) => {
+        const searchText = [
+          lake.name,
+          lake.type,
+          lake.region,
+          ...lake.counties,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return searchText.includes(normalizedQuery);
+      })
+      .map((lake) => lake.id);
+  }, [searchQuery]);
+
+  const fishingSheet = isFishingOpen ? (
+    <FishingSheet
+      fishingChoices={fishingChoices}
+      onChange={updateFishingChoice}
+      onReset={resetFishingChoices}
+      onClose={() => setIsFishingOpen(false)}
+    />
+  ) : null;
+
   if (selectedLake) {
     return (
       <LakePage
         lake={selectedLake}
         fishingChoices={fishingChoices}
+        isFavorite={favoriteLakeIds.includes(selectedLake.id)}
+        onToggleFavorite={() => toggleFavorite(selectedLake.id)}
         onBack={() => setSelectedLake(null)}
         onOpenFishing={() => setIsFishingOpen(true)}
       >
-        {isFishingOpen && (
-          <FishingSheet
-            fishingChoices={fishingChoices}
-            onChange={updateFishingChoice}
-            onReset={resetFishingChoices}
-            onClose={() => setIsFishingOpen(false)}
-          />
-        )}
+        {fishingSheet}
       </LakePage>
     );
   }
 
-  return (
-    <main className="home-page">
-      <section className="map-placeholder">
-        <button
-          className="map-water map-water-large"
-          onClick={() => setSelectedLake(lakes.bolmen)}
-        >
-          Bolmen
-        </button>
+  let pageContent;
 
-        <button
-          className="map-water map-water-small"
-          onClick={() => setSelectedLake(lakes.bunn)}
-        >
-          Bunn
-        </button>
-
-        <p className="map-message">Kartan kopplas in här</p>
-      </section>
-
-      <header className="map-header">
-        <input
-          className="search-field"
-          type="search"
-          placeholder="Sök vatten, ort eller kommun"
-          aria-label="Sök vatten, ort eller kommun"
+  if (activeTab === "saved") {
+    pageContent = (
+      <SavedPage
+        favoriteLakeIds={favoriteLakeIds}
+        lakes={lakes}
+        onOpenLake={openLake}
+        onRemoveFavorite={toggleFavorite}
+      />
+    );
+  } else if (activeTab === "journal") {
+    pageContent = (
+      <PlaceholderTabPage
+        title="Dagbok"
+        text="Här kommer dina privata fisketurer och anteckningar att samlas."
+      />
+    );
+  } else if (activeTab === "more") {
+    pageContent = (
+      <PlaceholderTabPage
+        title="Mer"
+        text="Inställningar, information och framtida funktioner får sitt hem här."
+      />
+    );
+  } else {
+    pageContent = (
+      <main className="home-page">
+        <MapPlaceholder
+          lakes={lakes}
+          matchingLakeIds={matchingLakeIds}
+          hasSearch={searchQuery.trim().length > 0}
+          onSelectLake={(lakeId) => openLake(lakes[lakeId])}
         />
 
-        <button className="round-button" aria-label="Använd min plats">
-          ◎
-        </button>
-
-        <button className="round-button" aria-label="Öppna inställningar">
-          ⚙
-        </button>
-      </header>
-
-      <button
-        className="fishing-button"
-        onClick={() => setIsFishingOpen(true)}
-      >
-        {fishingChoices.place} · {fishingChoices.method} ·{" "}
-        {fishingChoices.species}
-      </button>
-
-      <nav className="bottom-navigation">
-        <button className="navigation-item navigation-item-active">
-          Karta
-        </button>
-        <button className="navigation-item">Sparade</button>
-        <button className="navigation-item">Dagbok</button>
-        <button className="navigation-item">Mer</button>
-      </nav>
-
-      {isFishingOpen && (
-        <FishingSheet
-          fishingChoices={fishingChoices}
-          onChange={updateFishingChoice}
-          onReset={resetFishingChoices}
-          onClose={() => setIsFishingOpen(false)}
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
         />
-      )}
-    </main>
-  );
-}
-
-function LakePage({
-  lake,
-  fishingChoices,
-  onBack,
-  onOpenFishing,
-  children,
-}) {
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  return (
-    <main className="lake-page">
-      <header className="lake-topbar">
-        <button className="round-button" onClick={onBack} aria-label="Tillbaka">
-          ←
-        </button>
-
-        <strong>{lake.name}</strong>
 
         <button
-          className="round-button"
-          onClick={() => setIsFavorite((current) => !current)}
-          aria-label="Spara som favorit"
+          className="fishing-button"
+          onClick={() => setIsFishingOpen(true)}
         >
-          {isFavorite ? "★" : "☆"}
+          {fishingChoices.place} · {fishingChoices.method} ·{" "}
+          {fishingChoices.species}
         </button>
-      </header>
+      </main>
+    );
+  }
 
-      <section className="lake-hero">
-        <div className="lake-hero-water" />
-
-        <div className="lake-hero-content">
-          <p>{lake.region}</p>
-          <h1>{lake.name}</h1>
-          <span>{lake.distance} från dig</span>
-        </div>
-      </section>
-
-      <section className="lake-content">
-        <button className="lake-mini-map">
-          <span>Öppna karta</span>
-          <strong>›</strong>
-        </button>
-
-        <button className="lake-fishing-summary" onClick={onOpenFishing}>
-          <span>
-            <small>Mitt fiske</small>
-            <strong>
-              {fishingChoices.place} · {fishingChoices.method} ·{" "}
-              {fishingChoices.species}
-            </strong>
-          </span>
-
-          <strong>›</strong>
-        </button>
-
-        <section className="lake-status-grid">
-          <InformationCard
-            label="Regler"
-            value="Ej verifierade"
-            color="orange"
-          />
-
-          <InformationCard
-            label="Fiskekort"
-            value="Uppgift saknas"
-            color="blue"
-          />
-
-          <InformationCard
-            label="Parkering"
-            value="Uppgift saknas"
-            color="blue"
-          />
-
-          <InformationCard
-            label="Fredningsområde"
-            value="Kontrolleras"
-            color="orange"
-          />
-        </section>
-
-        <section className="lake-information">
-          <p className="eyebrow">Information</p>
-          <h2>Vi kartlägger fortfarande {lake.name}</h2>
-
-          <p>
-            Vi har inte hunnit verifiera regler och praktisk information
-            för det här vattnet ännu.
-          </p>
-
-          <button className="help-button">
-            Hjälp oss förbättra informationen
-          </button>
-
-          <button className="report-button">Rapportera fel</button>
-        </section>
-      </section>
-
-      {children}
-    </main>
-  );
-}
-
-function InformationCard({ label, value, color }) {
   return (
-    <button className="information-card">
-      <span className={`information-card-line ${color}`} />
-      <small>{label}</small>
-      <strong>{value}</strong>
-    </button>
-  );
-}
-
-function FishingSheet({
-  fishingChoices,
-  onChange,
-  onReset,
-  onClose,
-}) {
-  return (
-    <div className="sheet-backdrop" onClick={onClose}>
-      <section
-        className="fishing-sheet"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="sheet-handle" />
-
-        <header className="sheet-header">
-          <div>
-            <p className="eyebrow">Anpassa kartan och reglerna</p>
-            <h2>Mitt fiske</h2>
-          </div>
-
-          <button
-            className="close-button"
-            onClick={onClose}
-            aria-label="Stäng"
-          >
-            ×
-          </button>
-        </header>
-
-        <FishingChoices
-          title="Plats"
-          category="place"
-          choices={["Båt", "Land", "Kajak", "Flytring"]}
-          selected={fishingChoices.place}
-          onChange={onChange}
-        />
-
-        <FishingChoices
-          title="Metod"
-          category="method"
-          choices={["Spinn", "Mete", "Flugfiske", "Trolling"]}
-          selected={fishingChoices.method}
-          onChange={onChange}
-        />
-
-        <FishingChoices
-          title="Art"
-          category="species"
-          choices={["Gädda", "Abborre", "Gös", "Öring"]}
-          selected={fishingChoices.species}
-          onChange={onChange}
-        />
-
-        <button className="reset-button" onClick={onReset}>
-          Återställ
-        </button>
-      </section>
+    <div className="app-shell">
+      {pageContent}
+      <BottomNavigation activeTab={activeTab} onChange={setActiveTab} />
+      {fishingSheet}
     </div>
-  );
-}
-
-function FishingChoices({
-  title,
-  category,
-  choices,
-  selected,
-  onChange,
-}) {
-  return (
-    <section className="choice-section">
-      <h3>{title}</h3>
-
-      <div className="choice-list">
-        {choices.map((choice) => (
-          <button
-            key={choice}
-            className={`choice-button ${
-              choice === selected ? "choice-button-selected" : ""
-            }`}
-            onClick={() => onChange(category, choice)}
-          >
-            {choice}
-          </button>
-        ))}
-      </div>
-    </section>
   );
 }
 
