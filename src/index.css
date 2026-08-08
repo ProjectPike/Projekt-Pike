@@ -983,6 +983,114 @@ button {
   gap: 10px;
 }
 
+.lake-details {
+  display: grid;
+  gap: 10px;
+}
+
+.lake-details-section {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.lake-details-section h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.lake-details-section ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.lake-details-row {
+  padding: 8px 9px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 2%);
+}
+
+.lake-details-row-main {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.lake-details-row-label {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.lake-details-row-value {
+  font-size: 13px;
+  text-align: right;
+}
+
+.lake-details-row-note,
+.lake-details-row-meta {
+  margin: 5px 0 0;
+  color: #bdd0dd;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.lake-details-row-meta {
+  color: var(--color-primary);
+}
+
+.lake-details-tone {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: #d8e6ef;
+  background: rgb(133 189 217 / 16%);
+}
+
+.lake-details-row-recommendation .lake-details-tone {
+  background: rgb(219 165 93 / 20%);
+  color: #f0d5ae;
+}
+
+.lake-details-row-advisory .lake-details-tone {
+  background: rgb(123 159 235 / 19%);
+  color: #dce9ff;
+}
+
+.lake-details-section-warning {
+  border-color: rgb(123 159 235 / 28%);
+}
+
+.lake-details-verified-at {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.lake-details-source-list {
+  display: grid;
+  gap: 5px;
+}
+
+.lake-details-source-list a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.lake-details-source-list a:hover,
+.lake-details-source-list a:focus-visible {
+  text-decoration: underline;
+}
+
 .information-card {
   position: relative;
   display: grid;

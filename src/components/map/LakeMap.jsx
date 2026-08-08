@@ -221,7 +221,7 @@ function LakeMap({ lake, fishingChoices, onBack }) {
               "P",
               "boat-ramp",
               "R",
-              "•",
+              "",
             ],
             "text-size": 12,
             "text-allow-overlap": true,
@@ -258,13 +258,14 @@ function LakeMap({ lake, fishingChoices, onBack }) {
 
       try {
         const [longitude, latitude] = clusterFeature.geometry.coordinates;
-        const zoom = await source.getClusterExpansionZoom(
+        const expansionZoom = await source.getClusterExpansionZoom(
           Number(clusterFeature.properties.cluster_id),
         );
+        const targetZoom = Math.min(expansionZoom + 2, map.getMaxZoom());
 
         map.easeTo({
           center: [longitude, latitude],
-          zoom,
+          zoom: targetZoom,
         });
       } catch (error) {
         console.error("Kunde inte expandera kluster:", error);
