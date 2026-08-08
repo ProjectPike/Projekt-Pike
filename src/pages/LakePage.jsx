@@ -1,5 +1,8 @@
+import { useState } from "react";
 import InformationCard from "../components/lake/InformationCard";
 import LakeHero from "../components/lake/LakeHero";
+import LakeMap from "../components/map/LakeMap";
+import { getLakeFishingStatus } from "../services/lakeService";
 
 function LakePage({
   lake,
@@ -10,6 +13,37 @@ function LakePage({
   onOpenFishing,
   children,
 }) {
+  const [showLakeMap, setShowLakeMap] = useState(false);
+  const fishingStatus = getLakeFishingStatus(lake, fishingChoices);
+
+  const statusContent = {
+    allowed: {
+      heading: "Matchar ditt fiske",
+      body: `${fishingChoices.place} · ${fishingChoices.method} · ${fishingChoices.species}`,
+    },
+    warning: {
+      heading: "Villkor finns",
+      body: "Relevant information bör kontrolleras innan fisket.",
+    },
+    unknown: {
+      heading: "Otillräcklig information",
+      body: "Pike saknar tillräcklig information för att bedöma ditt val.",
+    },
+  }[fishingStatus] ?? {
+    heading: "Otillräcklig information",
+    body: "Pike saknar tillräcklig information för att bedöma ditt val.",
+  };
+
+  if (showLakeMap) {
+    return (
+      <LakeMap
+        lake={lake}
+        fishingChoices={fishingChoices}
+        onBack={() => setShowLakeMap(false)}
+      />
+    );
+  }
+
   return (
     <main className="lake-page lake-page-enter">
       <header className="lake-topbar">
@@ -33,7 +67,7 @@ function LakePage({
       <LakeHero lake={lake} />
 
       <section className="lake-content lake-content-enter">
-        <button className="lake-mini-map">
+        <button className="lake-mini-map" onClick={() => setShowLakeMap(true)}>
           <span>Öppna karta</span>
           <strong>›</strong>
         </button>
@@ -49,6 +83,11 @@ function LakePage({
 
           <strong>›</strong>
         </button>
+
+        <section className={`lake-status-message lake-status-message-${fishingStatus}`}>
+          <strong>{statusContent.heading}</strong>
+          <p>{statusContent.body}</p>
+        </section>
 
         <section className="lake-status-grid">
           <InformationCard label="Regler" information={lake.fishing.rules} />
