@@ -10,10 +10,12 @@ function MapView({
   onSelectLake,
   matchingLakeIds = [],
   hasSearch = false,
+  userPosition = null,
 }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
+  const userMarkerRef = useRef(null);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
@@ -22,9 +24,9 @@ function MapView({
 
     const map = new Map({
       container: mapContainerRef.current,
-      style: "https://demotiles.maplibre.org/style.json",
-      center: [14.16, 57.78],
-      zoom: 7.6,
+      style: "https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json?api_key=4e4b47b8-6f3a-4b4c-8bd8-2e5b36d35f13",
+      center: [14.5, 57.2],
+      zoom: 7.4,
     });
 
     map.addControl(
@@ -47,6 +49,12 @@ function MapView({
     return () => {
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
+
+      if (userMarkerRef.current) {
+        userMarkerRef.current.remove();
+        userMarkerRef.current = null;
+      }
+
       map.remove();
       mapRef.current = null;
     };
@@ -76,7 +84,28 @@ function MapView({
         markerElement.style.opacity = "1";
 
         markerElement.addEventListener("click", () => {
-          onSelectLake(lake.id);
+          const map = mapRef.current;
+
+          markerElement.classList.add("map-marker-selected");
+          window.setTimeout(() => {
+            markerElement.classList.remove("map-marker-selected");
+          }, 180);
+
+          if (!map) {
+            onSelectLake(lake.id);
+            return;
+          }
+
+          map.flyTo({
+            center: lake.coordinates,
+            zoom: Math.max(map.getZoom(), 8.2),
+            duration: 700,
+            essential: true,
+          });
+
+          map.once("moveend", () => {
+            onSelectLake(lake.id);
+          });
         });
 
         return new Marker({ element: markerElement })
@@ -95,6 +124,42 @@ function MapView({
         hasSearch && !isMatch ? "saturate(0.55)" : "saturate(1.12) brightness(1.08)";
     });
   }, [lakes, matchingLakeIds, hasSearch, onSelectLake]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map || !userPosition) {
+      return;
+    }
+
+    const [longitude, latitude] = userPosition;
+
+    if (!userMarkerRef.current) {
+      const markerElement = document.createElement("button");
+      markerElement.type = "button";
+      markerElement.style.width = "12px";
+      markerElement.style.height = "12px";
+      markerElement.style.border = "2px solid #d4f8ff";
+      markerElement.style.borderRadius = "50%";
+      markerElement.style.background = "#87d596";
+      markerElement.style.boxShadow = "0 0 0 3px rgba(0, 0, 0, 0.24)";
+      markerElement.style.padding = "0";
+      markerElement.style.cursor = "auto";
+
+      userMarkerRef.current = new Marker({ element: markerElement })
+        .setLngLat([longitude, latitude])
+        .addTo(map);
+    } else {
+      userMarkerRef.current.setLngLat([longitude, latitude]);
+    }
+
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom: 9.2,
+      duration: 700,
+      essential: true,
+    });
+  }, [userPosition]);
 
   return <section className="map-view-shell"><div ref={mapContainerRef} className="map-view" /></section>;
 }

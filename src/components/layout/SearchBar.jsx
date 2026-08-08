@@ -1,4 +1,4 @@
-function SearchBar({ searchQuery, onSearchChange }) {
+function SearchBar({ searchQuery, onSearchChange, onUseLocation }) {
   return (
     <header className="map-header">
       <input
@@ -10,7 +10,11 @@ function SearchBar({ searchQuery, onSearchChange }) {
         aria-label="Sök vatten, ort eller kommun"
       />
 
-      <button className="round-button" aria-label="Använd min plats">
+      <button
+        className="round-button"
+        aria-label="Använd min plats"
+        onClick={onUseLocation}
+      >
         ◎
       </button>
 

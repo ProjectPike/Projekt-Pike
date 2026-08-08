@@ -20,6 +20,7 @@ function HomePage() {
   const [isFishingOpen, setIsFishingOpen] = useState(false);
   const [selectedLake, setSelectedLake] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [userPosition, setUserPosition] = useState(null);
   const [favoriteLakeIds, setFavoriteLakeIds] = useLocalStorage(
     "project-pike-favorites",
     [],
@@ -50,6 +51,29 @@ function HomePage() {
 
   function openLake(lake) {
     setSelectedLake(lake);
+  }
+
+  function useCurrentLocation() {
+    if (!navigator.geolocation) {
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserPosition([
+          position.coords.longitude,
+          position.coords.latitude,
+        ]);
+      },
+      () => {
+        setUserPosition(null);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000,
+      },
+    );
   }
 
   const matchingLakeIds = useMemo(() => {
@@ -132,11 +156,13 @@ function HomePage() {
           matchingLakeIds={matchingLakeIds}
           hasSearch={searchQuery.trim().length > 0}
           onSelectLake={(lakeId) => openLake(lakes[lakeId])}
+          userPosition={userPosition}
         />
 
         <SearchBar
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
+          onUseLocation={useCurrentLocation}
         />
 
         <button
