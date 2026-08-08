@@ -24,7 +24,7 @@ function MapView({
 
     const map = new Map({
       container: mapContainerRef.current,
-      style: "https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json?api_key=4e4b47b8-6f3a-4b4c-8bd8-2e5b36d35f13",
+      style: "https://demotiles.maplibre.org/style.json",
       center: [14.5, 57.2],
       zoom: 7.4,
     });
