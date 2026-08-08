@@ -785,9 +785,26 @@ button {
 }
 
 .lake-map-layers h2 {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-size: 12px;
   color: var(--color-text);
+}
+
+.lake-map-layer-list {
+  display: grid;
+  gap: 7px;
+}
+
+.lake-map-layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+  font-size: 12px;
+}
+
+.lake-map-layer-toggle input {
+  accent-color: var(--color-primary);
 }
 
 .lake-map-layers p {
@@ -795,6 +812,102 @@ button {
   color: var(--color-muted);
   font-size: 12px;
   line-height: 1.45;
+}
+
+.lake-point-marker {
+  --lake-point-marker-bg: #1a4d67;
+  --lake-point-marker-fg: #f2f7fb;
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 50%;
+  background: var(--lake-point-marker-bg);
+  color: var(--lake-point-marker-fg);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 24%);
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.lake-point-marker-boat-ramp {
+  --lake-point-marker-bg: #1c526e;
+}
+
+.lake-point-marker-parking {
+  --lake-point-marker-bg: #295068;
+}
+
+.lake-point-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.lake-point-cluster-marker {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border: 1px solid rgb(255 255 255 / 76%);
+  border-radius: 999px;
+  background: #123f56;
+  color: #f2f7fb;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 28%);
+}
+
+.lake-point-cluster-count {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.lake-point-marker:hover {
+  transform: scale(1.08);
+}
+
+.lake-point-cluster-marker:hover {
+  transform: scale(1.05);
+}
+
+.lake-point-popup .maplibregl-popup-content {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: rgb(7 26 42 / 96%);
+  box-shadow: var(--shadow-floating);
+}
+
+.lake-point-popup .maplibregl-popup-tip {
+  border-top-color: rgb(7 26 42 / 96%);
+}
+
+.lake-point-popup-content {
+  display: grid;
+  gap: 3px;
+  min-width: 130px;
+}
+
+.lake-point-popup-content strong {
+  font-size: 12px;
+  color: var(--color-text);
+}
+
+.lake-point-popup-content p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.lake-point-popup-content small {
+  color: var(--color-primary);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .lake-map-footer {
