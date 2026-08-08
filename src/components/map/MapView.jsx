@@ -7,6 +7,7 @@ setWorkerUrl(workerUrl);
 
 function MapView({
   lakes,
+  lakeStatuses = {},
   onSelectLake,
   matchingLakeIds = [],
   hasSearch = false,
@@ -16,6 +17,20 @@ function MapView({
   const mapRef = useRef(null);
   const markersRef = useRef([]);
   const userMarkerRef = useRef(null);
+  const activeMarkerLabelRef = useRef(null);
+  const markerLabelTimeoutRef = useRef(null);
+
+  const clearActiveMarkerLabel = () => {
+    if (markerLabelTimeoutRef.current) {
+      window.clearTimeout(markerLabelTimeoutRef.current);
+      markerLabelTimeoutRef.current = null;
+    }
+
+    if (activeMarkerLabelRef.current) {
+      activeMarkerLabelRef.current.classList.remove("map-marker-label-visible");
+      activeMarkerLabelRef.current = null;
+    }
+  };
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
@@ -28,6 +43,9 @@ function MapView({
       center: [14.5, 57.2],
       zoom: 7.4,
     });
+
+    map.dragRotate.disable();
+    map.touchZoomRotate.disableRotation();
 
     map.addControl(
       new NavigationControl({
@@ -55,6 +73,7 @@ function MapView({
         userMarkerRef.current = null;
       }
 
+      clearActiveMarkerLabel();
       map.remove();
       mapRef.current = null;
     };
@@ -77,19 +96,51 @@ function MapView({
         markerElement.style.height = "16px";
         markerElement.style.border = "2px solid #ffffff";
         markerElement.style.borderRadius = "50%";
-        markerElement.style.background = "#85bdd9";
         markerElement.style.boxShadow = "0 0 0 2px rgba(0, 0, 0, 0.2)";
         markerElement.style.cursor = "pointer";
         markerElement.style.padding = "0";
         markerElement.style.opacity = "1";
+        markerElement.style.position = "relative";
+        markerElement.style.display = "inline-flex";
+        markerElement.style.alignItems = "center";
+        markerElement.style.justifyContent = "center";
+        markerElement.style.overflow = "visible";
+
+        markerElement.classList.add("map-marker-status-unknown");
+        const statusClass = lakeStatuses[lake.id];
+        if (statusClass === "allowed") {
+          markerElement.classList.add("map-marker-status-allowed");
+          markerElement.classList.remove("map-marker-status-unknown");
+        } else if (statusClass === "warning") {
+          markerElement.classList.add("map-marker-status-warning");
+          markerElement.classList.remove("map-marker-status-unknown");
+        }
+
+        const labelElement = document.createElement("span");
+        labelElement.className = "map-marker-label";
+        labelElement.textContent = lake.name;
+        labelElement.setAttribute("aria-hidden", "true");
+        markerElement.appendChild(labelElement);
 
         markerElement.addEventListener("click", () => {
           const map = mapRef.current;
+          const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
           markerElement.classList.add("map-marker-selected");
           window.setTimeout(() => {
             markerElement.classList.remove("map-marker-selected");
           }, 180);
+
+          clearActiveMarkerLabel();
+          labelElement.classList.add("map-marker-label-visible");
+          activeMarkerLabelRef.current = labelElement;
+          markerLabelTimeoutRef.current = window.setTimeout(() => {
+            labelElement.classList.remove("map-marker-label-visible");
+            if (activeMarkerLabelRef.current === labelElement) {
+              activeMarkerLabelRef.current = null;
+            }
+            markerLabelTimeoutRef.current = null;
+          }, prefersReducedMotion ? 220 : 700);
 
           if (!map) {
             onSelectLake(lake.id);
@@ -122,8 +173,23 @@ function MapView({
       element.style.opacity = hasSearch && !isMatch ? "0.35" : "1";
       element.style.filter =
         hasSearch && !isMatch ? "saturate(0.55)" : "saturate(1.12) brightness(1.08)";
+
+      element.classList.remove(
+        "map-marker-status-allowed",
+        "map-marker-status-warning",
+        "map-marker-status-unknown",
+      );
+
+      const statusClass = lakeStatuses[lakeId];
+      if (statusClass === "allowed") {
+        element.classList.add("map-marker-status-allowed");
+      } else if (statusClass === "warning") {
+        element.classList.add("map-marker-status-warning");
+      } else {
+        element.classList.add("map-marker-status-unknown");
+      }
     });
-  }, [lakes, matchingLakeIds, hasSearch, onSelectLake]);
+  }, [lakes, lakeStatuses, matchingLakeIds, hasSearch, onSelectLake]);
 
   useEffect(() => {
     const map = mapRef.current;

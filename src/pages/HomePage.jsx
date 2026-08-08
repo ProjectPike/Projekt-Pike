@@ -8,12 +8,21 @@ import SavedPage from "./SavedPage";
 import PlaceholderTabPage from "./PlaceholderTabPage";
 import { lakes } from "../data/lakes";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { getLakeFishingStatus } from "../services/lakeService";
 
 const defaultFishingChoices = {
   place: "Båt",
   method: "Spinn",
   species: "Gädda",
 };
+
+function normalizeFishingChoices(choices = {}) {
+  return {
+    place: choices.place ?? defaultFishingChoices.place,
+    method: choices.method ?? defaultFishingChoices.method,
+    species: choices.species ?? defaultFishingChoices.species,
+  };
+}
 
 function HomePage() {
   const [activeTab, setActiveTab] = useState("map");
@@ -29,16 +38,21 @@ function HomePage() {
     "project-pike-fishing-choices",
     defaultFishingChoices,
   );
+  const normalizedFishingChoices = normalizeFishingChoices(fishingChoices);
 
   function updateFishingChoice(category, value) {
-    setFishingChoices((currentChoices) => ({
-      ...currentChoices,
-      [category]: value,
-    }));
+    setFishingChoices((currentChoices) => {
+      const normalizedCurrentChoices = normalizeFishingChoices(currentChoices);
+
+      return normalizeFishingChoices({
+        ...normalizedCurrentChoices,
+        [category]: value,
+      });
+    });
   }
 
   function resetFishingChoices() {
-    setFishingChoices(defaultFishingChoices);
+    setFishingChoices(normalizeFishingChoices(defaultFishingChoices));
   }
 
   function toggleFavorite(lakeId) {
@@ -99,9 +113,16 @@ function HomePage() {
       .map((lake) => lake.id);
   }, [searchQuery]);
 
+  const lakeStatuses = useMemo(() => {
+    return Object.values(lakes).reduce((statuses, lake) => {
+      statuses[lake.id] = getLakeFishingStatus(lake, normalizedFishingChoices);
+      return statuses;
+    }, {});
+  }, [normalizedFishingChoices]);
+
   const fishingSheet = isFishingOpen ? (
     <FishingSheet
-      fishingChoices={fishingChoices}
+      fishingChoices={normalizedFishingChoices}
       onChange={updateFishingChoice}
       onReset={resetFishingChoices}
       onClose={() => setIsFishingOpen(false)}
@@ -112,7 +133,7 @@ function HomePage() {
     return (
       <LakePage
         lake={selectedLake}
-        fishingChoices={fishingChoices}
+        fishingChoices={normalizedFishingChoices}
         isFavorite={favoriteLakeIds.includes(selectedLake.id)}
         onToggleFavorite={() => toggleFavorite(selectedLake.id)}
         onBack={() => setSelectedLake(null)}
@@ -153,6 +174,7 @@ function HomePage() {
       <main className="home-page">
         <MapView
           lakes={lakes}
+          lakeStatuses={lakeStatuses}
           matchingLakeIds={matchingLakeIds}
           hasSearch={searchQuery.trim().length > 0}
           onSelectLake={(lakeId) => openLake(lakes[lakeId])}
@@ -169,8 +191,8 @@ function HomePage() {
           className="fishing-button"
           onClick={() => setIsFishingOpen(true)}
         >
-          {fishingChoices.place} · {fishingChoices.method} ·{" "}
-          {fishingChoices.species}
+          {normalizedFishingChoices.place} · {normalizedFishingChoices.method} ·{" "}
+          {normalizedFishingChoices.species}
         </button>
       </main>
     );
