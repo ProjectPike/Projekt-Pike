@@ -24,7 +24,7 @@ function MapView({
 
     const map = new Map({
       container: mapContainerRef.current,
-      style: "https://demotiles.maplibre.org/style.json",
+      style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
       center: [14.5, 57.2],
       zoom: 7.4,
     });
