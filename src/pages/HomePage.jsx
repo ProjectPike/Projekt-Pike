@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BottomNavigation from "../components/layout/BottomNavigation";
 import SearchBar from "../components/layout/SearchBar";
 import MapView from "../components/map/MapView";
@@ -30,6 +30,8 @@ function HomePage() {
   const [selectedLake, setSelectedLake] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [userPosition, setUserPosition] = useState(null);
+  const [isLegendOpen, setIsLegendOpen] = useState(false);
+  const legendContainerRef = useRef(null);
   const [favoriteLakeIds, setFavoriteLakeIds] = useLocalStorage(
     "project-pike-favorites",
     [],
@@ -120,6 +122,27 @@ function HomePage() {
     }, {});
   }, [normalizedFishingChoices]);
 
+  useEffect(() => {
+    if (!isLegendOpen) {
+      return undefined;
+    }
+
+    function handlePointerDown(event) {
+      if (
+        legendContainerRef.current &&
+        !legendContainerRef.current.contains(event.target)
+      ) {
+        setIsLegendOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [isLegendOpen]);
+
   const fishingSheet = isFishingOpen ? (
     <FishingSheet
       fishingChoices={normalizedFishingChoices}
@@ -187,13 +210,45 @@ function HomePage() {
           onUseLocation={useCurrentLocation}
         />
 
-        <button
-          className="fishing-button"
-          onClick={() => setIsFishingOpen(true)}
-        >
-          {normalizedFishingChoices.place} · {normalizedFishingChoices.method} ·{" "}
-          {normalizedFishingChoices.species}
-        </button>
+        <div className="map-overlay-controls" ref={legendContainerRef}>
+          <button
+            type="button"
+            className="map-help-button"
+            onClick={() => setIsLegendOpen((current) => !current)}
+            aria-label="Förklara färgerna på kartan"
+            aria-expanded={isLegendOpen}
+          >
+            ?
+          </button>
+
+          {isLegendOpen ? (
+            <div className="map-legend-panel" role="dialog" aria-label="Förklaring av kartfärger">
+              <h2>Vad betyder färgerna?</h2>
+              <ul>
+                <li>
+                  <span className="map-legend-swatch map-legend-swatch-green" />
+                  Matchar ditt fiske
+                </li>
+                <li>
+                  <span className="map-legend-swatch map-legend-swatch-amber" />
+                  Villkor finns – läs reglerna
+                </li>
+                <li>
+                  <span className="map-legend-swatch map-legend-swatch-gray" />
+                  Pike saknar tillräcklig information
+                </li>
+              </ul>
+            </div>
+          ) : null}
+
+          <button
+            className="fishing-button"
+            onClick={() => setIsFishingOpen(true)}
+          >
+            {normalizedFishingChoices.place} · {normalizedFishingChoices.method} ·{" "}
+            {normalizedFishingChoices.species}
+          </button>
+        </div>
       </main>
     );
   }
