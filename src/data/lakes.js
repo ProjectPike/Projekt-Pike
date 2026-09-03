@@ -4006,6 +4006,144 @@ export const lakes = {
       rules: { status: "unverified", label: "Kontrollera aktuella regler" },
       protectedAreas: { status: "unknown", label: "Uppgift saknas" },
     },
+    details: {
+      access: {
+        permitRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Fiskekort krävs.",
+          conditions: null,
+        },
+        youthRules: {
+          value: "not-required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Barn och ungdomar till och med 14 år fiskar utan fiskekort.",
+          conditions: null,
+        },
+      },
+      methods: {
+        iceMaxAngeldonPerAngler: {
+          value: 12,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Vid vinterfiske gäller max 12 angeldon/iskrokar per fiskare.",
+          conditions: null,
+        },
+      },
+      species: {
+        sizeLimits: [
+          {
+            species: "gädda",
+            value: { minSizeCm: 50, maxSizeCm: 90 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+        ],
+        releaseRequirements: [
+          {
+            species: "gädda",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Gädda över 90 cm ska återutsättas.",
+            conditions: null,
+          },
+        ],
+      },
+      watercraft: {},
+      boat: {
+        boatRentalAvailable: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/karta-sandhemssjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Båtuthyrning finns dokumenterad.",
+          conditions: null,
+        },
+        electricMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        combustionMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+      },
+      practical: {
+        ramp: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/karta-sandhemssjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Båtlaunch/båtramp finns dokumenterad vid eller nära Prästaviken.",
+          conditions: null,
+          geometry: null,
+        },
+      },
+      geography: {},
+      safety: {},
+    },
     practical: {
       parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
       ramps: [],
@@ -4033,6 +4171,108 @@ export const lakes = {
       permit: { status: "verified", label: "Fiskekort krävs" },
       rules: { status: "unverified", label: "Kontrollera aktuella regler" },
       protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    },
+    details: {
+      access: {
+        permitRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-03-01",
+          sources: [
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Fiskekort krävs. Kommunen hänvisar till kontaktperson för att få fiskekort.",
+          conditions: null,
+        },
+      },
+      methods: {},
+      species: {},
+      watercraft: {
+        boat: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        kayak: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        floatTube: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+      },
+      boat: {
+        boatRentalAvailable: {
+          value: "absent",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2023-02-16",
+          sources: [
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Uppgiften om att båtuthyrning saknas kommer från informationen uppdaterad 2023-02-16.",
+          conditions: null,
+        },
+        electricMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        combustionMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+      },
+      practical: {
+        ramp: {
+          value: "absent",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2023-02-16",
+          sources: [
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Båtramp saknas enligt uppgiften från 2023-02-16.",
+          conditions: null,
+          geometry: null,
+        },
+      },
+      geography: {},
+      safety: {},
     },
     practical: {
       parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
@@ -4063,6 +4303,190 @@ export const lakes = {
       rules: { status: "verified", label: "Verifierade grundregler" },
       protectedAreas: { status: "unknown", label: "Uppgift saknas" },
     },
+    details: {
+      access: {
+        permitRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Fiskekort krävs.",
+          conditions: null,
+        },
+        youthRules: {
+          value: "not-required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Ungdom till och med 15 år fiskar utan fiskekort.",
+          conditions: null,
+        },
+      },
+      methods: {
+        maxRodsPerPermit: {
+          value: 2,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Max 2 redskap per person.",
+          conditions: null,
+        },
+        iceMaxAngeldonPerAngler: {
+          value: 5,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Vid vinterfiske gäller max 5 angeldon per person.",
+          conditions: null,
+        },
+      },
+      species: {
+        releaseRequirements: [
+          {
+            species: "bäckröding",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Bäckröding ska återutsättas.",
+            conditions: null,
+          },
+          {
+            species: "öring",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Öring ska återutsättas.",
+            conditions: null,
+          },
+          {
+            species: "röding",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Röding ska återutsättas.",
+            conditions: null,
+          },
+          {
+            species: "gädda",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Gädda över 90 cm ska återutsättas.",
+            conditions: null,
+          },
+          {
+            species: "abborre",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-08-09",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Abborre över 32 cm ska återutsättas.",
+            conditions: null,
+          },
+        ],
+      },
+      watercraft: {},
+      boat: {
+        boatRentalAvailable: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Fyra uthyrningsbåtar finns dokumenterade.",
+          conditions: null,
+        },
+        electricMotor: {
+          value: "unknown",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "FVO anger att man föredrar endast elmotor av miljöskäl; det är en rekommendation och inte ett hårt motorförbud.",
+          conditions: null,
+        },
+        combustionMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+      },
+      practical: {},
+      geography: {},
+      safety: {},
+    },
     practical: {
       parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
       ramps: [],
@@ -4092,6 +4516,122 @@ export const lakes = {
       permit: { status: "verified", label: "Fiskekort krävs" },
       rules: { status: "verified", label: "Verifierade grundregler" },
       protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    },
+    details: {
+      access: {
+        permitRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Fiskekort krävs.",
+          conditions: null,
+        },
+        youthRules: {
+          value: "not-required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Ungdom till och med 18 år fiskar utan fiskekort.",
+          conditions: null,
+        },
+      },
+      methods: {},
+      species: {},
+      watercraft: {
+        boat: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        kayak: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        floatTube: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+      },
+      boat: {
+        boatRentalAvailable: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Fiskeföreningsbåt finns till uthyrning vid platsen.",
+          conditions: null,
+        },
+        electricMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+        combustionMotor: {
+          value: "unknown",
+          status: "unknown",
+          ruleType: "unknown",
+          verifiedAt: null,
+          sources: [],
+          note: null,
+          conditions: null,
+        },
+      },
+      practical: {
+        ramp: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-08-09",
+          sources: [
+            {
+              url: "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Dokumenterad launchplats finns vid vattenområdet.",
+          conditions: null,
+          geometry: null,
+        },
+      },
+      geography: {},
+      safety: {},
     },
     practical: {
       parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
