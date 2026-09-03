@@ -423,11 +423,49 @@ function getSpeciesRows(detailsSpecies) {
   return rows;
 }
 
+function getInferredWatercraftEntries(detailsWatercraft) {
+  if (!isPlainObject(detailsWatercraft)) {
+    return detailsWatercraft;
+  }
+
+  const boatFact = detailsWatercraft.boat;
+  const canInferKayakOrFloatTube =
+    isFactObject(boatFact) &&
+    boatFact.value === "allowed" &&
+    boatFact.status === "verified";
+
+  if (!canInferKayakOrFloatTube) {
+    return detailsWatercraft;
+  }
+
+  const inferredEntries = { ...detailsWatercraft };
+
+  ["kayak", "floatTube"].forEach((key) => {
+    const fact = inferredEntries[key];
+    if (isFactObject(fact) && fact.value !== "unknown") {
+      return;
+    }
+
+    inferredEntries[key] = {
+      value: "allowed",
+      status: "inferred",
+      ruleType: "advisory",
+      verifiedAt: null,
+      sources: [],
+      note: "Härlett från verifierad uppgift att båt är tillåten.",
+      conditions: null,
+    };
+  });
+
+  return inferredEntries;
+}
+
 function getBoatRows(details) {
   const rows = [];
+  const watercraftEntries = getInferredWatercraftEntries(details?.watercraft);
 
-  if (isPlainObject(details?.watercraft)) {
-    Object.entries(details.watercraft)
+  if (isPlainObject(watercraftEntries)) {
+    Object.entries(watercraftEntries)
       .filter(([, fact]) => isFactObject(fact))
       .forEach(([key, fact]) => {
         const isImportantUnknown = key === "boat" || key === "floatTube" || key === "kayak";
