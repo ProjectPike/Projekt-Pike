@@ -372,12 +372,18 @@ export function getLakeFishingStatusDetails(lake, fishingChoices = {}, now = new
     .filter(([, match]) => !match.supported)
     .map(([dimension]) => dimension);
 
+  // A verified restriction is actionable even if another choice dimension is
+  // still unknown. Never hide a known prohibition behind missing data.
+  if (Object.values(matches).some((match) => match.warning)) {
+    return { status: "warning", missing: [] };
+  }
+
   if (missing.length > 0) {
     return { status: "unknown", missing };
   }
 
   return {
-    status: Object.values(matches).some((match) => match.warning) ? "warning" : "allowed",
+    status: "allowed",
     missing: [],
   };
 }

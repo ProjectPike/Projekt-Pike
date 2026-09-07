@@ -126,6 +126,16 @@ test("returns warnings for verified prohibited places and methods", () => {
     getLakeFishingStatus(matchingLake({ methods: { spin: fact("prohibited") } }), choices),
     "warning",
   );
+  assert.equal(
+    getLakeFishingStatus(
+      matchingLake({
+        watercraft: { boat: fact("prohibited") },
+        species: {},
+      }),
+      choices,
+    ),
+    "warning",
+  );
 });
 
 test("treats Land as supported with verified method and species", () => {
