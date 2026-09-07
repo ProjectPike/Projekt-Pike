@@ -257,6 +257,95 @@ button {
   font-size: 13px;
 }
 
+.map-fallback-panel {
+  position: absolute;
+  z-index: 1;
+  top: 92px;
+  right: 14px;
+  bottom: 142px;
+  left: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 18px;
+  background: rgb(7 26 42 / 92%);
+  box-shadow: 0 18px 38px rgb(0 0 0 / 24%);
+}
+
+.map-fallback-notice,
+.map-fallback-empty {
+  margin: 0;
+  padding: 14px 16px;
+  color: rgb(255 255 255 / 72%);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.map-fallback-list {
+  display: grid;
+  gap: 1px;
+  overflow-y: auto;
+  background: rgb(255 255 255 / 8%);
+}
+
+.map-fallback-lake {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 58px;
+  padding: 10px 14px;
+  border: 0;
+  background: #0c2433;
+  color: #f3f6f6;
+  text-align: left;
+}
+
+.map-fallback-lake span:nth-child(2) {
+  display: grid;
+  gap: 2px;
+}
+
+.map-fallback-lake small {
+  color: rgb(255 255 255 / 56%);
+}
+
+.map-fallback-status {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #8b95a2;
+}
+
+.map-fallback-status-allowed {
+  background: #7fbf8b;
+}
+
+.map-fallback-status-warning {
+  background: #dba55d;
+}
+
+.lake-map-fallback {
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  min-height: 100%;
+  padding: 24px;
+  background: linear-gradient(145deg, #183a32, #102f2b);
+  color: rgb(255 255 255 / 72%);
+  text-align: center;
+}
+
+.lake-map-fallback p {
+  margin: 0;
+}
+
+.lake-map-fallback a {
+  color: #a8d7ff;
+  font-weight: 700;
+}
+
 .map-header {
   position: absolute;
   z-index: 3;

@@ -99,6 +99,7 @@ function LakeMap({ lake, onBack }) {
   const availableLayers = useMemo(() => getLakePointLayers(lake.id), [lake.id]);
   const lakePoints = useMemo(() => getLakePoints(lake.id), [lake.id]);
   const [isLayersOpen, setIsLayersOpen] = useState(false);
+  const [mapError, setMapError] = useState(false);
   const [activeLayerIds, setActiveLayerIds] = useState(() =>
     getLakePointLayers(lake.id).map((layer) => layer.id),
   );
@@ -108,13 +109,21 @@ function LakeMap({ lake, onBack }) {
       return undefined;
     }
 
-    const map = new Map({
-      container: mapContainerRef.current,
-      style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
-      center: lake.coordinates,
-      zoom: getLakeMapZoom(lake.id),
-      attributionControl: false,
-    });
+    let map;
+
+    try {
+      map = new Map({
+        container: mapContainerRef.current,
+        style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+        center: lake.coordinates,
+        zoom: getLakeMapZoom(lake.id),
+        attributionControl: false,
+      });
+    } catch (error) {
+      console.error("Sjökartan kunde inte startas:", error);
+      queueMicrotask(() => setMapError(true));
+      return undefined;
+    }
 
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
@@ -500,7 +509,20 @@ function LakeMap({ lake, onBack }) {
         </div>
       ) : null}
 
-      <div ref={mapContainerRef} className="lake-map-view" />
+      {mapError ? (
+        <div className="lake-map-fallback" role="status">
+          <p>Kartan stöds inte i den här webbläsaren.</p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${lake.coordinates[1]},${lake.coordinates[0]}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Öppna {lake.name} i Google Maps
+          </a>
+        </div>
+      ) : (
+        <div ref={mapContainerRef} className="lake-map-view" />
+      )}
 
       <div className="lake-map-footer">
         <small>{lakePoints.length > 0 ? "Verifierade platser" : "Kartläge"}</small>

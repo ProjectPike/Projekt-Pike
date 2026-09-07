@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Map, Marker, NavigationControl, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
+import MapPlaceholder from "./MapPlaceholder";
 
 setWorkerUrl(workerUrl);
 
@@ -46,6 +47,7 @@ function MapView({
   const userMarkerRef = useRef(null);
   const selectedHighlightTimeoutRef = useRef(null);
   const selectedLabelTimeoutRef = useRef(null);
+  const [mapError, setMapError] = useState(false);
 
   const lakeFeatureCollection = useMemo(() => {
     const matchingLakeIdSet = new Set(matchingLakeIds);
@@ -92,12 +94,20 @@ function MapView({
       return undefined;
     }
 
-    const map = new Map({
-      container: mapContainerRef.current,
-      style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
-      center: [14.5, 57.2],
-      zoom: 7.4,
-    });
+    let map;
+
+    try {
+      map = new Map({
+        container: mapContainerRef.current,
+        style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+        center: [14.5, 57.2],
+        zoom: 7.4,
+      });
+    } catch (error) {
+      console.error("Kartan kunde inte startas:", error);
+      queueMicrotask(() => setMapError(true));
+      return undefined;
+    }
 
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
@@ -494,6 +504,18 @@ function MapView({
       essential: true,
     });
   }, [userPosition]);
+
+  if (mapError) {
+    return (
+      <MapPlaceholder
+        lakes={lakes}
+        lakeStatuses={lakeStatuses}
+        onSelectLake={onSelectLake}
+        matchingLakeIds={matchingLakeIds}
+        hasSearch={hasSearch}
+      />
+    );
+  }
 
   return (
     <section className="map-view-shell">
