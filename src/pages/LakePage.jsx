@@ -810,7 +810,7 @@ function LakePage({
   const statusContent = {
     allowed: {
       heading: "Matchar ditt fiske",
-      body: `${fishingChoices.place} · ${fishingChoices.method} · ${fishingChoices.species}`,
+      body: "Ditt val stöds av informationen vi har för sjön.",
     },
     warning: {
       heading: "Villkor finns",
@@ -847,6 +847,17 @@ function LakePage({
   const safetyRows = hasDetails ? getSafetyRows(details.safety) : [];
   const sourceRows = hasDetails ? collectSourcesFromDetails(details) : [];
   const latestVerified = hasDetails ? formatVerifiedDate(getLatestVerificationDate(details)) : null;
+  const summaryCards = hasDetails
+    ? [
+        ["Parkering", lake.practical.parking],
+        ["Fredningsområde", lake.fishing.protectedAreas],
+      ]
+    : [
+        ["Regler", lake.fishing.rules],
+        ["Fiskekort", lake.fishing.permit],
+        ["Parkering", lake.practical.parking],
+        ["Fredningsområde", lake.fishing.protectedAreas],
+      ];
 
   return (
     <main className="lake-page lake-page-enter">
@@ -893,18 +904,23 @@ function LakePage({
           <p>{statusContent.body}</p>
         </section>
 
-        <section className="lake-status-grid">
-          <InformationCard label="Regler" information={lake.fishing.rules} />
-          <InformationCard label="Fiskekort" information={lake.fishing.permit} />
-          <InformationCard label="Parkering" information={lake.practical.parking} />
-          <InformationCard
-            label="Fredningsområde"
-            information={lake.fishing.protectedAreas}
-          />
+        <section className="lake-status-grid" aria-label="Snabbinfo">
+          {summaryCards.map(([label, information]) => (
+            <InformationCard key={label} label={label} information={information} />
+          ))}
         </section>
 
         {hasDetails ? (
           <section className="lake-details" aria-label="Detaljerad information">
+            <header className="lake-details-header">
+              <div>
+                <p className="eyebrow">Sjöinformation</p>
+                <h2>Regler &amp; praktiskt</h2>
+              </div>
+
+              {latestVerified ? <small>Verifierat {latestVerified}</small> : null}
+            </header>
+
             {accessRows.length > 0 ? (
               <article className="lake-details-section">
                 <h3>Fiskekort</h3>
@@ -955,12 +971,8 @@ function LakePage({
             ) : null}
 
             {sourceRows.length > 0 ? (
-              <article className="lake-details-section">
+              <article className="lake-details-section lake-details-sources">
                 <h3>Källor</h3>
-
-                {latestVerified ? (
-                  <p className="lake-details-verified-at">Senast verifierat: {latestVerified}</p>
-                ) : null}
 
                 <ul className="lake-details-source-list">
                   {sourceRows.map((source) => (
@@ -976,21 +988,26 @@ function LakePage({
           </section>
         ) : null}
 
-        <section className="lake-information">
-          <p className="eyebrow">Information</p>
-          <h2>Vi kartlägger fortfarande {lake.name}</h2>
+        {!hasDetails ? (
+          <section className="lake-information">
+            <p className="eyebrow">Information</p>
+            <h2>Vi kartlägger fortfarande {lake.name}</h2>
 
-          <p>
-            Vi har inte hunnit verifiera regler och praktisk information för
-            det här vattnet ännu.
-          </p>
+            <p>
+              Vi har inte hunnit verifiera regler och praktisk information för
+              det här vattnet ännu.
+            </p>
 
-          <button className="help-button">
-            Hjälp oss förbättra informationen
-          </button>
-
-          <button className="report-button">Rapportera fel</button>
-        </section>
+            <button className="help-button">
+              Hjälp oss förbättra informationen
+            </button>
+          </section>
+        ) : (
+          <section className="lake-feedback" aria-label="Återkoppling">
+            <span>Saknas något eller ser fel ut?</span>
+            <button className="report-button">Rapportera fel</button>
+          </section>
+        )}
       </section>
 
       {children}
