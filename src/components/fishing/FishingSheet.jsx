@@ -51,7 +51,7 @@ function FishingSheet({
         />
 
         <button className="reset-button" onClick={onReset}>
-          Återställ
+          Rensa val
         </button>
       </section>
     </div>

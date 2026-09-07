@@ -9,13 +9,7 @@ import PlaceholderTabPage from "./PlaceholderTabPage";
 import { lakes } from "../data/lakes";
 import { fishingChoices as fishingChoiceOptions } from "../data/fishingChoices";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { getLakeFishingStatus } from "../services/lakeService";
-
-const legacyFishingChoiceDefaults = {
-  place: "Båt",
-  method: "Spinn",
-  species: "Gädda",
-};
+import { getLakeFishingSelectionDetails } from "../services/lakeService";
 const fishingChoiceOptionsByCategory = {
   place: fishingChoiceOptions.places,
   method: fishingChoiceOptions.methods,
@@ -60,12 +54,29 @@ function hasSameFishingSelections(first, second) {
   );
 }
 
-function getScalarFishingChoices(selections) {
-  return {
-    place: selections.place[0] ?? legacyFishingChoiceDefaults.place,
-    method: selections.method[0] ?? legacyFishingChoiceDefaults.method,
-    species: selections.species[0] ?? legacyFishingChoiceDefaults.species,
+function getFishingSelectionSummary(selections) {
+  const labels = {
+    place: ["plats", "platser"],
+    method: ["metod", "metoder"],
+    species: ["art", "arter"],
   };
+  const parts = Object.keys(fishingChoiceOptionsByCategory)
+    .map((category) => {
+      const choices = selections[category];
+
+      if (choices.length === 0) {
+        return null;
+      }
+
+      if (choices.length === 1) {
+        return choices[0];
+      }
+
+      return `${choices.length} ${labels[category][1]}`;
+    })
+    .filter(Boolean);
+
+  return parts.length > 0 ? parts.join(" · ") : "Välj fiske";
 }
 
 function HomePage() {
@@ -85,7 +96,10 @@ function HomePage() {
     emptyFishingSelections,
   );
   const normalizedFishingSelections = normalizeFishingSelections(fishingChoices);
-  const scalarFishingChoices = getScalarFishingChoices(normalizedFishingSelections);
+  const fishingSelectionSummary = getFishingSelectionSummary(normalizedFishingSelections);
+  const hasFishingSelections = Object.values(normalizedFishingSelections).some(
+    (choices) => choices.length > 0,
+  );
 
   useEffect(() => {
     if (!hasSameFishingSelections(fishingChoices, normalizedFishingSelections)) {
@@ -99,17 +113,17 @@ function HomePage() {
 
       return {
         ...normalizedCurrentChoices,
-        [category]: fishingChoiceOptionsByCategory[category]?.includes(value) ? [value] : [],
+        [category]: fishingChoiceOptionsByCategory[category]?.includes(value)
+          ? normalizedCurrentChoices[category].includes(value)
+            ? normalizedCurrentChoices[category].filter((choice) => choice !== value)
+            : [...normalizedCurrentChoices[category], value]
+          : normalizedCurrentChoices[category],
       };
     });
   }
 
   function resetFishingChoices() {
-    setFishingChoices({
-      place: [legacyFishingChoiceDefaults.place],
-      method: [legacyFishingChoiceDefaults.method],
-      species: [legacyFishingChoiceDefaults.species],
-    });
+    setFishingChoices(emptyFishingSelections);
   }
 
   function toggleFavorite(lakeId) {
@@ -172,10 +186,13 @@ function HomePage() {
 
   const lakeStatuses = useMemo(() => {
     return Object.values(lakes).reduce((statuses, lake) => {
-      statuses[lake.id] = getLakeFishingStatus(lake, scalarFishingChoices);
+      statuses[lake.id] = getLakeFishingSelectionDetails(
+        lake,
+        normalizedFishingSelections,
+      ).status ?? "neutral";
       return statuses;
     }, {});
-  }, [scalarFishingChoices]);
+  }, [normalizedFishingSelections]);
 
   useEffect(() => {
     if (!isLegendOpen) {
@@ -200,7 +217,7 @@ function HomePage() {
 
   const fishingSheet = isFishingOpen ? (
     <FishingSheet
-      fishingChoices={scalarFishingChoices}
+      fishingChoices={normalizedFishingSelections}
       onChange={updateFishingChoice}
       onReset={resetFishingChoices}
       onClose={() => setIsFishingOpen(false)}
@@ -211,7 +228,8 @@ function HomePage() {
     return (
       <LakePage
         lake={selectedLake}
-        fishingChoices={scalarFishingChoices}
+        fishingChoices={normalizedFishingSelections}
+        fishingSelectionSummary={fishingSelectionSummary}
         isFavorite={favoriteLakeIds.includes(selectedLake.id)}
         onToggleFavorite={() => toggleFavorite(selectedLake.id)}
         onBack={() => setSelectedLake(null)}
@@ -278,21 +296,27 @@ function HomePage() {
 
           {isLegendOpen ? (
             <div className="map-legend-panel" role="dialog" aria-label="Förklaring av kartfärger">
-              <h2>Vad betyder färgerna?</h2>
-              <ul>
-                <li>
-                  <span className="map-legend-swatch map-legend-swatch-green" />
-                  Matchar ditt fiske
-                </li>
-                <li>
-                  <span className="map-legend-swatch map-legend-swatch-amber" />
-                  Villkor finns – läs reglerna
-                </li>
-                <li>
-                  <span className="map-legend-swatch map-legend-swatch-gray" />
-                  Pike saknar tillräcklig information
-                </li>
-              </ul>
+              {hasFishingSelections ? (
+                <>
+                  <h2>Vad betyder färgerna?</h2>
+                  <ul>
+                    <li>
+                      <span className="map-legend-swatch map-legend-swatch-green" />
+                      Matchar ditt fiske
+                    </li>
+                    <li>
+                      <span className="map-legend-swatch map-legend-swatch-amber" />
+                      Villkor finns – läs reglerna
+                    </li>
+                    <li>
+                      <span className="map-legend-swatch map-legend-swatch-gray" />
+                      Pike saknar tillräcklig information
+                    </li>
+                  </ul>
+                </>
+              ) : (
+                <p>Välj fiske för att se hur sjöarna matchar.</p>
+              )}
             </div>
           ) : null}
 
@@ -300,8 +324,7 @@ function HomePage() {
             className="fishing-button"
             onClick={() => setIsFishingOpen(true)}
           >
-            {scalarFishingChoices.place} · {scalarFishingChoices.method} ·{" "}
-            {scalarFishingChoices.species}
+            {fishingSelectionSummary}
           </button>
         </div>
       </main>

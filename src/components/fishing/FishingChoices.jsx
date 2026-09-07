@@ -10,17 +10,20 @@ function FishingChoices({
       <h3>{title}</h3>
 
       <div className="choice-list">
-        {choices.map((choice) => (
-          <button
-            key={choice}
-            className={`choice-button ${
-              choice === selected ? "choice-button-selected" : ""
-            }`}
-            onClick={() => onChange(category, choice)}
-          >
-            {choice}
-          </button>
-        ))}
+        {choices.map((choice) => {
+          const isSelected = selected.includes(choice);
+
+          return (
+            <button
+              key={choice}
+              className={`choice-button ${isSelected ? "choice-button-selected" : ""}`}
+              onClick={() => onChange(category, choice)}
+              aria-pressed={isSelected}
+            >
+              {choice}
+            </button>
+          );
+        })}
       </div>
     </section>
   );

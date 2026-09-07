@@ -3,7 +3,7 @@ import InformationCard from "../components/lake/InformationCard";
 import LakeHero from "../components/lake/LakeHero";
 import LakeMap from "../components/map/LakeMap";
 import { getLakePoints, getPointTypes } from "../data/lakePoints";
-import { getLakeFishingStatusDetails } from "../services/lakeService";
+import { getLakeFishingSelectionDetails } from "../services/lakeService";
 
 const SOURCE_TYPE_LABELS = {
   authority: "Myndighet",
@@ -1047,14 +1047,18 @@ function formatSwedishList(values) {
   return `${values.slice(0, -1).join(", ")} och ${values.at(-1)}`;
 }
 
-function getMissingChoiceLabels(missing, fishingChoices) {
+function getUnknownChoiceLabels(categories) {
   const labels = {
-    place: `fiske från ${fishingChoices.place.toLocaleLowerCase("sv")}`,
-    method: fishingChoices.method.toLocaleLowerCase("sv"),
-    species: fishingChoices.species.toLocaleLowerCase("sv"),
+    place: "fiske från",
+    method: "metoden",
+    species: "arten",
   };
 
-  return missing.map((dimension) => labels[dimension]).filter(Boolean);
+  return Object.entries(categories).flatMap(([category, choices]) =>
+    choices
+      .filter((choice) => choice.status === "unknown")
+      .map((choice) => `${labels[category]} ${choice.choice.toLocaleLowerCase("sv")}`),
+  );
 }
 
 function getParkingSummary(lake, lakePoints) {
@@ -1176,6 +1180,7 @@ function isDirectConditionRow(row, section) {
 function LakePage({
   lake,
   fishingChoices,
+  fishingSelectionSummary,
   isFavorite,
   onToggleFavorite,
   onBack,
@@ -1185,17 +1190,22 @@ function LakePage({
   const [showLakeMap, setShowLakeMap] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [showDirectConditions, setShowDirectConditions] = useState(false);
-  const fishingStatusDetails = getLakeFishingStatusDetails(lake, fishingChoices);
+  const fishingStatusDetails = getLakeFishingSelectionDetails(lake, fishingChoices);
   const fishingStatus = fishingStatusDetails.status;
-  const missingChoiceLabels = getMissingChoiceLabels(
-    fishingStatusDetails.missing,
-    fishingChoices,
+  const missingChoiceLabels = getUnknownChoiceLabels(fishingStatusDetails.categories);
+  const isSimpleSelection = ["place", "method", "species"].every(
+    (category) => fishingChoices[category].length === 1,
   );
+  const showAllChoiceDetails = !isSimpleSelection || showAllDetails;
 
   const statusContent = {
     allowed: {
       heading: "Matchar ditt fiske",
-      body: "Ditt val stöds av informationen vi har för sjön.",
+      body: "De val du gjort stöds av informationen vi har för sjön.",
+    },
+    "allowed-unknown": {
+      heading: "Bra match",
+      body: "Pike hittade ett användbart verifierat alternativ, men vissa val saknar verifierad information.",
     },
     warning: {
       heading: "Villkor finns",
@@ -1207,10 +1217,13 @@ function LakePage({
         ? `Verifierad information saknas om ${formatSwedishList(missingChoiceLabels)}.`
         : "Pike saknar tillräcklig information för att bedöma ditt val.",
     },
-  }[fishingStatus] ?? {
-    heading: "Otillräcklig information",
-    body: "Pike saknar tillräcklig information för att bedöma ditt val.",
-  };
+    null: {
+      heading: "Välj ditt fiske",
+      body: "Välj plats, metod eller art för att se hur sjön matchar.",
+    },
+  }[fishingStatus === "allowed" && fishingStatusDetails.hasUnknownSelections
+    ? "allowed-unknown"
+    : fishingStatus];
 
   if (showLakeMap) {
     return (
@@ -1228,16 +1241,16 @@ function LakePage({
 
   const accessRows = hasDetails ? getAccessRows(details.access) : [];
   const methodRows = hasDetails
-    ? getMethodRows(details.methods, fishingChoices.method, showAllDetails)
+    ? getMethodRows(details.methods, fishingChoices.method[0], showAllChoiceDetails)
     : [];
   const speciesRows = hasDetails
-    ? getSpeciesRows(details.species, fishingChoices.species, showAllDetails)
+    ? getSpeciesRows(details.species, fishingChoices.species[0], showAllChoiceDetails)
     : [];
   const boatRows = hasDetails
-    ? getBoatRows(details, fishingChoices.place, fishingChoices.method, showAllDetails)
+    ? getBoatRows(details, fishingChoices.place[0], fishingChoices.method[0], showAllChoiceDetails)
     : [];
   const practicalRows = hasDetails
-    ? getPracticalRows(details.practical, details.boat, fishingChoices.place, showAllDetails)
+    ? getPracticalRows(details.practical, details.boat, fishingChoices.place[0], showAllChoiceDetails)
     : [];
   const geographyRows = hasDetails ? getGeographyRows(details.geography) : [];
   const safetyRows = hasDetails ? getSafetyRows(details.safety) : [];
@@ -1249,10 +1262,10 @@ function LakePage({
   const sourceRows = hasDetails ? collectSourcesFromDetails(details) : [];
   const latestVerified = hasDetails ? formatVerifiedDate(getLatestVerificationDate(details)) : null;
   const allChoiceSpecificRowCount = hasDetails
-    ? getMethodRows(details.methods, fishingChoices.method, true).length +
-      getSpeciesRows(details.species, fishingChoices.species, true).length +
-      getBoatRows(details, fishingChoices.place, fishingChoices.method, true).length +
-      getPracticalRows(details.practical, details.boat, fishingChoices.place, true).length
+    ? getMethodRows(details.methods, fishingChoices.method[0], true).length +
+      getSpeciesRows(details.species, fishingChoices.species[0], true).length +
+      getBoatRows(details, fishingChoices.place[0], fishingChoices.method[0], true).length +
+      getPracticalRows(details.practical, details.boat, fishingChoices.place[0], true).length
     : 0;
   const visibleChoiceSpecificRowCount =
     methodRows.length + speciesRows.length + boatRows.length + practicalRows.length;
@@ -1310,16 +1323,13 @@ function LakePage({
         <button className="lake-fishing-summary" onClick={onOpenFishing}>
           <span>
             <small>Mitt fiske</small>
-            <strong>
-              {fishingChoices.place} · {fishingChoices.method} ·{" "}
-              {fishingChoices.species}
-            </strong>
+            <strong>{fishingSelectionSummary}</strong>
           </span>
 
           <strong>›</strong>
         </button>
 
-        {fishingStatus === "warning" ? (
+        {fishingStatus === "warning" && isSimpleSelection ? (
           <>
             <button
               type="button"
@@ -1347,7 +1357,7 @@ function LakePage({
                   <span>
                     <small>Gäller ditt val</small>
                     <strong>
-                      {fishingChoices.place} · {fishingChoices.method} · {fishingChoices.species}
+                      {fishingSelectionSummary}
                     </strong>
                   </span>
                   <button
@@ -1370,6 +1380,11 @@ function LakePage({
               </section>
             ) : null}
           </>
+        ) : fishingStatus === "warning" ? (
+          <section className="lake-status-message lake-status-message-warning">
+            <strong>{statusContent.heading}</strong>
+            <p>Minst ett valt alternativ har ett verifierat villkor. Fullständig regelinformation visas nedan.</p>
+          </section>
         ) : (
           <section className={`lake-status-message lake-status-message-${fishingStatus}`}>
             <strong>{statusContent.heading}</strong>
@@ -1394,7 +1409,7 @@ function LakePage({
               <div className="lake-details-header-meta">
                 {latestVerified ? <small>Verifierat {latestVerified}</small> : null}
 
-                {showAllDetails || hiddenDetailCount > 0 ? (
+                {isSimpleSelection && (showAllDetails || hiddenDetailCount > 0) ? (
                   <button
                     type="button"
                     className="lake-details-filter-button"
