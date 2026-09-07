@@ -2343,7 +2343,64 @@ export const lakes = {
           conditions: null,
         },
       },
-      methods: {},
+      methods: {
+        spin: {
+          value: "restricted",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              type: "fvo-club",
+            },
+          ],
+          note: "Kastspö är tillåtet, men på sjöns västra sida är endast flugfiske med flugspö tillåtet.",
+          conditions: null,
+        },
+        fly: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              type: "fvo-club",
+            },
+          ],
+          note: "Flugspö är tillåtet.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              type: "fvo-club",
+            },
+          ],
+          note: "Metspö är tillåtet.",
+          conditions: null,
+        },
+        ice: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              type: "fvo-club",
+            },
+          ],
+          note: "Pimpelspö och fiske från is är tillåtet.",
+          conditions: null,
+        },
+      },
       species: {
         stockedSportFish: {
           value: ["regnbage", "oring"],
@@ -2647,6 +2704,20 @@ export const lakes = {
         },
       },
       species: {
+        knownSpecies: {
+          value: ["gädda"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://viss.lansstyrelsen.se/Waters.aspx?1=1&generatePDF=true&managementCycleName=Cykel_1&timeStamp=&userProfileID=3&waterMSCD=WA55273393",
+              type: "authority",
+            },
+          ],
+          note: "Verifierad förekomst av gädda; uppgiften är inte avsedd som komplett artlista.",
+          conditions: null,
+        },
         closedSeasons: [
           {
             species: "gos",
