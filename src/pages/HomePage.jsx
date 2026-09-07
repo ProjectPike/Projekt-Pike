@@ -4,12 +4,14 @@ import SearchBar from "../components/layout/SearchBar";
 import MapView from "../components/map/MapView";
 import FishingSheet from "../components/fishing/FishingSheet";
 import LakePage from "./LakePage";
+import MorePage from "./MorePage";
 import SavedPage from "./SavedPage";
 import PlaceholderTabPage from "./PlaceholderTabPage";
 import { lakes } from "../data/lakes";
 import { fishingChoices as fishingChoiceOptions } from "../data/fishingChoices";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { getLakeFishingSelectionDetails } from "../services/lakeService";
+import { defaultThemeId, isThemeId } from "../theme/themes";
 const fishingChoiceOptionsByCategory = {
   place: fishingChoiceOptions.places,
   method: fishingChoiceOptions.methods,
@@ -91,6 +93,11 @@ function HomePage() {
     "project-pike-favorites",
     [],
   );
+  const [storedThemeId, setStoredThemeId] = useLocalStorage(
+    "project-pike-theme",
+    defaultThemeId,
+  );
+  const themeId = isThemeId(storedThemeId) ? storedThemeId : defaultThemeId;
   const [fishingChoices, setFishingChoices] = useLocalStorage(
     "project-pike-fishing-choices",
     emptyFishingSelections,
@@ -106,6 +113,14 @@ function HomePage() {
       setFishingChoices(normalizedFishingSelections);
     }
   }, [fishingChoices, normalizedFishingSelections, setFishingChoices]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = themeId;
+
+    if (storedThemeId !== themeId) {
+      window.localStorage.setItem("project-pike-theme", JSON.stringify(themeId));
+    }
+  }, [storedThemeId, themeId]);
 
   function updateFishingChoice(category, value) {
     setFishingChoices((currentChoices) => {
@@ -260,10 +275,7 @@ function HomePage() {
     );
   } else if (activeTab === "more") {
     pageContent = (
-      <PlaceholderTabPage
-        title="Mer"
-        text="Inställningar, information och framtida funktioner får sitt hem här."
-      />
+      <MorePage themeId={themeId} onThemeChange={setStoredThemeId} />
     );
   } else {
     pageContent = (
@@ -281,6 +293,7 @@ function HomePage() {
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           onUseLocation={useCurrentLocation}
+          onOpenSettings={() => setActiveTab("more")}
         />
 
         <div className="map-overlay-controls" ref={legendContainerRef}>

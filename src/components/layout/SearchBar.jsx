@@ -1,4 +1,4 @@
-function SearchBar({ searchQuery, onSearchChange, onUseLocation }) {
+function SearchBar({ searchQuery, onSearchChange, onUseLocation, onOpenSettings }) {
   return (
     <header className="map-header">
       <input
@@ -18,7 +18,11 @@ function SearchBar({ searchQuery, onSearchChange, onUseLocation }) {
         ◎
       </button>
 
-      <button className="round-button" aria-label="Öppna inställningar">
+      <button
+        className="round-button"
+        aria-label="Öppna inställningar"
+        onClick={onOpenSettings}
+      >
         ⚙
       </button>
     </header>
