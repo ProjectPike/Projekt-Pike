@@ -1010,11 +1010,31 @@ button {
   font-size: 19px;
 }
 
-.lake-details-header > small {
+.lake-details-header-meta {
+  display: grid;
   flex: 0 0 auto;
+  justify-items: end;
+  gap: 7px;
+}
+
+.lake-details-header-meta small {
   color: var(--color-muted);
   font-size: 12px;
   text-align: right;
+}
+
+.lake-details-filter-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lake-details-filter-button:hover,
+.lake-details-filter-button:focus-visible {
+  text-decoration: underline;
 }
 
 .lake-details-section {

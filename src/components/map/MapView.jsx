@@ -338,11 +338,15 @@ function MapView({
         const zoom = await source.getClusterExpansionZoom(
           Number(clusterFeature.properties.cluster_id),
         );
+        const targetZoom = Math.min(
+          Math.max(zoom + 1.2, map.getZoom() + 2),
+          14,
+        );
 
         map.easeTo({
           center: [longitude, latitude],
-          zoom,
-          duration: 500,
+          zoom: targetZoom,
+          duration: 320,
           essential: true,
         });
       } catch (error) {

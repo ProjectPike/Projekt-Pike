@@ -60,6 +60,77 @@ const BOAT_LABELS = {
   speedLimits: "Hastighetsgräns",
 };
 
+const PLACE_WATERCRAFT_KEYS = {
+  Båt: "boat",
+  Kajak: "kayak",
+  Flytring: "floatTube",
+};
+
+function getMethodChoiceForKey(key) {
+  const normalizedKey = key.toLowerCase();
+
+  if (normalizedKey.includes("trolling") || normalizedKey.includes("dragrowing")) {
+    return "Trolling";
+  }
+
+  if (normalizedKey === "spin" || normalizedKey.includes("lurefishing")) {
+    return "Spinn";
+  }
+
+  if (normalizedKey === "bait") {
+    return "Mete";
+  }
+
+  if (normalizedKey === "fly") {
+    return "Flugfiske";
+  }
+
+  if (
+    normalizedKey === "ice" ||
+    normalizedKey.includes("ice") ||
+    normalizedKey.includes("angeldon") ||
+    normalizedKey.includes("crayfish") ||
+    normalizedKey === "nets" ||
+    normalizedKey === "fixedgear"
+  ) {
+    return null;
+  }
+
+  return undefined;
+}
+
+function isRelevantMethodKey(key, selectedMethod) {
+  const methodChoice = getMethodChoiceForKey(key);
+  return methodChoice === undefined || methodChoice === selectedMethod;
+}
+
+function matchesSelectedSpecies(value, selectedSpecies) {
+  if (!selectedSpecies || value === null || value === undefined) {
+    return false;
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((item) => matchesSelectedSpecies(item, selectedSpecies));
+  }
+
+  const normalize = (item) =>
+    formatToken(item)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase("sv");
+  const selectedToken = normalize(selectedSpecies);
+
+  return normalize(value)
+    .split("+")
+    .some(
+      (token) =>
+        token === "all" ||
+        token === selectedToken ||
+        token.endsWith(selectedToken) ||
+        (token === "laxartad" && selectedToken === "oring"),
+    );
+}
+
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
@@ -284,13 +355,14 @@ function getAccessRows(detailsAccess) {
     .filter(Boolean);
 }
 
-function getMethodRows(detailsMethods) {
+function getMethodRows(detailsMethods, selectedMethod, showAll) {
   if (!isPlainObject(detailsMethods)) {
     return [];
   }
 
   return Object.entries(detailsMethods)
     .filter(([, fact]) => isFactObject(fact))
+    .filter(([key]) => showAll || isRelevantMethodKey(key, selectedMethod))
     .map(([key, fact]) => {
       if (fact.value === "unknown") {
         return null;
@@ -316,7 +388,7 @@ function getMethodRows(detailsMethods) {
     .filter(Boolean);
 }
 
-function getSpeciesRows(detailsSpecies) {
+function getSpeciesRows(detailsSpecies, selectedSpecies, showAll) {
   if (!isPlainObject(detailsSpecies)) {
     return [];
   }
@@ -324,29 +396,47 @@ function getSpeciesRows(detailsSpecies) {
   const rows = [];
 
   if (isFactObject(detailsSpecies.knownSpecies) && Array.isArray(detailsSpecies.knownSpecies.value)) {
-    rows.push({
-      label: "Arter",
-      value: detailsSpecies.knownSpecies.value.map((species) => formatToken(species)).join(", "),
-      note: detailsSpecies.knownSpecies.note,
-      conditions: getConditionText(detailsSpecies.knownSpecies.conditions),
-      tone: getTone(detailsSpecies.knownSpecies.ruleType),
-      toneLabel: getToneLabel(detailsSpecies.knownSpecies.ruleType),
-    });
+    const visibleSpecies = showAll
+      ? detailsSpecies.knownSpecies.value
+      : detailsSpecies.knownSpecies.value.filter((species) =>
+          matchesSelectedSpecies(species, selectedSpecies),
+        );
+
+    if (visibleSpecies.length > 0) {
+      rows.push({
+        label: showAll ? "Arter" : "Vald art",
+        value: visibleSpecies.map((species) => formatToken(species)).join(", "),
+        note: showAll ? detailsSpecies.knownSpecies.note : null,
+        conditions: getConditionText(detailsSpecies.knownSpecies.conditions),
+        tone: getTone(detailsSpecies.knownSpecies.ruleType),
+        toneLabel: getToneLabel(detailsSpecies.knownSpecies.ruleType),
+      });
+    }
   }
 
   if (isFactObject(detailsSpecies.stockedSportFish) && Array.isArray(detailsSpecies.stockedSportFish.value)) {
-    rows.push({
-      label: "Inplanterade arter",
-      value: detailsSpecies.stockedSportFish.value.map((species) => formatToken(species)).join(", "),
-      note: detailsSpecies.stockedSportFish.note,
-      conditions: getConditionText(detailsSpecies.stockedSportFish.conditions),
-      tone: getTone(detailsSpecies.stockedSportFish.ruleType),
-      toneLabel: getToneLabel(detailsSpecies.stockedSportFish.ruleType),
-    });
+    const visibleSpecies = showAll
+      ? detailsSpecies.stockedSportFish.value
+      : detailsSpecies.stockedSportFish.value.filter((species) =>
+          matchesSelectedSpecies(species, selectedSpecies),
+        );
+
+    if (visibleSpecies.length > 0) {
+      rows.push({
+        label: "Inplanterade arter",
+        value: visibleSpecies.map((species) => formatToken(species)).join(", "),
+        note: detailsSpecies.stockedSportFish.note,
+        conditions: getConditionText(detailsSpecies.stockedSportFish.conditions),
+        tone: getTone(detailsSpecies.stockedSportFish.ruleType),
+        toneLabel: getToneLabel(detailsSpecies.stockedSportFish.ruleType),
+      });
+    }
   }
 
   if (Array.isArray(detailsSpecies.sizeLimits)) {
-    detailsSpecies.sizeLimits.forEach((entry) => {
+    detailsSpecies.sizeLimits
+      .filter((entry) => showAll || matchesSelectedSpecies(entry.species, selectedSpecies))
+      .forEach((entry) => {
       const sizeText = getStateLabel(entry.value);
       if (!sizeText) {
         return;
@@ -364,14 +454,20 @@ function getSpeciesRows(detailsSpecies) {
   }
 
   if (Array.isArray(detailsSpecies.bagLimits)) {
-    detailsSpecies.bagLimits.forEach((entry) => {
+    detailsSpecies.bagLimits
+      .filter(
+        (entry) =>
+          showAll ||
+          matchesSelectedSpecies(entry.species ?? entry.speciesGroup, selectedSpecies),
+      )
+      .forEach((entry) => {
       const bagText = getStateLabel(entry.value);
       if (!bagText) {
         return;
       }
 
       rows.push({
-        label: `${formatToken(entry.species ?? "Art")} · Fångstgräns`,
+        label: `${formatToken(entry.species ?? entry.speciesGroup ?? "Art")} · Fångstgräns`,
         value: bagText,
         note: entry.note,
         conditions: getConditionText(entry.conditions),
@@ -382,7 +478,9 @@ function getSpeciesRows(detailsSpecies) {
   }
 
   if (Array.isArray(detailsSpecies.closedSeasons)) {
-    detailsSpecies.closedSeasons.forEach((entry) => {
+    detailsSpecies.closedSeasons
+      .filter((entry) => showAll || matchesSelectedSpecies(entry.species, selectedSpecies))
+      .forEach((entry) => {
       rows.push({
         label: `${formatToken(entry.species ?? "Art")} · Fredning`,
         value: "Förbjudet",
@@ -395,7 +493,9 @@ function getSpeciesRows(detailsSpecies) {
   }
 
   if (Array.isArray(detailsSpecies.releaseRequirements)) {
-    detailsSpecies.releaseRequirements.forEach((entry) => {
+    detailsSpecies.releaseRequirements
+      .filter((entry) => showAll || matchesSelectedSpecies(entry.species, selectedSpecies))
+      .forEach((entry) => {
       rows.push({
         label: `${formatToken(entry.species ?? "Art")} · Återutsättning`,
         value: "Krävs",
@@ -408,7 +508,9 @@ function getSpeciesRows(detailsSpecies) {
   }
 
   if (Array.isArray(detailsSpecies.releaseRestrictions)) {
-    detailsSpecies.releaseRestrictions.forEach((entry) => {
+    detailsSpecies.releaseRestrictions
+      .filter((entry) => showAll || matchesSelectedSpecies(entry.species, selectedSpecies))
+      .forEach((entry) => {
       rows.push({
         label: `${formatToken(entry.species ?? "Art")} · Catch and release`,
         value: "Förbjudet",
@@ -460,13 +562,15 @@ function getInferredWatercraftEntries(detailsWatercraft) {
   return inferredEntries;
 }
 
-function getBoatRows(details) {
+function getBoatRows(details, selectedPlace, selectedMethod, showAll) {
   const rows = [];
   const watercraftEntries = getInferredWatercraftEntries(details?.watercraft);
+  const selectedWatercraftKey = PLACE_WATERCRAFT_KEYS[selectedPlace];
 
   if (isPlainObject(watercraftEntries)) {
     Object.entries(watercraftEntries)
       .filter(([, fact]) => isFactObject(fact))
+      .filter(([key]) => showAll || key === selectedWatercraftKey)
       .forEach(([key, fact]) => {
         const isImportantUnknown = key === "boat" || key === "floatTube" || key === "kayak";
         if (fact.value === "unknown" && !isImportantUnknown) {
@@ -487,6 +591,19 @@ function getBoatRows(details) {
   if (isPlainObject(details?.boat)) {
     Object.entries(details.boat)
       .filter(([, fact]) => isFactObject(fact))
+      .filter(([key]) => key !== "boatRentalAvailable")
+      .filter(([key]) => {
+        if (showAll) {
+          return true;
+        }
+
+        if (selectedPlace !== "Båt") {
+          return false;
+        }
+
+        const methodChoice = getMethodChoiceForKey(key);
+        return methodChoice === undefined || methodChoice === selectedMethod;
+      })
       .forEach(([key, fact]) => {
         const isImportantUnknown = key === "electricMotor" || key === "combustionMotor";
         if (fact.value === "unknown" && !isImportantUnknown) {
@@ -512,10 +629,14 @@ function getBoatRows(details) {
   return rows.filter((row) => Boolean(row.value) || Boolean(row.note));
 }
 
-function getPracticalRows(detailsPractical, detailsBoat) {
+function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll) {
   const rows = [];
 
-  if (isPlainObject(detailsBoat?.boatRentalAvailable) && detailsBoat.boatRentalAvailable.value !== "unknown") {
+  if (
+    (showAll || selectedPlace === "Båt") &&
+    isPlainObject(detailsBoat?.boatRentalAvailable) &&
+    detailsBoat.boatRentalAvailable.value !== "unknown"
+  ) {
     rows.push({
       label: "Hyrbåt",
       value: getStateLabel(detailsBoat.boatRentalAvailable.value),
@@ -805,6 +926,7 @@ function LakePage({
   children,
 }) {
   const [showLakeMap, setShowLakeMap] = useState(false);
+  const [showAllDetails, setShowAllDetails] = useState(false);
   const fishingStatus = getLakeFishingStatus(lake, fishingChoices);
 
   const statusContent = {
@@ -814,7 +936,7 @@ function LakePage({
     },
     warning: {
       heading: "Villkor finns",
-      body: "Relevant information bör kontrolleras innan fisket.",
+      body: "Vi hittade regler som berör ditt val. Läs dem före fisket.",
     },
     unknown: {
       heading: "Otillräcklig information",
@@ -839,14 +961,34 @@ function LakePage({
   const hasDetails = Boolean(details);
 
   const accessRows = hasDetails ? getAccessRows(details.access) : [];
-  const methodRows = hasDetails ? getMethodRows(details.methods) : [];
-  const speciesRows = hasDetails ? getSpeciesRows(details.species) : [];
-  const boatRows = hasDetails ? getBoatRows(details) : [];
-  const practicalRows = hasDetails ? getPracticalRows(details.practical, details.boat) : [];
+  const methodRows = hasDetails
+    ? getMethodRows(details.methods, fishingChoices.method, showAllDetails)
+    : [];
+  const speciesRows = hasDetails
+    ? getSpeciesRows(details.species, fishingChoices.species, showAllDetails)
+    : [];
+  const boatRows = hasDetails
+    ? getBoatRows(details, fishingChoices.place, fishingChoices.method, showAllDetails)
+    : [];
+  const practicalRows = hasDetails
+    ? getPracticalRows(details.practical, details.boat, fishingChoices.place, showAllDetails)
+    : [];
   const geographyRows = hasDetails ? getGeographyRows(details.geography) : [];
   const safetyRows = hasDetails ? getSafetyRows(details.safety) : [];
   const sourceRows = hasDetails ? collectSourcesFromDetails(details) : [];
   const latestVerified = hasDetails ? formatVerifiedDate(getLatestVerificationDate(details)) : null;
+  const allChoiceSpecificRowCount = hasDetails
+    ? getMethodRows(details.methods, fishingChoices.method, true).length +
+      getSpeciesRows(details.species, fishingChoices.species, true).length +
+      getBoatRows(details, fishingChoices.place, fishingChoices.method, true).length +
+      getPracticalRows(details.practical, details.boat, fishingChoices.place, true).length
+    : 0;
+  const visibleChoiceSpecificRowCount =
+    methodRows.length + speciesRows.length + boatRows.length + practicalRows.length;
+  const hiddenDetailCount = Math.max(
+    0,
+    allChoiceSpecificRowCount - visibleChoiceSpecificRowCount,
+  );
   const summaryCards = hasDetails
     ? [
         ["Parkering", lake.practical.parking],
@@ -918,7 +1060,21 @@ function LakePage({
                 <h2>Regler &amp; praktiskt</h2>
               </div>
 
-              {latestVerified ? <small>Verifierat {latestVerified}</small> : null}
+              <div className="lake-details-header-meta">
+                {latestVerified ? <small>Verifierat {latestVerified}</small> : null}
+
+                {showAllDetails || hiddenDetailCount > 0 ? (
+                  <button
+                    type="button"
+                    className="lake-details-filter-button"
+                    onClick={() => setShowAllDetails((current) => !current)}
+                  >
+                    {showAllDetails
+                      ? "Visa bara mitt fiske"
+                      : `Visa all info (${hiddenDetailCount})`}
+                  </button>
+                ) : null}
+              </div>
             </header>
 
             {accessRows.length > 0 ? (
