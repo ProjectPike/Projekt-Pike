@@ -8,6 +8,7 @@ import {
   getPointTypeLabel,
   getPointTypes,
 } from "../../data/lakePoints";
+import { supportsInteractiveMap } from "../../utils/mapSupport";
 
 setWorkerUrl(workerUrl);
 
@@ -106,6 +107,11 @@ function LakeMap({ lake, onBack }) {
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
+      return undefined;
+    }
+
+    if (!supportsInteractiveMap()) {
+      queueMicrotask(() => setMapError(true));
       return undefined;
     }
 

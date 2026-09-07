@@ -3,6 +3,7 @@ import { Map, Marker, NavigationControl, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import MapPlaceholder from "./MapPlaceholder";
+import { supportsInteractiveMap } from "../../utils/mapSupport";
 
 setWorkerUrl(workerUrl);
 
@@ -91,6 +92,11 @@ function MapView({
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
+      return undefined;
+    }
+
+    if (!supportsInteractiveMap()) {
+      queueMicrotask(() => setMapError(true));
       return undefined;
     }
 
