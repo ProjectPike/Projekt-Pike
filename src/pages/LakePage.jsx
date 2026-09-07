@@ -2,7 +2,8 @@ import { useState } from "react";
 import InformationCard from "../components/lake/InformationCard";
 import LakeHero from "../components/lake/LakeHero";
 import LakeMap from "../components/map/LakeMap";
-import { getLakeFishingStatus } from "../services/lakeService";
+import { getLakePoints, getPointTypes } from "../data/lakePoints";
+import { getLakeFishingStatusDetails } from "../services/lakeService";
 
 const SOURCE_TYPE_LABELS = {
   authority: "Myndighet",
@@ -58,6 +59,24 @@ const METHOD_LABELS = {
   augustSportFishingHours: "Fisketider 1–15 augusti",
   winterIceFishingAnnualPermit: "Vinterfiske med årskort",
   iceMaxAngeldonPerAngler: "Angeldon vid isfiske",
+  angeldonContinuousSupervision: "Angeldon under uppsikt",
+  angeldonOnlyIceCoveredWater: "Angeldon endast på islagt vatten",
+  augustFishingHours: "Fisketider i augusti",
+  dragFromBoatWinterIceFree: "Dragfiske från båt vintertid",
+  dragRowingMaxAnglers: "Fiskande vid dragrodd",
+  familyPermitMaxLinesPerAngler: "Spön per fiskare med familjekort",
+  iceMaxAngeldonPerAngelkort: "Angeldon per angelkort",
+  iceMaxAngeldonPerPermit: "Angeldon per fiskekort",
+  iceMaxBaitsPerAngler: "Beten vid isfiske",
+  lureFishing: "Kastfiske",
+  maxFishingDepthMeters: "Största fiskedjup",
+  maxHooksPerPerson: "Krokar per person",
+  maxLinesPerFishingCard: "Spön per fiskekort",
+  maxLinesPerFishingPermit: "Spön per fiskekort",
+  publicFishing: "Allmänt fiske",
+  summerFishing: "Sommarfiske",
+  weekdayClosures: "Stängda veckodagar",
+  winterFishing: "Vinterfiske",
 };
 
 const WATERCRAFT_LABELS = {
@@ -70,6 +89,12 @@ const BOAT_LABELS = {
   electricMotor: "Elmotor",
   combustionMotor: "Bensinmotor",
   speedLimits: "Hastighetsgräns",
+  singleHookRecommendation: "Enkelkrok",
+  trolling: "Trolling från båt",
+  trollingMaxBaitsPerBoat: "Beten per båt vid trolling",
+  trollingParticipantsNeedCard: "Fiskekort vid trolling",
+  trollingPermitRequirement: "Trollingkort",
+  trollingTechniquesProhibited: "Förbjudna trollingmetoder",
 };
 
 const PRACTICAL_LABELS = {
@@ -79,10 +104,47 @@ const PRACTICAL_LABELS = {
   maxRodsPerPersonFromBoat: "Spön från båt",
   parkingAtBoatStations: "Parkering vid båtstationer",
   parkingAtLaunch: "Parkering vid iläggning",
+  piers: "Bryggor",
   ramp: "Båtramp",
+  ramps: "Båtramper",
+  rampsAvailable: "Båtramper",
   rentalAgeRule: "Åldersregel för hyrbåt",
+  rentalStations: "Båtstation",
   visitorFacilities: "Service vid sjön",
 };
+
+const GEOGRAPHY_LABELS = {
+  fishingProhibitionAreas: "Fiskeförbud",
+  protectedAreas: "Skyddsområde",
+  seasonalAreas: "Säsongsområde",
+  tributaries: "Tillrinnande vatten",
+};
+
+const SAFETY_LABELS = {
+  consumptionAdvisories: "Kostråd",
+  invasiveSpeciesHygiene: "Hindra smittspridning",
+  navigationNotes: "På sjön",
+};
+
+const WATER_ACCESS_PRACTICAL_KEYS = new Set([
+  "boatRamp",
+  "parkingAtLaunch",
+  "ramp",
+  "ramps",
+  "rampsAvailable",
+]);
+
+const BOAT_ONLY_PRACTICAL_KEYS = new Set([
+  "maxRodsPerPersonFromBoat",
+  "parkingAtBoatStations",
+  "rentalAgeRule",
+  "rentalStations",
+]);
+
+const LAND_ONLY_PRACTICAL_KEYS = new Set([
+  "fishingPierAtBathingArea",
+  "piers",
+]);
 
 const PLACE_WATERCRAFT_KEYS = {
   Båt: "boat",
@@ -210,7 +272,11 @@ function formatMonthDay(value) {
     return null;
   }
 
-  const [monthString, dayString] = value.split("-");
+  const parts = value.split("-");
+  const hasYear = parts.length === 3;
+  const [yearString, monthString, dayString] = hasYear
+    ? parts
+    : [null, ...parts];
   const month = Number(monthString);
   const day = Number(dayString);
 
@@ -233,7 +299,7 @@ function formatMonthDay(value) {
     "dec",
   ];
 
-  return `${day} ${months[month - 1] ?? ""}`.trim();
+  return `${day} ${months[month - 1] ?? ""}${hasYear ? ` ${yearString}` : ""}`.trim();
 }
 
 function getTone(ruleType) {
@@ -304,6 +370,17 @@ function getStateLabel(value) {
     if (typeof value.maxRetainedOver50cmCombinedPerPersonPerDay === "number") {
       return `max ${value.maxRetainedOver50cmCombinedPerPersonPerDay}/dygn`;
     }
+
+    if (typeof value.maxPerFishingCardPerDay === "number") {
+      return `max ${value.maxPerFishingCardPerDay}/dygn`;
+    }
+
+    if (typeof value.maxPerPersonPerDay === "number") {
+      const charLimit = value.maxRodingPerPersonPerDay;
+      return typeof charLimit === "number"
+        ? `max ${value.maxPerPersonPerDay}/dygn · högst ${charLimit} rödingar`
+        : `max ${value.maxPerPersonPerDay}/dygn`;
+    }
   }
 
   return null;
@@ -341,13 +418,19 @@ function formatToken(value) {
     braxen: "Braxen",
     mort: "Mört",
     regnbage: "Regnbåge",
+    all: "Alla arter",
+    "bäckröding": "Bäckröding",
+    gers: "Gärs",
     gädda: "Gädda",
     gärs: "Gärs",
     gös: "Gös",
     harr: "Harr",
     lax: "Lax",
+    laxartad: "Laxartad fisk",
     mört: "Mört",
+    nors: "Nors",
     ruda: "Ruda",
+    röding: "Röding",
     sarv: "Sarv",
     signalkräfta: "Signalkräfta",
     siklöja: "Siklöja",
@@ -412,7 +495,10 @@ function getMethodRows(detailsMethods, selectedMethod, showAll) {
       }
 
       const label = METHOD_LABELS[key] ?? prettifyKey(key);
-      const valueLabel = getStateLabel(fact.value);
+      const valueLabel =
+        key === "maxFishingDepthMeters" && typeof fact.value === "number"
+          ? `${fact.value} m`
+          : getStateLabel(fact.value);
       const conditionText = getConditionText(fact.conditions);
 
       if (!valueLabel && !fact.note && !conditionText) {
@@ -720,6 +806,7 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
 
   Object.entries(detailsPractical)
     .filter(([, value]) => isFactObject(value))
+    .filter(([key]) => showAll || isRelevantPracticalKey(key, selectedPlace))
     .forEach(([key, fact]) => {
       if (fact.value === "unknown") {
         return;
@@ -737,6 +824,7 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
 
   Object.entries(detailsPractical)
     .filter(([, value]) => Array.isArray(value))
+    .filter(([key]) => showAll || isRelevantPracticalKey(key, selectedPlace))
     .forEach(([key, list]) => {
       list.forEach((entry) => {
         if (!isPlainObject(entry)) {
@@ -754,7 +842,7 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
         }
 
         rows.push({
-          label: key === "rentalStations" ? "Hyrbåt" : prettifyKey(key),
+          label: key === "rentalStations" ? "Hyrbåt" : PRACTICAL_LABELS[key] ?? prettifyKey(key),
           value: entry.name ?? null,
           note: parts.join(" · ") || null,
           conditions: getConditionText(entry.conditions),
@@ -765,6 +853,22 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
     });
 
   return rows;
+}
+
+function isRelevantPracticalKey(key, selectedPlace) {
+  if (BOAT_ONLY_PRACTICAL_KEYS.has(key)) {
+    return selectedPlace === "Båt";
+  }
+
+  if (WATER_ACCESS_PRACTICAL_KEYS.has(key)) {
+    return selectedPlace !== "Land";
+  }
+
+  if (LAND_ONLY_PRACTICAL_KEYS.has(key)) {
+    return selectedPlace === "Land";
+  }
+
+  return true;
 }
 
 function getGeographyRows(detailsGeography) {
@@ -782,7 +886,7 @@ function getGeographyRows(detailsGeography) {
       }
 
       rows.push({
-        label: prettifyKey(key),
+        label: GEOGRAPHY_LABELS[key] ?? prettifyKey(key),
         value: getStateLabel(fact.value),
         note: fact.note,
         conditions: getConditionText(fact.conditions),
@@ -800,7 +904,7 @@ function getGeographyRows(detailsGeography) {
         }
 
         rows.push({
-          label: entry.name ?? prettifyKey(key),
+          label: entry.name ?? GEOGRAPHY_LABELS[key] ?? prettifyKey(key),
           value: getStateLabel(entry.value),
           note: entry.note,
           conditions: getConditionText(entry.conditions),
@@ -828,7 +932,7 @@ function getSafetyRows(detailsSafety) {
       }
 
       rows.push({
-        label: prettifyKey(key),
+        label: SAFETY_LABELS[key] ?? prettifyKey(key),
         value: getStateLabel(fact.value),
         note: fact.note,
         conditions: getConditionText(fact.conditions),
@@ -849,7 +953,7 @@ function getSafetyRows(detailsSafety) {
           label:
             key === "consumptionAdvisories"
               ? `Konsumtion${entry.substance ? ` · ${entry.substance}` : ""}`
-              : prettifyKey(key),
+              : SAFETY_LABELS[key] ?? prettifyKey(key),
           value: entry.authority ? entry.authority : getStateLabel(entry.value),
           note: entry.note,
           conditions: getConditionText(entry.conditions),
@@ -893,7 +997,8 @@ function collectSourcesFromDetails(details) {
         if (!sourceMap.has(source.url)) {
           sourceMap.set(source.url, {
             url: source.url,
-            label: SOURCE_TYPE_LABELS[source.type] ?? "Källa",
+            label: getSourceName(source.url),
+            typeLabel: SOURCE_TYPE_LABELS[source.type] ?? "Källa",
           });
         }
       });
@@ -905,6 +1010,78 @@ function collectSourcesFromDetails(details) {
   walk(details);
 
   return Array.from(sourceMap.values());
+}
+
+function getSourceName(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, "");
+    const knownSources = {
+      "bolmensweden.com": "Bolmens FVO",
+      "bunnfiske.se": "Bunns FVO",
+      "hittafiske.se": "Hittafiske",
+      "hokesjon.se": "Hökesjöns FVO",
+      "ifiske.se": "iFiske",
+      "jonkoping.se": "Jönköpings kommun",
+      "jsf-fiske.net": "Jönköpings sportfiskeklubb",
+      "mullsjo.se": "Mullsjö kommun",
+      "mullsjosfk.se": "Mullsjö sportfiskeklubb",
+      "nassjo.se": "Nässjö kommun",
+      "risbrodammen-fiske.se": "Risbrodammens FVO",
+      "sommen.org": "Sommens FVO",
+      "spexhultasjon.se": "Spexhultasjöns FVO",
+      "vattern.org": "Vätternvårdsförbundet",
+      "viss.lansstyrelsen.se": "Länsstyrelsens VISS",
+    };
+
+    return knownSources[hostname] ?? hostname;
+  } catch {
+    return "Källa";
+  }
+}
+
+function formatSwedishList(values) {
+  if (values.length <= 1) {
+    return values[0] ?? "";
+  }
+
+  return `${values.slice(0, -1).join(", ")} och ${values.at(-1)}`;
+}
+
+function getMissingChoiceLabels(missing, fishingChoices) {
+  const labels = {
+    place: `fiske från ${fishingChoices.place.toLocaleLowerCase("sv")}`,
+    method: fishingChoices.method.toLocaleLowerCase("sv"),
+    species: fishingChoices.species.toLocaleLowerCase("sv"),
+  };
+
+  return missing.map((dimension) => labels[dimension]).filter(Boolean);
+}
+
+function getParkingSummary(lake, lakePoints) {
+  const hasParkingPoint = lakePoints.some((point) =>
+    getPointTypes(point).includes("parking"),
+  );
+  const parkingFacts = [
+    lake.details?.practical?.parkingAtBoatStations,
+    lake.details?.practical?.parkingAtLaunch,
+  ];
+  const hasVerifiedParking = parkingFacts.some(
+    (fact) => fact?.status === "verified" && fact.value === "present",
+  );
+
+  if (hasParkingPoint || hasVerifiedParking) {
+    return { status: "verified", label: "Finns" };
+  }
+
+  return lake.practical.parking;
+}
+
+function getProtectedAreaSummary(lake, geographyRows) {
+  if (geographyRows.length > 0) {
+    return { status: "restricted", label: "Särskilda regler" };
+  }
+
+  return lake.fishing.protectedAreas;
 }
 
 function getLatestVerificationDate(details) {
@@ -994,7 +1171,12 @@ function LakePage({
 }) {
   const [showLakeMap, setShowLakeMap] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
-  const fishingStatus = getLakeFishingStatus(lake, fishingChoices);
+  const fishingStatusDetails = getLakeFishingStatusDetails(lake, fishingChoices);
+  const fishingStatus = fishingStatusDetails.status;
+  const missingChoiceLabels = getMissingChoiceLabels(
+    fishingStatusDetails.missing,
+    fishingChoices,
+  );
 
   const statusContent = {
     allowed: {
@@ -1006,8 +1188,10 @@ function LakePage({
       body: "Vi hittade regler som berör ditt val. Läs dem före fisket.",
     },
     unknown: {
-      heading: "Otillräcklig information",
-      body: "Pike saknar tillräcklig information för att bedöma ditt val.",
+      heading: "Kan inte bedömas ännu",
+      body: missingChoiceLabels.length > 0
+        ? `Verifierad information saknas om ${formatSwedishList(missingChoiceLabels)}.`
+        : "Pike saknar tillräcklig information för att bedöma ditt val.",
     },
   }[fishingStatus] ?? {
     heading: "Otillräcklig information",
@@ -1026,6 +1210,7 @@ function LakePage({
 
   const details = lake.details;
   const hasDetails = Boolean(details);
+  const lakePoints = getLakePoints(lake.id);
 
   const accessRows = hasDetails ? getAccessRows(details.access) : [];
   const methodRows = hasDetails
@@ -1058,8 +1243,8 @@ function LakePage({
   );
   const summaryCards = hasDetails
     ? [
-        ["Parkering", lake.practical.parking],
-        ["Fredningsområde", lake.fishing.protectedAreas],
+        ["Parkering", getParkingSummary(lake, lakePoints)],
+        ["Områdesregler", getProtectedAreaSummary(lake, geographyRows)],
       ]
     : [
         ["Regler", lake.fishing.rules],
@@ -1092,7 +1277,14 @@ function LakePage({
 
       <section className="lake-content lake-content-enter">
         <button className="lake-mini-map" onClick={() => setShowLakeMap(true)}>
-          <span>Öppna karta</span>
+          <span>
+            <small>Karta</small>
+            <strong>
+              {lakePoints.length > 0
+                ? `${lakePoints.length} verifierade platser`
+                : "Öppna sjökartan"}
+            </strong>
+          </span>
           <strong>›</strong>
         </button>
 
@@ -1201,7 +1393,8 @@ function LakePage({
                   {sourceRows.map((source) => (
                     <li key={source.url}>
                       <a href={source.url} target="_blank" rel="noreferrer">
-                        {source.label}
+                        <span>{source.label}</span>
+                        <small>{source.typeLabel}</small>
                       </a>
                     </li>
                   ))}
@@ -1228,7 +1421,12 @@ function LakePage({
         ) : (
           <section className="lake-feedback" aria-label="Återkoppling">
             <span>Saknas något eller ser fel ut?</span>
-            <button className="report-button">Rapportera fel</button>
+            <a
+              className="report-button"
+              href={`mailto:projektpike@gmail.com?subject=${encodeURIComponent(`Felaktig sjöinformation: ${lake.name}`)}`}
+            >
+              Rapportera fel
+            </a>
           </section>
         )}
       </section>

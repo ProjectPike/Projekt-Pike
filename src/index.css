@@ -725,6 +725,17 @@ button {
     linear-gradient(145deg, #17382f, #102d28);
 }
 
+.lake-mini-map > span {
+  display: grid;
+  gap: 3px;
+  text-align: left;
+}
+
+.lake-mini-map small {
+  color: #b9ced9;
+  font-size: 11px;
+}
+
 .lake-fishing-summary {
   display: flex;
   min-height: 72px;
@@ -1146,9 +1157,16 @@ button {
 }
 
 .lake-details-source-list a {
+  display: grid;
+  gap: 2px;
   color: var(--color-primary);
   text-decoration: none;
   font-size: 12px;
+}
+
+.lake-details-source-list a small {
+  color: var(--color-muted);
+  font-size: 10px;
 }
 
 .lake-details-source-list a:hover,
@@ -1233,6 +1251,8 @@ button {
   border: 0;
   background: transparent;
   color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
 }
 
 @keyframes fade-in {
