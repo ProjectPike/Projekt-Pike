@@ -578,8 +578,148 @@ export const lakes = {
           conditions: null,
         },
       },
-      methods: {},
-      species: {},
+      methods: {
+        spin: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+              type: "fvo-club",
+            },
+            {
+              url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Spinnfiske är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+              type: "fvo-club",
+            },
+            {
+              url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Mete är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
+          conditions: null,
+        },
+        ice: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+              type: "fvo-club",
+            },
+            {
+              url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Pimpelfiske är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
+          conditions: null,
+        },
+      },
+      species: {
+        knownSpecies: {
+          value: [
+            "abborre",
+            "gädda",
+            "gös",
+            "lake",
+            "braxen",
+            "mört",
+            "gers",
+            "nors",
+            "sarv",
+            "signalkräfta",
+          ],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://bunnfiske.se/item/fisk-i-bunn.html",
+              type: "fvo-club",
+            },
+          ],
+          note: "Arterna gäller för både Norra och Södra Bunn.",
+          conditions: null,
+        },
+        sizeLimits: [
+          {
+            species: "gädda",
+            value: { minSizeCm: 50, maxSizeCm: 80 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://bunnfiske.se/item/fiskekort.html",
+                type: "fvo-club",
+              },
+              {
+                url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+          {
+            species: "abborre",
+            value: { maxSizeCm: 38 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://bunnfiske.se/item/fiskekort.html",
+                type: "fvo-club",
+              },
+              {
+                url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+          {
+            species: "gös",
+            value: { maxSizeCm: 70 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://bunnfiske.se/item/fiskekort.html",
+                type: "fvo-club",
+              },
+              {
+                url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Minimimått skiljer mellan regelområdena och är därför inte angivet här.",
+            conditions: null,
+          },
+        ],
+      },
       watercraft: {
         boat: {
           value: "unknown",
@@ -643,7 +783,7 @@ export const lakes = {
                 type: "fvo-club",
               },
             ],
-            note: "Sjösättningsplatsen är stängd under perioden.",
+            note: "Sjösättningsplatsen vid Roten/Rotabron för Norra/Mellersta Bunn är stängd under perioden.",
             conditions: {
               dateFrom: "06-15",
               dateTo: "08-15",
@@ -654,26 +794,7 @@ export const lakes = {
           },
         ],
       },
-      geography: {
-        fishingProhibitionAreas: [
-          {
-            name: "Avstånd till tomt eller brygga",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bunnfiske.se/item/fiskekort.html",
-                type: "fvo-club",
-              },
-            ],
-            note: "Fiske får inte bedrivas närmare än 75 meter från tomt eller brygga.",
-            conditions: null,
-            geometry: null,
-          },
-        ],
-      },
+      geography: {},
       safety: {},
     },
     practical: {
@@ -4000,6 +4121,34 @@ export const lakes = {
         },
       },
       methods: {
+        spin: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://risbrodammen-fiske.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "FVO:s fiskeguide beskriver och rekommenderar spinn- och jiggmetoder; detta är vägledning, inte en separat juridisk tillåtelsebestämmelse.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://risbrodammen-fiske.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "FVO:s fiskeguide beskriver och rekommenderar metfiske; detta är vägledning, inte en separat juridisk tillåtelsebestämmelse.",
+          conditions: null,
+        },
         fishingSeason: {
           value: "allowed",
           status: "verified",
@@ -4119,6 +4268,21 @@ export const lakes = {
         },
       },
       practical: {
+        ramp: {
+          value: "absent",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://risbrodammen-fiske.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Båtramper saknas och FVO anger att egna båtar inte kan sjösättas.",
+          conditions: null,
+          geometry: null,
+        },
         parkingAtBoatStations: {
           value: "present",
           status: "verified",
