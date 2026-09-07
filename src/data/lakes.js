@@ -4138,20 +4138,35 @@ export const lakes = {
           conditions: null,
         },
       },
-      methods: {},
-      species: {
-        knownSpecies: {
-          value: ["gädda", "abborre"],
+      methods: {
+        ice: {
+          value: "allowed",
           status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
           sources: [
             {
               url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
               type: "commercial-aggregator",
             },
           ],
-          note: "Kända sportfiskarter enligt angiven källa.",
+          note: "Pimpel ingår i fiskekortet.",
+          conditions: null,
+        },
+      },
+      species: {
+        knownSpecies: {
+          value: ["gädda", "abborre", "mört"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Verifierad förekomst av gädda, abborre och mört.",
           conditions: null,
         },
       },
@@ -4185,22 +4200,46 @@ export const lakes = {
         },
       },
       boat: {
+        boatRentalAvailable: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Båtuthyrning finns.",
+          conditions: null,
+        },
         electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Endast eldrivna båtmotorer får användas.",
           conditions: null,
         },
         combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
+          value: "prohibited",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Endast eldrivna båtmotorer får användas.",
           conditions: null,
         },
       },
@@ -4547,6 +4586,10 @@ export const lakes = {
               url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
               type: "commercial-aggregator",
             },
+            {
+              url: "https://hokesjon.se/",
+              type: "fvo-club",
+            },
           ],
           note: "Fiskekort krävs.",
           conditions: null,
@@ -4567,6 +4610,62 @@ export const lakes = {
         },
       },
       methods: {
+        spin: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm?rules=1917",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "FVO:s regel anger spöfiske generellt; spinningsfiske är inte namngivet separat.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm?rules=1917",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "FVO:s regel anger spöfiske generellt; mete är inte namngivet separat.",
+          conditions: null,
+        },
+        fly: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm?rules=1917",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "FVO:s regel anger spöfiske generellt; flugfiske är inte namngivet separat.",
+          conditions: null,
+        },
+        trolling: {
+          value: "restricted",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm?rules=1917",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Trolling omnämns uttryckligen i ordningsreglerna. Vid badplatser får fiskelinans väg inte korsa badande.",
+          conditions: null,
+        },
         maxRodsPerPermit: {
           value: 2,
           status: "verified",
@@ -4597,6 +4696,24 @@ export const lakes = {
         },
       },
       species: {
+        knownSpecies: {
+          value: ["gädda", "abborre", "mört", "öring", "braxen"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://hokesjon.se/",
+              type: "fvo-club",
+            },
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Verifierad förekomst av gädda, abborre, mört, öring och braxen.",
+          conditions: null,
+        },
         releaseRequirements: [
           {
             species: "bäckröding",
@@ -4686,6 +4803,10 @@ export const lakes = {
             {
               url: "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm",
               type: "commercial-aggregator",
+            },
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
             },
           ],
           note: "Fyra uthyrningsbåtar finns dokumenterade.",
