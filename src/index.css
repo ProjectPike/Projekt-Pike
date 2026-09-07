@@ -1097,6 +1097,78 @@ button {
   border-color: rgb(139 149 162 / 34%);
 }
 
+.lake-status-message-button {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lake-status-message-button > span {
+  display: grid;
+  gap: 4px;
+}
+
+.lake-status-chevron {
+  color: #e9bd7d;
+  font-size: 20px;
+}
+
+.lake-direct-conditions {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgb(219 165 93 / 34%);
+  border-radius: var(--radius-medium);
+  background: rgb(219 165 93 / 7%);
+}
+
+.lake-direct-conditions header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lake-direct-conditions header > span {
+  display: grid;
+  gap: 3px;
+}
+
+.lake-direct-conditions header small {
+  color: #e9bd7d;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.lake-direct-conditions header button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 4%);
+  color: var(--color-text);
+  font-size: 20px;
+}
+
+.lake-direct-conditions ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lake-direct-conditions > p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .lake-status-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

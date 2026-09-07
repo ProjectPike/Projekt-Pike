@@ -1160,6 +1160,19 @@ function renderRow(row, index) {
   );
 }
 
+function isDirectConditionRow(row, section) {
+  if (section === "species") {
+    return row.label !== "Vald art" && row.label !== "Inplanterade arter";
+  }
+
+  return (
+    ["Förbjudet", "Särskilda regler", "Krävs", "Var försiktig"].includes(row.value) ||
+    Boolean(row.conditions) ||
+    row.tone === "advisory" ||
+    row.tone === "recommendation"
+  );
+}
+
 function LakePage({
   lake,
   fishingChoices,
@@ -1171,6 +1184,7 @@ function LakePage({
 }) {
   const [showLakeMap, setShowLakeMap] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
+  const [showDirectConditions, setShowDirectConditions] = useState(false);
   const fishingStatusDetails = getLakeFishingStatusDetails(lake, fishingChoices);
   const fishingStatus = fishingStatusDetails.status;
   const missingChoiceLabels = getMissingChoiceLabels(
@@ -1185,7 +1199,7 @@ function LakePage({
     },
     warning: {
       heading: "Villkor finns",
-      body: "Vi hittade regler som berör ditt val. Läs dem före fisket.",
+      body: "Vi hittade regler som berör ditt val. Tryck för att se dem direkt.",
     },
     unknown: {
       heading: "Kan inte bedömas ännu",
@@ -1227,6 +1241,11 @@ function LakePage({
     : [];
   const geographyRows = hasDetails ? getGeographyRows(details.geography) : [];
   const safetyRows = hasDetails ? getSafetyRows(details.safety) : [];
+  const directConditionRows = [
+    ...methodRows.filter((row) => isDirectConditionRow(row, "method")),
+    ...speciesRows.filter((row) => isDirectConditionRow(row, "species")),
+    ...boatRows.filter((row) => isDirectConditionRow(row, "boat")),
+  ];
   const sourceRows = hasDetails ? collectSourcesFromDetails(details) : [];
   const latestVerified = hasDetails ? formatVerifiedDate(getLatestVerificationDate(details)) : null;
   const allChoiceSpecificRowCount = hasDetails
@@ -1300,10 +1319,63 @@ function LakePage({
           <strong>›</strong>
         </button>
 
-        <section className={`lake-status-message lake-status-message-${fishingStatus}`}>
-          <strong>{statusContent.heading}</strong>
-          <p>{statusContent.body}</p>
-        </section>
+        {fishingStatus === "warning" ? (
+          <>
+            <button
+              type="button"
+              className={`lake-status-message lake-status-message-${fishingStatus} lake-status-message-button`}
+              onClick={() => setShowDirectConditions((current) => !current)}
+              aria-expanded={showDirectConditions}
+              aria-controls="direct-fishing-conditions"
+            >
+              <span>
+                <strong>{statusContent.heading}</strong>
+                <p>{statusContent.body}</p>
+              </span>
+              <strong className="lake-status-chevron" aria-hidden="true">
+                {showDirectConditions ? "⌃" : "⌄"}
+              </strong>
+            </button>
+
+            {showDirectConditions ? (
+              <section
+                id="direct-fishing-conditions"
+                className="lake-direct-conditions"
+                aria-label="Villkor för ditt fiske"
+              >
+                <header>
+                  <span>
+                    <small>Gäller ditt val</small>
+                    <strong>
+                      {fishingChoices.place} · {fishingChoices.method} · {fishingChoices.species}
+                    </strong>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowDirectConditions(false)}
+                    aria-label="Stäng villkor"
+                  >
+                    ×
+                  </button>
+                </header>
+
+                {directConditionRows.length > 0 ? (
+                  <ul>{directConditionRows.map(renderRow)}</ul>
+                ) : (
+                  <p>
+                    Ett verifierat villkor berör ditt val. Se den filtrerade
+                    regelinformationen nedanför för fullständig formulering.
+                  </p>
+                )}
+              </section>
+            ) : null}
+          </>
+        ) : (
+          <section className={`lake-status-message lake-status-message-${fishingStatus}`}>
+            <strong>{statusContent.heading}</strong>
+            <p>{statusContent.body}</p>
+          </section>
+        )}
 
         <section className="lake-status-grid" aria-label="Snabbinfo">
           {summaryCards.map(([label, information]) => (
