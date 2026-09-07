@@ -950,8 +950,8 @@ function LakePage({
   if (showLakeMap) {
     return (
       <LakeMap
+        key={lake.id}
         lake={lake}
-        fishingChoices={fishingChoices}
         onBack={() => setShowLakeMap(false)}
       />
     );

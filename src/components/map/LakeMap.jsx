@@ -2,7 +2,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Map, NavigationControl, Popup, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { getLakePointLayers, getPointTypeLabel } from "../../data/lakePoints";
+import {
+  getLakePointLayers,
+  getLakePoints,
+  getPointTypeLabel,
+  getPointTypes,
+} from "../../data/lakePoints";
 
 setWorkerUrl(workerUrl);
 
@@ -15,6 +20,16 @@ const EMPTY_FEATURE_COLLECTION = {
   type: "FeatureCollection",
   features: [],
 };
+
+const LAKE_MAP_ZOOM_BY_ID = {
+  bolmen: 10,
+  sommen: 9.2,
+  vattern: 8.3,
+};
+
+function getLakeMapZoom(lakeId) {
+  return LAKE_MAP_ZOOM_BY_ID[lakeId] ?? 11.2;
+}
 
 function createPopupContent(featureProperties) {
   const popupContent = document.createElement("div");
@@ -36,17 +51,40 @@ function createPopupContent(featureProperties) {
     popupContent.appendChild(type);
   }
 
+  const actions = document.createElement("div");
+  actions.className = "lake-point-popup-actions";
+
+  const directions = document.createElement("a");
+  directions.href = `https://www.google.com/maps/dir/?api=1&destination=${featureProperties.latitude},${featureProperties.longitude}`;
+  directions.target = "_blank";
+  directions.rel = "noreferrer";
+  directions.textContent = "Vägbeskrivning";
+  actions.appendChild(directions);
+
+  if (featureProperties.source) {
+    const source = document.createElement("a");
+    source.href = featureProperties.source;
+    source.target = "_blank";
+    source.rel = "noreferrer";
+    source.textContent = "Källa";
+    actions.appendChild(source);
+  }
+
+  popupContent.appendChild(actions);
+
   return popupContent;
 }
 
-function LakeMap({ lake, fishingChoices, onBack }) {
+function LakeMap({ lake, onBack }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const popupRef = useRef(null);
-  const [isLayersOpen, setIsLayersOpen] = useState(false);
-  const [activeLayerIds, setActiveLayerIds] = useState([]);
-
   const availableLayers = useMemo(() => getLakePointLayers(lake.id), [lake.id]);
+  const lakePoints = useMemo(() => getLakePoints(lake.id), [lake.id]);
+  const [isLayersOpen, setIsLayersOpen] = useState(false);
+  const [activeLayerIds, setActiveLayerIds] = useState(() =>
+    getLakePointLayers(lake.id).map((layer) => layer.id),
+  );
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
@@ -57,7 +95,7 @@ function LakeMap({ lake, fishingChoices, onBack }) {
       container: mapContainerRef.current,
       style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
       center: lake.coordinates,
-      zoom: 10,
+      zoom: getLakeMapZoom(lake.id),
       attributionControl: false,
     });
 
@@ -75,22 +113,25 @@ function LakeMap({ lake, fishingChoices, onBack }) {
       console.error("Kartfel:", event.error);
     });
 
-    requestAnimationFrame(() => {
+    const focusLake = () => {
       map.resize();
-    });
+      map.jumpTo({
+        center: lake.coordinates,
+        zoom: getLakeMapZoom(lake.id),
+      });
+    };
+
+    map.once("load", focusLake);
+    requestAnimationFrame(focusLake);
 
     mapRef.current = map;
 
     return () => {
+      map.off("load", focusLake);
       map.remove();
       mapRef.current = null;
     };
-  }, [lake.coordinates]);
-
-  useEffect(() => {
-    setActiveLayerIds([]);
-    setIsLayersOpen(false);
-  }, [lake.id]);
+  }, [lake.coordinates, lake.id]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -102,14 +143,18 @@ function LakeMap({ lake, fishingChoices, onBack }) {
     popupRef.current?.remove();
     popupRef.current = null;
 
-    const visibleLayers = availableLayers.filter((layer) =>
-      activeLayerIds.includes(layer.id),
+    const visiblePoints = lakePoints.filter((point) =>
+      getPointTypes(point).some((type) => activeLayerIds.includes(type)),
     );
 
     const featureCollection = {
       type: "FeatureCollection",
-      features: visibleLayers.flatMap((layer) =>
-        layer.points.map((point) => ({
+      features: visiblePoints.map((point) => {
+        const pointTypes = getPointTypes(point);
+        const displayType =
+          pointTypes.find((type) => activeLayerIds.includes(type)) ?? point.type;
+
+        return {
           type: "Feature",
           geometry: {
             type: "Point",
@@ -117,14 +162,16 @@ function LakeMap({ lake, fishingChoices, onBack }) {
           },
           properties: {
             pointId: point.id,
-            type: point.type,
+            type: displayType,
             name: point.name || getPointTypeLabel(point.type),
             note: point.note ?? "",
-            typeLabel: getPointTypeLabel(point.type),
-            layerLabel: layer.label,
+            typeLabel: pointTypes.map(getPointTypeLabel).join(" · "),
+            source: point.source ?? "",
+            longitude: point.coordinates[0],
+            latitude: point.coordinates[1],
           },
-        })),
-      ),
+        };
+      }),
     };
 
     const ensurePointSourceAndLayers = () => {
@@ -198,6 +245,10 @@ function LakeMap({ lake, fishingChoices, onBack }) {
               "#1c526e",
               "parking",
               "#295068",
+              "bathing-area",
+              "#16747f",
+              "shore-access",
+              "#34705b",
               "#1a4d67",
             ],
             "circle-radius": 12,
@@ -221,7 +272,11 @@ function LakeMap({ lake, fishingChoices, onBack }) {
               "P",
               "boat-ramp",
               "R",
-              "",
+              "bathing-area",
+              "B",
+              "shore-access",
+              "Å",
+              "•",
             ],
             "text-size": 12,
             "text-allow-overlap": true,
@@ -371,7 +426,7 @@ function LakeMap({ lake, fishingChoices, onBack }) {
       popupRef.current?.remove();
       popupRef.current = null;
     };
-  }, [activeLayerIds, availableLayers, lake.id]);
+  }, [activeLayerIds, lake.id, lakePoints]);
 
   const toggleLayer = (layerId) => {
     setActiveLayerIds((current) =>
@@ -414,7 +469,9 @@ function LakeMap({ lake, fishingChoices, onBack }) {
                     checked={activeLayerIds.includes(layer.id)}
                     onChange={() => toggleLayer(layer.id)}
                   />
-                  <span>{layer.label}</span>
+                  <span>
+                    {layer.label} ({layer.points.length})
+                  </span>
                 </label>
               ))}
             </div>
@@ -425,9 +482,11 @@ function LakeMap({ lake, fishingChoices, onBack }) {
       <div ref={mapContainerRef} className="lake-map-view" />
 
       <div className="lake-map-footer">
-        <small>Mitt fiske</small>
+        <small>{lakePoints.length > 0 ? "Verifierade platser" : "Kartläge"}</small>
         <strong>
-          {fishingChoices.place} · {fishingChoices.method} · {fishingChoices.species}
+          {lakePoints.length > 0
+            ? `${lakePoints.length} platser · Tryck på en markör`
+            : "Inga verifierade platser ännu"}
         </strong>
       </div>
     </section>

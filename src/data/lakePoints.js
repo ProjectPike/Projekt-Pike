@@ -59,6 +59,7 @@ export const lakePointsByLakeId = {
     {
       id: "bolmen-parking-mjalen",
       type: "parking",
+      types: ["parking", "bathing-area"],
       name: "Mjälen",
       coordinates: [13.7782, 56.9015],
       source:
@@ -69,6 +70,7 @@ export const lakePointsByLakeId = {
     {
       id: "bolmen-parking-tannaker",
       type: "parking",
+      types: ["parking", "bathing-area"],
       name: "Tannåker",
       coordinates: [13.7729, 56.9545],
       source:
@@ -79,6 +81,7 @@ export const lakePointsByLakeId = {
     {
       id: "bolmen-parking-odensjo-badplats",
       type: "parking",
+      types: ["parking", "bathing-area"],
       name: "Odensjö badplats",
       coordinates: [13.6187, 56.8652],
       source:
@@ -100,18 +103,32 @@ const layerDefinitions = {
     id: "parking",
     label: "Parkering",
   },
+  "bathing-area": {
+    id: "bathing-area",
+    label: "Badplatser",
+  },
   "shore-access": {
     id: "shore-access",
     label: "Åtkomst från land",
   },
 };
 
+export function getLakePoints(lakeId) {
+  return lakePointsByLakeId[lakeId] ?? [];
+}
+
+export function getPointTypes(point) {
+  return point.types ?? [point.type];
+}
+
 export function getLakePointLayers(lakeId) {
-  const points = lakePointsByLakeId[lakeId] ?? [];
+  const points = getLakePoints(lakeId);
 
   return Object.values(layerDefinitions)
     .map((definition) => {
-      const matchingPoints = points.filter((point) => point.type === definition.id);
+      const matchingPoints = points.filter((point) =>
+        getPointTypes(point).includes(definition.id),
+      );
 
       if (matchingPoints.length === 0) {
         return null;
