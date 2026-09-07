@@ -3717,6 +3717,34 @@ export const lakes = {
         },youthRules:{value:"not-required",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/fiske-ryssbysjons-fvof-nassjo.htm",type:"commercial-aggregator"}],note:"Barn och ungdomar till och med 16 \xE5r fiskar fritt.",conditions:null},
       },
       methods: {
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiske-ryssbysjons-fvof-nassjo.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Mete med betesfisk anges som en vanlig metod för gös.",
+          conditions: null,
+        },
+        trolling: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiske-ryssbysjons-fvof-nassjo.htm",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Trolling anges som en vanlig metod för gös.",
+          conditions: null,
+        },
         weekdayClosures: {
           value: "prohibited",
           status: "verified",
@@ -4627,17 +4655,17 @@ export const lakes = {
           conditions: null,
         },
         permitProducts: {
-          value: "present",
+          value: ["day", "month", "year", "angel-ice"],
           status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
           sources: [
             {
               url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
               type: "commercial-aggregator",
             },
           ],
-          note: "Aktuella kortprodukter finns i källan.",
+          note: "Dagskort, vinterdagskort, månadskort för öppet vatten och årskort finns. Ismete och angel ingår i särskilda vinterprodukter och årskortet.",
           conditions: null,
         },youthRules:{value:"not-required",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"}],note:"Barn och ungdomar till och med 14 \xE5r fiskar fritt.",conditions:null},
       },

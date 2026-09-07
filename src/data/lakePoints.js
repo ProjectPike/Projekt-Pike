@@ -160,6 +160,20 @@ export const lakePointsByLakeId = {
       note: "Kommunens anvisade kartpunkt för sjön. Båtuthyrning finns, men utlämningsplatsen bör kontrolleras vid bokning.",
     },
   ],
+  knipesjon: [
+    {
+      id: "knipesjon-parking-msok-stugan",
+      type: "parking",
+      types: ["parking", "shore-access"],
+      name: "Knipesjöleden – MSOK-stugan",
+      coordinates: [13.889868, 57.926333],
+      source: "https://www.naturkartan.se/sv/jonkopings-lan/knipesjoleden",
+      coordinateSource:
+        "https://www.google.com/maps/dir/?api=1&destination=57.92633260600269,13.88986816629767",
+      verifiedAt: "2026-09-07",
+      note: "Parkering finns vid infarten till Knipesjöleden. Här startar den cirka 9 km långa leden runt sjön; rastplats, grillplats och toalett finns vid stugan.",
+    },
+  ],
   nommen: [
     {
       id: "nommen-boat-ramp-kristinelund",
@@ -220,6 +234,19 @@ export const lakePointsByLakeId = {
         "https://www.naturkartan.se/sv/jonkopings-lan/batuthyrning-ryssbysjon",
       verifiedAt: "2026-09-07",
       note: "Sex plastbåtar anges som tillgängliga för uthyrning. Kontrollera aktuell kostnad och tillgänglighet hos uthyraren före resan.",
+    },
+  ],
+  svansjon: [
+    {
+      id: "svansjon-boat-launch",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking", "boat-rental"],
+      name: "Svansjöns båtiläggning",
+      coordinates: [13.778806, 57.81374],
+      source:
+        "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
+      verifiedAt: "2026-09-07",
+      note: "Lämplig plats för iläggning av båt. Parkering kan ske på ladugårdsplanen intill och föreningens hyrbåt hämtas vid platsen.",
     },
   ],
   munksjon: [
