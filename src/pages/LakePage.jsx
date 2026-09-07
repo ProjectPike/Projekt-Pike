@@ -185,14 +185,25 @@ function getMethodChoiceForKey(key) {
   return undefined;
 }
 
-function isRelevantMethodKey(key, selectedMethod) {
+function isRelevantMethodKey(key, selectedMethods) {
+  if (selectedMethods.length === 0) {
+    return true;
+  }
+
   const methodChoice = getMethodChoiceForKey(key);
-  return methodChoice === undefined || methodChoice === selectedMethod;
+  return (
+    methodChoice === undefined ||
+    selectedMethods.includes(methodChoice)
+  );
 }
 
 function matchesSelectedSpecies(value, selectedSpecies) {
-  if (!selectedSpecies || value === null || value === undefined) {
+  if (value === null || value === undefined) {
     return false;
+  }
+
+  if (selectedSpecies.length === 0) {
+    return true;
   }
 
   if (Array.isArray(value)) {
@@ -204,17 +215,19 @@ function matchesSelectedSpecies(value, selectedSpecies) {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLocaleLowerCase("sv");
-  const selectedToken = normalize(selectedSpecies);
+  return selectedSpecies.some((selectedSpeciesValue) => {
+    const selectedToken = normalize(selectedSpeciesValue);
 
-  return normalize(value)
-    .split("+")
-    .some(
-      (token) =>
-        token === "all" ||
-        token === selectedToken ||
-        token.endsWith(selectedToken) ||
-        (token === "laxartad" && selectedToken === "oring"),
-    );
+    return normalize(value)
+      .split("+")
+      .some(
+        (token) =>
+          token === "all" ||
+          token === selectedToken ||
+          token.endsWith(selectedToken) ||
+          (token === "laxartad" && selectedToken === "oring"),
+      );
+  });
 }
 
 function isPlainObject(value) {
@@ -481,14 +494,14 @@ function getAccessRows(detailsAccess) {
     .filter(Boolean);
 }
 
-function getMethodRows(detailsMethods, selectedMethod, showAll) {
+function getMethodRows(detailsMethods, selectedMethods, showAll) {
   if (!isPlainObject(detailsMethods)) {
     return [];
   }
 
   return Object.entries(detailsMethods)
     .filter(([, fact]) => isFactObject(fact))
-    .filter(([key]) => showAll || isRelevantMethodKey(key, selectedMethod))
+    .filter(([key]) => showAll || isRelevantMethodKey(key, selectedMethods))
     .map(([key, fact]) => {
       if (fact.value === "unknown") {
         return null;
@@ -715,15 +728,17 @@ function getInferredWatercraftEntries(detailsWatercraft) {
   return inferredEntries;
 }
 
-function getBoatRows(details, selectedPlace, selectedMethod, showAll) {
+function getBoatRows(details, selectedPlaces, selectedMethods, showAll) {
   const rows = [];
   const watercraftEntries = getInferredWatercraftEntries(details?.watercraft);
-  const selectedWatercraftKey = PLACE_WATERCRAFT_KEYS[selectedPlace];
+  const selectedWatercraftKeys = selectedPlaces
+    .map((place) => PLACE_WATERCRAFT_KEYS[place])
+    .filter(Boolean);
 
   if (isPlainObject(watercraftEntries)) {
     Object.entries(watercraftEntries)
       .filter(([, fact]) => isFactObject(fact))
-      .filter(([key]) => showAll || key === selectedWatercraftKey)
+      .filter(([key]) => showAll || selectedPlaces.length === 0 || selectedWatercraftKeys.includes(key))
       .forEach(([key, fact]) => {
         const isImportantUnknown = key === "boat" || key === "floatTube" || key === "kayak";
         if (fact.value === "unknown" && !isImportantUnknown) {
@@ -750,12 +765,16 @@ function getBoatRows(details, selectedPlace, selectedMethod, showAll) {
           return true;
         }
 
-        if (selectedPlace !== "Båt") {
+        if (selectedPlaces.length > 0 && !selectedPlaces.includes("Båt")) {
           return false;
         }
 
         const methodChoice = getMethodChoiceForKey(key);
-        return methodChoice === undefined || methodChoice === selectedMethod;
+        return (
+          methodChoice === undefined ||
+          selectedMethods.length === 0 ||
+          selectedMethods.includes(methodChoice)
+        );
       })
       .forEach(([key, fact]) => {
         const isImportantUnknown = key === "electricMotor" || key === "combustionMotor";
@@ -782,11 +801,11 @@ function getBoatRows(details, selectedPlace, selectedMethod, showAll) {
   return rows.filter((row) => Boolean(row.value) || Boolean(row.note));
 }
 
-function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll) {
+function getPracticalRows(detailsPractical, detailsBoat, selectedPlaces, showAll) {
   const rows = [];
 
   if (
-    (showAll || selectedPlace === "Båt") &&
+    (showAll || selectedPlaces.length === 0 || selectedPlaces.includes("Båt")) &&
     isPlainObject(detailsBoat?.boatRentalAvailable) &&
     detailsBoat.boatRentalAvailable.value !== "unknown"
   ) {
@@ -806,7 +825,7 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
 
   Object.entries(detailsPractical)
     .filter(([, value]) => isFactObject(value))
-    .filter(([key]) => showAll || isRelevantPracticalKey(key, selectedPlace))
+    .filter(([key]) => showAll || isRelevantPracticalKey(key, selectedPlaces))
     .forEach(([key, fact]) => {
       if (fact.value === "unknown") {
         return;
@@ -824,7 +843,7 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
 
   Object.entries(detailsPractical)
     .filter(([, value]) => Array.isArray(value))
-    .filter(([key]) => showAll || isRelevantPracticalKey(key, selectedPlace))
+    .filter(([key]) => showAll || isRelevantPracticalKey(key, selectedPlaces))
     .forEach(([key, list]) => {
       list.forEach((entry) => {
         if (!isPlainObject(entry)) {
@@ -855,17 +874,21 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
   return rows;
 }
 
-function isRelevantPracticalKey(key, selectedPlace) {
+function isRelevantPracticalKey(key, selectedPlaces) {
+  if (selectedPlaces.length === 0) {
+    return true;
+  }
+
   if (BOAT_ONLY_PRACTICAL_KEYS.has(key)) {
-    return selectedPlace === "Båt";
+    return selectedPlaces.includes("Båt");
   }
 
   if (WATER_ACCESS_PRACTICAL_KEYS.has(key)) {
-    return selectedPlace !== "Land";
+    return selectedPlaces.some((place) => place !== "Land");
   }
 
   if (LAND_ONLY_PRACTICAL_KEYS.has(key)) {
-    return selectedPlace === "Land";
+    return selectedPlaces.includes("Land");
   }
 
   return true;
@@ -1061,6 +1084,25 @@ function getUnknownChoiceLabels(categories) {
   );
 }
 
+function getWarningChoiceLabels(categories) {
+  return Object.values(categories)
+    .flat()
+    .filter((choice) => choice.status === "warning")
+    .map((choice) => choice.choice);
+}
+
+function getChoiceStatusLabel(status) {
+  return {
+    allowed: "Stöds",
+    warning: "Villkor finns",
+    unknown: "Uppgift saknas",
+  }[status];
+}
+
+function getChoiceStatusSymbol(status) {
+  return { allowed: "✓", warning: "!", unknown: "?" }[status];
+}
+
 function getParkingSummary(lake, lakePoints) {
   const hasParkingPoint = lakePoints.some((point) =>
     getPointTypes(point).includes("parking"),
@@ -1193,10 +1235,8 @@ function LakePage({
   const fishingStatusDetails = getLakeFishingSelectionDetails(lake, fishingChoices);
   const fishingStatus = fishingStatusDetails.status;
   const missingChoiceLabels = getUnknownChoiceLabels(fishingStatusDetails.categories);
-  const isSimpleSelection = ["place", "method", "species"].every(
-    (category) => fishingChoices[category].length === 1,
-  );
-  const showAllChoiceDetails = !isSimpleSelection || showAllDetails;
+  const warningChoiceLabels = getWarningChoiceLabels(fishingStatusDetails.categories);
+  const hasSelectedChoices = Object.values(fishingChoices).some((choices) => choices.length > 0);
 
   const statusContent = {
     allowed: {
@@ -1241,16 +1281,16 @@ function LakePage({
 
   const accessRows = hasDetails ? getAccessRows(details.access) : [];
   const methodRows = hasDetails
-    ? getMethodRows(details.methods, fishingChoices.method[0], showAllChoiceDetails)
+    ? getMethodRows(details.methods, fishingChoices.method, showAllDetails)
     : [];
   const speciesRows = hasDetails
-    ? getSpeciesRows(details.species, fishingChoices.species[0], showAllChoiceDetails)
+    ? getSpeciesRows(details.species, fishingChoices.species, showAllDetails)
     : [];
   const boatRows = hasDetails
-    ? getBoatRows(details, fishingChoices.place[0], fishingChoices.method[0], showAllChoiceDetails)
+    ? getBoatRows(details, fishingChoices.place, fishingChoices.method, showAllDetails)
     : [];
   const practicalRows = hasDetails
-    ? getPracticalRows(details.practical, details.boat, fishingChoices.place[0], showAllChoiceDetails)
+    ? getPracticalRows(details.practical, details.boat, fishingChoices.place, showAllDetails)
     : [];
   const geographyRows = hasDetails ? getGeographyRows(details.geography) : [];
   const safetyRows = hasDetails ? getSafetyRows(details.safety) : [];
@@ -1262,10 +1302,10 @@ function LakePage({
   const sourceRows = hasDetails ? collectSourcesFromDetails(details) : [];
   const latestVerified = hasDetails ? formatVerifiedDate(getLatestVerificationDate(details)) : null;
   const allChoiceSpecificRowCount = hasDetails
-    ? getMethodRows(details.methods, fishingChoices.method[0], true).length +
-      getSpeciesRows(details.species, fishingChoices.species[0], true).length +
-      getBoatRows(details, fishingChoices.place[0], fishingChoices.method[0], true).length +
-      getPracticalRows(details.practical, details.boat, fishingChoices.place[0], true).length
+    ? getMethodRows(details.methods, fishingChoices.method, true).length +
+      getSpeciesRows(details.species, fishingChoices.species, true).length +
+      getBoatRows(details, fishingChoices.place, fishingChoices.method, true).length +
+      getPracticalRows(details.practical, details.boat, fishingChoices.place, true).length
     : 0;
   const visibleChoiceSpecificRowCount =
     methodRows.length + speciesRows.length + boatRows.length + practicalRows.length;
@@ -1329,7 +1369,29 @@ function LakePage({
           <strong>›</strong>
         </button>
 
-        {fishingStatus === "warning" && isSimpleSelection ? (
+        {hasSelectedChoices ? (
+          <section className="lake-choice-status" aria-label="Dina val">
+            <h2>Dina val</h2>
+            {Object.entries(fishingStatusDetails.categories).map(([category, choices]) =>
+              choices.length > 0 ? (
+                <div key={category} className="lake-choice-status-category">
+                  <h3>{{ place: "Plats", method: "Metod", species: "Art" }[category]}</h3>
+                  <ul>
+                    {choices.map((choice) => (
+                      <li key={choice.choice} className={`lake-choice-status-${choice.status}`}>
+                        <span aria-hidden="true">{getChoiceStatusSymbol(choice.status)}</span>
+                        <strong>{choice.choice}</strong>
+                        <small>{getChoiceStatusLabel(choice.status)}</small>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null,
+            )}
+          </section>
+        ) : null}
+
+        {fishingStatus === "warning" ? (
           <>
             <button
               type="button"
@@ -1355,7 +1417,7 @@ function LakePage({
               >
                 <header>
                   <span>
-                    <small>Gäller ditt val</small>
+                    <small>Villkor berör: {formatSwedishList(warningChoiceLabels)}</small>
                     <strong>
                       {fishingSelectionSummary}
                     </strong>
@@ -1373,18 +1435,13 @@ function LakePage({
                   <ul>{directConditionRows.map(renderRow)}</ul>
                 ) : (
                   <p>
-                    Ett verifierat villkor berör ditt val. Se den filtrerade
+                    Ett verifierat villkor berör minst ett av dina val. Se
                     regelinformationen nedanför för fullständig formulering.
                   </p>
                 )}
               </section>
             ) : null}
           </>
-        ) : fishingStatus === "warning" ? (
-          <section className="lake-status-message lake-status-message-warning">
-            <strong>{statusContent.heading}</strong>
-            <p>Minst ett valt alternativ har ett verifierat villkor. Fullständig regelinformation visas nedan.</p>
-          </section>
         ) : (
           <section className={`lake-status-message lake-status-message-${fishingStatus}`}>
             <strong>{statusContent.heading}</strong>
@@ -1409,7 +1466,7 @@ function LakePage({
               <div className="lake-details-header-meta">
                 {latestVerified ? <small>Verifierat {latestVerified}</small> : null}
 
-                {isSimpleSelection && (showAllDetails || hiddenDetailCount > 0) ? (
+                {hasSelectedChoices && (showAllDetails || hiddenDetailCount > 0) ? (
                   <button
                     type="button"
                     className="lake-details-filter-button"
