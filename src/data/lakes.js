@@ -3152,6 +3152,62 @@ export const lakes = {
         },
       },
       methods: {
+        spin: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Spinnfiske är tillåtet som handredskapsfiske.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Mete är tillåtet som handredskapsfiske.",
+          conditions: null,
+        },
+        fly: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Flugfiske är tillåtet som handredskapsfiske.",
+          conditions: null,
+        },
+        ice: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Pimpelfiske är tillåtet som handredskapsfiske.",
+          conditions: null,
+        },
         nets: {
           value: "restricted",
           status: "verified",
@@ -3197,19 +3253,70 @@ export const lakes = {
       },
       species: {
         knownSpecies: {
-          value: ["gadda", "sik", "abborre"],
+          value: ["abborre", "gädda", "mört", "siklöja", "sutare"],
           status: "verified",
           ruleType: "advisory",
-          verifiedAt: "2026-08-09",
+          verifiedAt: "2026-09-07",
           sources: [
             {
-              url: "https://nassjo.se/uppleva-och-gora/aktivitet/fiske-spexhultasjon.html",
-              type: "municipality",
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
             },
           ],
-          note: "Kommunen listar dessa som förekommande arter.",
+          note: "Verifierad förekomst enligt FVO:s artinformation.",
           conditions: null,
         },
+        sizeLimits: [
+          {
+            species: "gädda",
+            value: { minSizeCm: 50, maxSizeCm: 80 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://spexhultasjon.se/",
+                type: "fvo-club",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+        ],
+        bagLimits: [
+          {
+            species: "gädda",
+            value: { maxRetainedPerPermitPerDay: 3 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://spexhultasjon.se/",
+                type: "fvo-club",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+        ],
+        releaseRequirements: [
+          {
+            species: "abborre",
+            value: "required",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://spexhultasjon.se/",
+                type: "fvo-club",
+              },
+            ],
+            note: "Abborre över 35 cm ska återutsättas.",
+            conditions: null,
+          },
+        ],
       },
       watercraft: {},
       boat: {
@@ -3228,21 +3335,31 @@ export const lakes = {
           conditions: null,
         },
         electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Elmotor är tillåten.",
           conditions: null,
         },
         combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
+          value: "restricted",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://spexhultasjon.se/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Endast fyrtaktsmotor som drivs med alkylatbensin är tillåten. Tvåtaktsmotor är förbjuden.",
           conditions: null,
         },
       },
@@ -4024,20 +4141,63 @@ export const lakes = {
           conditions: null,
         },
       },
-      methods: {},
-      species: {
-        knownSpecies: {
-          value: ["gädda", "abborre", "gös"],
+      methods: {
+        spin: {
+          value: "allowed",
           status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
           sources: [
             {
-              url: "https://www.ifiske.se/fiskekort-mullsjon.htm",
-              type: "commercial-aggregator",
+              url: "https://www.mullsjosfk.se/medlem/",
+              type: "fvo-club",
             },
           ],
-          note: "Kända sportfiskarter enligt angiven källa.",
+          note: "Kastspö är tillåtet med fiskekort.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.mullsjosfk.se/medlem/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Metspö är tillåtet med fiskekort.",
+          conditions: null,
+        },
+        ice: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.mullsjosfk.se/medlem/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Pimpel är tillåtet med fiskekort.",
+          conditions: null,
+        },
+      },
+      species: {
+        knownSpecies: {
+          value: ["gädda", "abborre", "mört", "sutare"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              type: "municipality",
+            },
+          ],
+          note: "Verifierad förekomst av gädda, abborre, mört och sutare.",
           conditions: null,
         },
       },
@@ -4053,6 +4213,20 @@ export const lakes = {
         },
       },
       boat: {
+        boatRentalAvailable: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.mullsjosfk.se/klubbvatten/",
+              type: "fvo-club",
+            },
+          ],
+          note: "Två uthyrningsbåtar finns via Landhs Konditori.",
+          conditions: null,
+        },
         electricMotor: {
           value: "unknown",
           status: "unknown",
