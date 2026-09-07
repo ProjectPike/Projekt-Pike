@@ -7,20 +7,64 @@ import LakePage from "./LakePage";
 import SavedPage from "./SavedPage";
 import PlaceholderTabPage from "./PlaceholderTabPage";
 import { lakes } from "../data/lakes";
+import { fishingChoices as fishingChoiceOptions } from "../data/fishingChoices";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { getLakeFishingStatus } from "../services/lakeService";
 
-const defaultFishingChoices = {
+const legacyFishingChoiceDefaults = {
   place: "Båt",
   method: "Spinn",
   species: "Gädda",
 };
+const fishingChoiceOptionsByCategory = {
+  place: fishingChoiceOptions.places,
+  method: fishingChoiceOptions.methods,
+  species: fishingChoiceOptions.species,
+};
+const emptyFishingSelections = {
+  place: [],
+  method: [],
+  species: [],
+};
 
-function normalizeFishingChoices(choices = {}) {
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function normalizeFishingSelections(selections) {
+  if (!isPlainObject(selections)) {
+    return emptyFishingSelections;
+  }
+
+  return Object.fromEntries(
+    Object.entries(fishingChoiceOptionsByCategory).map(([category, options]) => {
+      const storedValues = Array.isArray(selections[category])
+        ? selections[category]
+        : [selections[category]];
+      const validValues = storedValues.filter(
+        (value, index) => options.includes(value) && storedValues.indexOf(value) === index,
+      );
+
+      return [category, validValues];
+    }),
+  );
+}
+
+function hasSameFishingSelections(first, second) {
+  return Object.keys(fishingChoiceOptionsByCategory).every(
+    (category) =>
+      Array.isArray(first?.[category]) &&
+      Array.isArray(second?.[category]) &&
+      first[category].length === second[category].length &&
+      first[category].every((value, index) => value === second[category][index]),
+  );
+}
+
+function getScalarFishingChoices(selections) {
   return {
-    place: choices.place ?? defaultFishingChoices.place,
-    method: choices.method ?? defaultFishingChoices.method,
-    species: choices.species ?? defaultFishingChoices.species,
+    place: selections.place[0] ?? legacyFishingChoiceDefaults.place,
+    method: selections.method[0] ?? legacyFishingChoiceDefaults.method,
+    species: selections.species[0] ?? legacyFishingChoiceDefaults.species,
   };
 }
 
@@ -38,23 +82,34 @@ function HomePage() {
   );
   const [fishingChoices, setFishingChoices] = useLocalStorage(
     "project-pike-fishing-choices",
-    defaultFishingChoices,
+    emptyFishingSelections,
   );
-  const normalizedFishingChoices = normalizeFishingChoices(fishingChoices);
+  const normalizedFishingSelections = normalizeFishingSelections(fishingChoices);
+  const scalarFishingChoices = getScalarFishingChoices(normalizedFishingSelections);
+
+  useEffect(() => {
+    if (!hasSameFishingSelections(fishingChoices, normalizedFishingSelections)) {
+      setFishingChoices(normalizedFishingSelections);
+    }
+  }, [fishingChoices, normalizedFishingSelections, setFishingChoices]);
 
   function updateFishingChoice(category, value) {
     setFishingChoices((currentChoices) => {
-      const normalizedCurrentChoices = normalizeFishingChoices(currentChoices);
+      const normalizedCurrentChoices = normalizeFishingSelections(currentChoices);
 
-      return normalizeFishingChoices({
+      return {
         ...normalizedCurrentChoices,
-        [category]: value,
-      });
+        [category]: fishingChoiceOptionsByCategory[category]?.includes(value) ? [value] : [],
+      };
     });
   }
 
   function resetFishingChoices() {
-    setFishingChoices(normalizeFishingChoices(defaultFishingChoices));
+    setFishingChoices({
+      place: [legacyFishingChoiceDefaults.place],
+      method: [legacyFishingChoiceDefaults.method],
+      species: [legacyFishingChoiceDefaults.species],
+    });
   }
 
   function toggleFavorite(lakeId) {
@@ -117,10 +172,10 @@ function HomePage() {
 
   const lakeStatuses = useMemo(() => {
     return Object.values(lakes).reduce((statuses, lake) => {
-      statuses[lake.id] = getLakeFishingStatus(lake, normalizedFishingChoices);
+      statuses[lake.id] = getLakeFishingStatus(lake, scalarFishingChoices);
       return statuses;
     }, {});
-  }, [normalizedFishingChoices]);
+  }, [scalarFishingChoices]);
 
   useEffect(() => {
     if (!isLegendOpen) {
@@ -145,7 +200,7 @@ function HomePage() {
 
   const fishingSheet = isFishingOpen ? (
     <FishingSheet
-      fishingChoices={normalizedFishingChoices}
+      fishingChoices={scalarFishingChoices}
       onChange={updateFishingChoice}
       onReset={resetFishingChoices}
       onClose={() => setIsFishingOpen(false)}
@@ -156,7 +211,7 @@ function HomePage() {
     return (
       <LakePage
         lake={selectedLake}
-        fishingChoices={normalizedFishingChoices}
+        fishingChoices={scalarFishingChoices}
         isFavorite={favoriteLakeIds.includes(selectedLake.id)}
         onToggleFavorite={() => toggleFavorite(selectedLake.id)}
         onBack={() => setSelectedLake(null)}
@@ -245,8 +300,8 @@ function HomePage() {
             className="fishing-button"
             onClick={() => setIsFishingOpen(true)}
           >
-            {normalizedFishingChoices.place} · {normalizedFishingChoices.method} ·{" "}
-            {normalizedFishingChoices.species}
+            {scalarFishingChoices.place} · {scalarFishingChoices.method} ·{" "}
+            {scalarFishingChoices.species}
           </button>
         </div>
       </main>
