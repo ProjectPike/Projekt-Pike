@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import InformationCard from "../components/lake/InformationCard";
 import LakeHero from "../components/lake/LakeHero";
 import LakeMap from "../components/map/LakeMap";
@@ -1232,11 +1232,20 @@ function LakePage({
   const [showLakeMap, setShowLakeMap] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [showDirectConditions, setShowDirectConditions] = useState(false);
+  const [expandedUnknownChoice, setExpandedUnknownChoice] = useState(null);
+  const directConditionsRef = useRef(null);
   const fishingStatusDetails = getLakeFishingSelectionDetails(lake, fishingChoices);
   const fishingStatus = fishingStatusDetails.status;
   const missingChoiceLabels = getUnknownChoiceLabels(fishingStatusDetails.categories);
   const warningChoiceLabels = getWarningChoiceLabels(fishingStatusDetails.categories);
   const hasSelectedChoices = Object.values(fishingChoices).some((choices) => choices.length > 0);
+
+  function openDirectConditions() {
+    setShowDirectConditions(true);
+    requestAnimationFrame(() => {
+      directConditionsRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
 
   const statusContent = {
     allowed: {
@@ -1377,13 +1386,50 @@ function LakePage({
                 <div key={category} className="lake-choice-status-category">
                   <h3>{{ place: "Plats", method: "Metod", species: "Art" }[category]}</h3>
                   <ul>
-                    {choices.map((choice) => (
-                      <li key={choice.choice} className={`lake-choice-status-${choice.status}`}>
+                    {choices.map((choice) => {
+                      const choiceKey = `${lake.id}:${category}:${choice.choice}`;
+                      const isUnknownExpanded = expandedUnknownChoice === choiceKey;
+                      const content = <>
                         <span aria-hidden="true">{getChoiceStatusSymbol(choice.status)}</span>
                         <strong>{choice.choice}</strong>
                         <small>{getChoiceStatusLabel(choice.status)}</small>
-                      </li>
-                    ))}
+                      </>;
+
+                      return (
+                        <li key={choice.choice} className={`lake-choice-status-${choice.status}`}>
+                          {choice.status === "warning" ? (
+                            <button
+                              type="button"
+                              className="lake-choice-status-action"
+                              onClick={openDirectConditions}
+                              aria-controls="direct-fishing-conditions"
+                              aria-expanded={showDirectConditions}
+                            >
+                              {content}
+                            </button>
+                          ) : choice.status === "unknown" ? (
+                            <>
+                              <button
+                                type="button"
+                                className="lake-choice-status-action"
+                                onClick={() => setExpandedUnknownChoice(
+                                  isUnknownExpanded ? null : choiceKey,
+                                )}
+                                aria-expanded={isUnknownExpanded}
+                                aria-controls={`unknown-choice-${lake.id}-${choiceKey}`}
+                              >
+                                {content}
+                              </button>
+                              {isUnknownExpanded ? (
+                                <p id={`unknown-choice-${lake.id}-${choiceKey}`} className="lake-choice-status-explanation">
+                                  Pike saknar verifierad information för det här valet. Det betyder inte att det är förbjudet.
+                                </p>
+                              ) : null}
+                            </>
+                          ) : content}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ) : null,
@@ -1412,6 +1458,7 @@ function LakePage({
             {showDirectConditions ? (
               <section
                 id="direct-fishing-conditions"
+                ref={directConditionsRef}
                 className="lake-direct-conditions"
                 aria-label="Villkor för ditt fiske"
               >
