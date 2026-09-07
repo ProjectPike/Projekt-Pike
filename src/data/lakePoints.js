@@ -103,7 +103,19 @@ export const lakePointsByLakeId = {
       note: "Betongramp. Parkering för bil och trailer finns cirka 100 meter bort. Giltigt fiskekort för Norra Bunn krävs och rampen är sommarstängd under angiven period.",
     },
   ],
-  sommen: [],
+  sommen: [
+    {
+      id: "sommen-boat-ramp-tranas-hamn",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking"],
+      name: "Tranås hamn",
+      coordinates: [14.991016, 58.04006],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-sommen-7eb79b70-cb01-4fec-b738-9cfeb62d28aa",
+      verifiedAt: "2026-09-07",
+      note: "Betongramp med brygga intill Hughs Marina. Stor skyltad parkering finns framför marinan.",
+    },
+  ],
   risbrodammen: [
     {
       id: "risbrodammen-boat-rental-risbro",
@@ -146,6 +158,45 @@ export const lakePointsByLakeId = {
       source: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
       verifiedAt: "2026-09-07",
       note: "Kommunens anvisade kartpunkt för sjön. Båtuthyrning finns, men utlämningsplatsen bör kontrolleras vid bokning.",
+    },
+  ],
+  nommen: [
+    {
+      id: "nommen-boat-ramp-kristinelund",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking", "bathing-area"],
+      name: "Kristinelund",
+      coordinates: [14.877538, 57.521295],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-nommen-453b7243-0748-4e73-bf56-d05e8439f24e",
+      verifiedAt: "2026-09-07",
+      note: "Grusramp intill badplatsen. Stor parkering finns i direkt anslutning till rampen.",
+    },
+  ],
+  landsjon: [
+    {
+      id: "landsjon-boat-ramp-sodra",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking"],
+      name: "Landsjöns södra båtramp",
+      coordinates: [14.292654, 57.855496],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-landsjon",
+      verifiedAt: "2026-09-07",
+      note: "Grävd ramp med underlag av asfalt och plåt. Begränsat antal anvisade parkeringsplatser.",
+    },
+  ],
+  vattern: [
+    {
+      id: "vattern-boat-ramp-rosendala",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking"],
+      name: "Rosendala båtramp",
+      coordinates: [14.268447, 57.797355],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-vattern-f45e6e20-67b9-4701-84de-1f1d3d7ec1f3",
+      verifiedAt: "2026-09-07",
+      note: "Tre betongramper och en stor skyltad parkering. Avgift för sjösättning anges på platsens källsida.",
     },
   ],
 };
