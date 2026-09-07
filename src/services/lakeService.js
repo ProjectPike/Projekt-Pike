@@ -324,25 +324,38 @@ function getSpeciesMatch(details, species, now) {
 }
 
 /**
+ * Returnerar matchstatus och saknade verifierade dimensioner för ett fiskeval.
+ */
+export function getLakeFishingStatusDetails(lake, fishingChoices = {}, now = new Date()) {
+  const details = lake?.details;
+
+  if (!details) {
+    return { status: "unknown", missing: ["place", "method", "species"] };
+  }
+
+  const matches = {
+    place: getPlaceMatch(details, fishingChoices.place, now),
+    method: getMethodMatch(details, fishingChoices.method, now),
+    species: getSpeciesMatch(details, fishingChoices.species, now),
+  };
+  const missing = Object.entries(matches)
+    .filter(([, match]) => !match.supported)
+    .map(([dimension]) => dimension);
+
+  if (missing.length > 0) {
+    return { status: "unknown", missing };
+  }
+
+  return {
+    status: Object.values(matches).some((match) => match.warning) ? "warning" : "allowed",
+    missing: [],
+  };
+}
+
+/**
  * Matchar användarens plats, metod och art mot verifierad sjödata.
  * "allowed" betyder att alla tre valen uttryckligen stöds – aldrig att allt fiske är fritt.
  */
 export function getLakeFishingStatus(lake, fishingChoices = {}, now = new Date()) {
-  const details = lake?.details;
-
-  if (!details) {
-    return "unknown";
-  }
-
-  const matches = [
-    getPlaceMatch(details, fishingChoices.place, now),
-    getMethodMatch(details, fishingChoices.method, now),
-    getSpeciesMatch(details, fishingChoices.species, now),
-  ];
-
-  if (matches.some((match) => !match.supported)) {
-    return "unknown";
-  }
-
-  return matches.some((match) => match.warning) ? "warning" : "allowed";
+  return getLakeFishingStatusDetails(lake, fishingChoices, now).status;
 }

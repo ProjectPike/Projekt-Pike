@@ -1,4 +1,5 @@
 import FishingChoices from "./FishingChoices";
+import { fishingChoices as fishingChoiceOptions } from "../../data/fishingChoices";
 
 function FishingSheet({
   fishingChoices,
@@ -28,7 +29,7 @@ function FishingSheet({
         <FishingChoices
           title="Plats"
           category="place"
-          choices={["Båt", "Land", "Kajak", "Flytring"]}
+          choices={fishingChoiceOptions.places}
           selected={fishingChoices.place}
           onChange={onChange}
         />
@@ -36,7 +37,7 @@ function FishingSheet({
         <FishingChoices
           title="Metod"
           category="method"
-          choices={["Spinn", "Mete", "Flugfiske", "Trolling"]}
+          choices={fishingChoiceOptions.methods}
           selected={fishingChoices.method}
           onChange={onChange}
         />
@@ -44,7 +45,7 @@ function FishingSheet({
         <FishingChoices
           title="Art"
           category="species"
-          choices={["Gädda", "Abborre", "Gös", "Öring"]}
+          choices={fishingChoiceOptions.species}
           selected={fishingChoices.species}
           onChange={onChange}
         />

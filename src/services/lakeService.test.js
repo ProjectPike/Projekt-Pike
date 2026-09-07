@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getLakeFishingStatus } from "./lakeService.js";
+import {
+  getLakeFishingStatus,
+  getLakeFishingStatusDetails,
+} from "./lakeService.js";
 
 const choices = {
   place: "Båt",
@@ -38,6 +41,39 @@ test("returns allowed only when place, method and species are verified", () => {
   assert.equal(
     getLakeFishingStatus(matchingLake({ species: {} }), choices),
     "unknown",
+  );
+});
+
+test("returns diagnostic details through the same matching path", () => {
+  const allowed = getLakeFishingStatusDetails(matchingLake(), choices);
+  const missingPlace = getLakeFishingStatusDetails(
+    matchingLake({ watercraft: {} }),
+    choices,
+  );
+  const missingMultiple = getLakeFishingStatusDetails(
+    matchingLake({
+      watercraft: {},
+      methods: {},
+      species: {},
+    }),
+    choices,
+  );
+  const warning = getLakeFishingStatusDetails(
+    matchingLake({ watercraft: { boat: fact("prohibited") } }),
+    choices,
+  );
+
+  assert.deepEqual(allowed, { status: "allowed", missing: [] });
+  assert.deepEqual(missingPlace, { status: "unknown", missing: ["place"] });
+  assert.deepEqual(missingMultiple, {
+    status: "unknown",
+    missing: ["place", "method", "species"],
+  });
+  assert.deepEqual(warning, { status: "warning", missing: [] });
+  assert.equal(getLakeFishingStatus(matchingLake(), choices), allowed.status);
+  assert.equal(
+    getLakeFishingStatus(matchingLake({ watercraft: {} }), choices),
+    missingPlace.status,
   );
 });
 
