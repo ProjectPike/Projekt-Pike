@@ -159,6 +159,126 @@ test("returns warning when every selected alternative has a verified restriction
   assert.equal(result.hasUnknownSelections, false);
 });
 
+test("infers lightweight watercraft support only from a verified allowed boat", () => {
+  const lake = matchingLake({ watercraft: { boat: fact("allowed") } });
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(lake, { place: ["Kajak"] }).categories.place,
+    [{ choice: "Kajak", status: "allowed", missing: [], inferred: true }],
+  );
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(lake, { place: ["Flytring"] }).categories.place,
+    [{ choice: "Flytring", status: "allowed", missing: [], inferred: true }],
+  );
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      matchingLake({ watercraft: { boat: fact("allowed"), kayak: fact("unknown") } }),
+      { place: ["Kajak"] },
+    ).categories.place,
+    [{ choice: "Kajak", status: "allowed", missing: [], inferred: true }],
+  );
+});
+
+test("gives explicit lightweight watercraft facts precedence over boat inference", () => {
+  const boatAllowed = fact("allowed");
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      matchingLake({ watercraft: { boat: boatAllowed, kayak: fact("prohibited") } }),
+      { place: ["Kajak"] },
+    ).categories.place,
+    [{ choice: "Kajak", status: "warning", missing: [] }],
+  );
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      matchingLake({ watercraft: { boat: boatAllowed, floatTube: fact("restricted") } }),
+      { place: ["Flytring"] },
+    ).categories.place,
+    [{ choice: "Flytring", status: "warning", missing: [] }],
+  );
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      matchingLake({
+        watercraft: { boat: boatAllowed, kayak: fact("prohibited", { status: "unverified" }) },
+      }),
+      { place: ["Kajak"] },
+    ).categories.place,
+    [{ choice: "Kajak", status: "unknown", missing: ["place"] }],
+  );
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      matchingLake({ watercraft: { boat: fact("allowed"), kayak: fact("allowed") } }),
+      { place: ["Kajak"] },
+    ).categories.place,
+    [{ choice: "Kajak", status: "allowed", missing: [] }],
+  );
+});
+
+test("does not infer lightweight watercraft from prohibited, restricted, or unknown boats", () => {
+  for (const boatValue of ["prohibited", "restricted", "unknown"]) {
+    assert.deepEqual(
+      getLakeFishingSelectionDetails(
+        matchingLake({ watercraft: { boat: fact(boatValue) } }),
+        { place: ["Kajak"] },
+      ).categories.place,
+      [{ choice: "Kajak", status: "unknown", missing: ["place"] }],
+    );
+  }
+});
+
+test("does not inherit boat-specific warnings into inferred lightweight watercraft", () => {
+  const result = getLakeFishingSelectionDetails(
+    matchingLake({
+      watercraft: { boat: fact("allowed") },
+      boat: { speedLimits: fact(5) },
+    }),
+    { place: ["Kajak"] },
+  );
+
+  assert.deepEqual(result.categories.place, [
+    { choice: "Kajak", status: "allowed", missing: [], inferred: true },
+  ]);
+});
+
+test("keeps Båt as a warning for verified administrative boat requirements", () => {
+  const requirements = {
+    fvoNotificationRequirement: fact("required"),
+    boatMarkingRequirement: fact("required"),
+  };
+
+  for (const boat of [
+    { fvoNotificationRequirement: requirements.fvoNotificationRequirement },
+    { boatMarkingRequirement: requirements.boatMarkingRequirement },
+    requirements,
+  ]) {
+    assert.deepEqual(
+      getLakeFishingSelectionDetails(
+        matchingLake({ watercraft: { boat: fact("allowed") }, boat }),
+        { place: ["Båt"] },
+      ).categories.place,
+      [{ choice: "Båt", status: "warning", missing: [] }],
+    );
+  }
+});
+
+test("does not apply Båt administrative requirements to inferred lightweight watercraft", () => {
+  const result = getLakeFishingSelectionDetails(
+    matchingLake({
+      watercraft: { boat: fact("allowed") },
+      boat: {
+        fvoNotificationRequirement: fact("required"),
+        boatMarkingRequirement: fact("required"),
+      },
+    }),
+    { place: ["Kajak", "Flytring"] },
+  );
+
+  assert.deepEqual(result.categories.place, [
+    { choice: "Kajak", status: "allowed", missing: [], inferred: true },
+    { choice: "Flytring", status: "allowed", missing: [], inferred: true },
+  ]);
+});
+
 test("returns unknown when a selected method or place is missing", () => {
   assert.equal(
     getLakeFishingStatus(matchingLake({ methods: {} }), choices),

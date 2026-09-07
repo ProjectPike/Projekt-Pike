@@ -233,10 +233,35 @@ function getPlaceMatch(details, place, now) {
   const fact = details?.watercraft?.[watercraftKey];
 
   if (isVerifiedFact(fact)) {
+    const boatRequirements = [
+      details?.boat?.fvoNotificationRequirement,
+      details?.boat?.boatMarkingRequirement,
+    ];
     return {
       supported: true,
-      warning: isRestriction(fact, now),
+      warning:
+        isRestriction(fact, now) ||
+        (place === "Båt" &&
+          boatRequirements.some((requirement) =>
+            isVerifiedFact(requirement) &&
+            requirement.value === "required" &&
+            isConditionActive(requirement, now),
+          )),
     };
+  }
+
+  const isLightweightWatercraft = place === "Kajak" || place === "Flytring";
+  const boatFact = details?.watercraft?.boat;
+  const hasExplicitLightweightWatercraftFact =
+    isPlainObject(fact) && fact.value !== "unknown";
+
+  if (
+    isLightweightWatercraft &&
+    !hasExplicitLightweightWatercraftFact &&
+    isVerifiedFact(boatFact) &&
+    boatFact.value === "allowed"
+  ) {
+    return { supported: true, warning: false, inferred: true };
   }
 
   // A verified boat-specific rule is explicit evidence that boat fishing is supported,
@@ -384,6 +409,7 @@ function getChoiceResult(details, category, choice, now) {
     choice,
     status: !match.supported ? "unknown" : match.warning ? "warning" : "allowed",
     missing: match.supported ? [] : [category],
+    ...(match.inferred ? { inferred: true } : {}),
   };
 }
 

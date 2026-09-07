@@ -86,6 +86,8 @@ const WATERCRAFT_LABELS = {
 };
 
 const BOAT_LABELS = {
+  fvoNotificationRequirement: "Anmälan till FVO",
+  boatMarkingRequirement: "Märkning av båt",
   electricMotor: "Elmotor",
   combustionMotor: "Bensinmotor",
   speedLimits: "Hastighetsgräns",
@@ -1091,12 +1093,14 @@ function getWarningChoiceLabels(categories) {
     .map((choice) => choice.choice);
 }
 
-function getChoiceStatusLabel(status) {
-  return {
+function getChoiceStatusLabel(choice) {
+  const label = {
     allowed: "Stöds",
     warning: "Villkor finns",
     unknown: "Uppgift saknas",
-  }[status];
+  }[choice.status];
+
+  return choice.inferred ? "Bedöms okej" : label;
 }
 
 function getChoiceStatusSymbol(status) {
@@ -1392,7 +1396,7 @@ function LakePage({
                       const content = <>
                         <span aria-hidden="true">{getChoiceStatusSymbol(choice.status)}</span>
                         <strong>{choice.choice}</strong>
-                        <small>{getChoiceStatusLabel(choice.status)}</small>
+                        <small>{getChoiceStatusLabel(choice)}</small>
                       </>;
 
                       return (

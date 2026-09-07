@@ -1996,12 +1996,12 @@ export const lakes = {
       },
       watercraft: {
         boat: {
-          value: "restricted",
+          value: "allowed",
           status: "verified",
           ruleType: "rule",
           verifiedAt: "2026-09-07",
           sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }],
-          note: "Mindre roddbåtar och motorbåtar med utombordare får användas för fiske efter anmälan till FVO. Båten ska vara märkt med namn och kontaktuppgifter.",
+          note: "Mindre roddbåtar och motorbåtar med utombordare får användas för fiske.",
           conditions: null,
         },
         kayak: {
@@ -2024,6 +2024,24 @@ export const lakes = {
         },
       },
       boat: {
+        fvoNotificationRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }],
+          note: "Båt som används för fiske ska anmälas till FVO.",
+          conditions: null,
+        },
+        boatMarkingRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }],
+          note: "Båten ska vara märkt med namn och kontaktuppgifter.",
+          conditions: null,
+        },
         electricMotor: {
           value: "unknown",
           status: "unknown",
