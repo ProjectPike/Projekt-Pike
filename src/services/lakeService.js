@@ -68,25 +68,97 @@ function isVerifiedFact(fact) {
   return isPlainObject(fact) && fact.status === "verified" && fact.value !== "unknown";
 }
 
-function hasConditions(fact) {
-  if (!isPlainObject(fact?.conditions)) {
-    return false;
+function isDateInRange(date, dateFrom, dateTo) {
+  if (!dateFrom && !dateTo) {
+    return true;
   }
 
-  return Object.values(fact.conditions).some(Boolean);
+  const currentDate = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+    date.getDate(),
+  ).padStart(2, "0")}`;
+
+  if (!dateFrom) {
+    return currentDate <= dateTo;
+  }
+
+  if (!dateTo) {
+    return currentDate >= dateFrom;
+  }
+
+  if (dateFrom <= dateTo) {
+    return currentDate >= dateFrom && currentDate <= dateTo;
+  }
+
+  return currentDate >= dateFrom || currentDate <= dateTo;
 }
 
-function isRestriction(fact) {
+function isTimeInRange(date, timeFrom, timeTo) {
+  if (!timeFrom && !timeTo) {
+    return true;
+  }
+
+  const currentTime = `${String(date.getHours()).padStart(2, "0")}:${String(
+    date.getMinutes(),
+  ).padStart(2, "0")}`;
+
+  if (!timeFrom) {
+    return currentTime <= timeTo;
+  }
+
+  if (!timeTo) {
+    return currentTime >= timeFrom;
+  }
+
+  if (timeFrom <= timeTo) {
+    return currentTime >= timeFrom && currentTime <= timeTo;
+  }
+
+  return currentTime >= timeFrom || currentTime <= timeTo;
+}
+
+function isDateConditionActive(fact, now) {
+  const conditions = fact?.conditions;
+
+  if (!isPlainObject(conditions)) {
+    return true;
+  }
+
+  return isDateInRange(now, conditions.dateFrom, conditions.dateTo);
+}
+
+function isConditionActive(fact, now) {
+  const conditions = fact?.conditions;
+
+  return (
+    isDateConditionActive(fact, now) &&
+    (!isPlainObject(conditions) ||
+      isTimeInRange(now, conditions.timeFrom, conditions.timeTo))
+  );
+}
+
+function isLimitedHoursRuleActive(fact, now) {
+  const conditions = fact?.conditions;
+
+  return (
+    isVerifiedFact(fact) &&
+    fact.value === "allowed" &&
+    isPlainObject(conditions) &&
+    Boolean(conditions.timeFrom || conditions.timeTo) &&
+    isDateConditionActive(fact, now)
+  );
+}
+
+function isRestriction(fact, now) {
   if (!isVerifiedFact(fact)) {
     return false;
   }
 
   return (
-    fact.value === "restricted" ||
-    fact.value === "prohibited" ||
-    fact.ruleType === "advisory" ||
-    fact.ruleType === "recommendation" ||
-    hasConditions(fact)
+    isConditionActive(fact, now) &&
+    (fact.value === "restricted" ||
+      fact.value === "prohibited" ||
+      fact.ruleType === "advisory" ||
+      fact.ruleType === "recommendation")
   );
 }
 
@@ -123,7 +195,11 @@ function getMethodChoiceForKey(key) {
   return undefined;
 }
 
-function getPlaceMatch(details, place) {
+function getPlaceMatch(details, place, now) {
+  if (place === "Land") {
+    return { supported: true, warning: false };
+  }
+
   const watercraftKey = PLACE_FACT_KEYS[place];
 
   if (!watercraftKey) {
@@ -134,8 +210,8 @@ function getPlaceMatch(details, place) {
 
   if (isVerifiedFact(fact)) {
     return {
-      supported: fact.value === "allowed" || fact.value === "restricted",
-      warning: isRestriction(fact),
+      supported: true,
+      warning: isRestriction(fact, now),
     };
   }
 
@@ -152,7 +228,7 @@ function getPlaceMatch(details, place) {
       const [key, factValue] = boatEvidence;
       return {
         supported: true,
-        warning: key === "speedLimits" || isRestriction(factValue),
+        warning: key === "speedLimits" || isRestriction(factValue, now),
       };
     }
   }
@@ -160,7 +236,7 @@ function getPlaceMatch(details, place) {
   return { supported: false, warning: false };
 }
 
-function getMethodMatch(details, method) {
+function getMethodMatch(details, method, now) {
   const keys = METHOD_FACT_KEYS[method] ?? [];
   const facts = keys
     .flatMap((key) => [details?.methods?.[key], details?.boat?.[key]])
@@ -177,14 +253,17 @@ function getMethodMatch(details, method) {
     .filter(([, fact]) => isVerifiedFact(fact))
     .filter(([key]) => getMethodChoiceForKey(key) === method);
   const hasSelectedBoatRestriction = selectedBoatMethodRules.some(
-    ([key, fact]) => !keys.includes(key) || isRestriction(fact),
+    ([key, fact]) =>
+      isConditionActive(fact, now) && (!keys.includes(key) || isRestriction(fact, now)),
   );
 
   return {
-    supported: facts.some((fact) => fact.value === "allowed" || fact.value === "restricted"),
+    supported: true,
     warning:
-      facts.some(isRestriction) ||
-      generalMethodRules.length > 0 ||
+      facts.some((fact) => isRestriction(fact, now)) ||
+      generalMethodRules.some(
+        ([, fact]) => isRestriction(fact, now) || isLimitedHoursRuleActive(fact, now),
+      ) ||
       hasSelectedBoatRestriction,
   };
 }
@@ -216,7 +295,7 @@ function matchesSpecies(value, species) {
     );
 }
 
-function getSpeciesMatch(details, species) {
+function getSpeciesMatch(details, species, now) {
   const speciesDetails = details?.species;
 
   if (!isPlainObject(speciesDetails)) {
@@ -240,7 +319,7 @@ function getSpeciesMatch(details, species) {
 
   return {
     supported: facts.length > 0,
-    warning: restrictionFacts.length > 0,
+    warning: restrictionFacts.some((fact) => isConditionActive(fact, now)),
   };
 }
 
@@ -248,7 +327,7 @@ function getSpeciesMatch(details, species) {
  * Matchar användarens plats, metod och art mot verifierad sjödata.
  * "allowed" betyder att alla tre valen uttryckligen stöds – aldrig att allt fiske är fritt.
  */
-export function getLakeFishingStatus(lake, fishingChoices = {}) {
+export function getLakeFishingStatus(lake, fishingChoices = {}, now = new Date()) {
   const details = lake?.details;
 
   if (!details) {
@@ -256,9 +335,9 @@ export function getLakeFishingStatus(lake, fishingChoices = {}) {
   }
 
   const matches = [
-    getPlaceMatch(details, fishingChoices.place),
-    getMethodMatch(details, fishingChoices.method),
-    getSpeciesMatch(details, fishingChoices.species),
+    getPlaceMatch(details, fishingChoices.place, now),
+    getMethodMatch(details, fishingChoices.method, now),
+    getSpeciesMatch(details, fishingChoices.species, now),
   ];
 
   if (matches.some((match) => !match.supported)) {
