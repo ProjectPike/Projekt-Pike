@@ -90,8 +90,64 @@ export const lakePointsByLakeId = {
       verifiedAt: "2026-08-08",
     },
   ],
-  bunn: [],
+  bunn: [
+    {
+      id: "bunn-boat-ramp-rotabron",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking"],
+      name: "Rotabron",
+      coordinates: [14.516454, 57.975362],
+      source: "https://bunnfiske.se/item/hitta-hit.html",
+      coordinateSource: "https://www.naturkartan.se/sv/jonkopings-lan/batramp-bunn",
+      verifiedAt: "2026-09-07",
+      note: "Betongramp. Parkering för bil och trailer finns cirka 100 meter bort. Giltigt fiskekort för Norra Bunn krävs och rampen är sommarstängd under angiven period.",
+    },
+  ],
   sommen: [],
+  risbrodammen: [
+    {
+      id: "risbrodammen-boat-rental-risbro",
+      type: "boat-rental",
+      types: ["boat-rental", "parking"],
+      name: "Risbro båtstation",
+      coordinates: [14.016333, 57.852639],
+      source: "https://risbrodammen-fiske.se/",
+      verifiedAt: "2026-09-07",
+      note: "Fem uthyrningsbåtar och parkering. Camping är inte tillåten.",
+    },
+    {
+      id: "risbrodammen-boat-rental-midsommarangen",
+      type: "boat-rental",
+      types: ["boat-rental", "parking"],
+      name: "Midsommarängen båtstation",
+      coordinates: [14.011361, 57.834167],
+      source: "https://risbrodammen-fiske.se/",
+      verifiedAt: "2026-09-07",
+      note: "Fem uthyrningsbåtar och parkering. Camping är inte tillåten.",
+    },
+  ],
+  mullsjon: [
+    {
+      id: "mullsjon-municipality-map-point",
+      type: "shore-access",
+      name: "Mullsjön – kommunens kartpunkt",
+      coordinates: [13.88144, 57.911189],
+      source: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+      verifiedAt: "2026-09-07",
+      note: "Kommunens anvisade kartpunkt för sjön. Båtuthyrning finns via Landhs Konditori; kontrollera utlämningsplats vid bokning.",
+    },
+  ],
+  gravsjon: [
+    {
+      id: "gravsjon-municipality-map-point",
+      type: "shore-access",
+      name: "Gravsjön – kommunens kartpunkt",
+      coordinates: [13.890796, 57.970893],
+      source: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+      verifiedAt: "2026-09-07",
+      note: "Kommunens anvisade kartpunkt för sjön. Båtuthyrning finns, men utlämningsplatsen bör kontrolleras vid bokning.",
+    },
+  ],
 };
 
 const layerDefinitions = {
@@ -110,6 +166,10 @@ const layerDefinitions = {
   "shore-access": {
     id: "shore-access",
     label: "Åtkomst från land",
+  },
+  "boat-rental": {
+    id: "boat-rental",
+    label: "Hyrbåtar",
   },
 };
 

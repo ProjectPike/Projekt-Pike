@@ -73,6 +73,30 @@ function isDateInRange(date, dateFrom, dateTo) {
     return true;
   }
 
+  const isAbsoluteDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? "");
+
+  if (isAbsoluteDate(dateFrom) || isAbsoluteDate(dateTo)) {
+    const currentDate = [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, "0"),
+      String(date.getDate()).padStart(2, "0"),
+    ].join("-");
+    const currentYear = String(date.getFullYear());
+    const absoluteFrom = dateFrom
+      ? isAbsoluteDate(dateFrom)
+        ? dateFrom
+        : `${currentYear}-${dateFrom}`
+      : null;
+    const absoluteTo = dateTo
+      ? isAbsoluteDate(dateTo)
+        ? dateTo
+        : `${currentYear}-${dateTo}`
+      : null;
+
+    return (!absoluteFrom || currentDate >= absoluteFrom) &&
+      (!absoluteTo || currentDate <= absoluteTo);
+  }
+
   const currentDate = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(
     date.getDate(),
   ).padStart(2, "0")}`;
@@ -242,7 +266,13 @@ function getMethodMatch(details, method, now) {
     .flatMap((key) => [details?.methods?.[key], details?.boat?.[key]])
     .filter(isVerifiedFact);
 
-  if (facts.length === 0) {
+  const handGearOnly = details?.methods?.handGearOnly;
+  const isCoveredByHandGearRule =
+    ["Spinn", "Mete", "Flugfiske"].includes(method) &&
+    isVerifiedFact(handGearOnly) &&
+    handGearOnly.value !== "prohibited";
+
+  if (facts.length === 0 && !isCoveredByHandGearRule) {
     return { supported: false, warning: false };
   }
 
@@ -258,7 +288,7 @@ function getMethodMatch(details, method, now) {
   );
 
   return {
-    supported: true,
+    supported: isCoveredByHandGearRule || facts.length > 0,
     warning:
       facts.some((fact) => isRestriction(fact, now)) ||
       generalMethodRules.some(

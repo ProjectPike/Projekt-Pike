@@ -21,6 +21,8 @@ const STATE_LABELS = {
   restricted: "Särskilda regler",
   present: "Finns",
   absent: "Saknas",
+  free: "Gratis",
+  caution: "Var försiktig",
   "calendar-year": "Kalenderår",
   unknown: "Ingen verifierad uppgift",
 };
@@ -46,6 +48,16 @@ const METHOD_LABELS = {
   crayfishFishing: "Kräftfiske",
   nets: "Nät",
   fixedGear: "Fasta redskap",
+  handGearOnly: "Tillåtna redskap",
+  openWaterMaxLuresPerPerson: "Beten på öppet vatten",
+  iceMaxLuresPerPerson: "Beten vid isfiske",
+  maxRodsPerPermit: "Spön per fiskekort",
+  fishingSeason: "Fiskesäsong",
+  fishingHoursInSeason: "Fisketider",
+  outsideSeasonFishing: "Utanför säsong",
+  augustSportFishingHours: "Fisketider 1–15 augusti",
+  winterIceFishingAnnualPermit: "Vinterfiske med årskort",
+  iceMaxAngeldonPerAngler: "Angeldon vid isfiske",
 };
 
 const WATERCRAFT_LABELS = {
@@ -58,6 +70,18 @@ const BOAT_LABELS = {
   electricMotor: "Elmotor",
   combustionMotor: "Bensinmotor",
   speedLimits: "Hastighetsgräns",
+};
+
+const PRACTICAL_LABELS = {
+  accessibility: "Tillgänglighet",
+  boatRamp: "Båtramp",
+  fishingPierAtBathingArea: "Fiskebrygga",
+  maxRodsPerPersonFromBoat: "Spön från båt",
+  parkingAtBoatStations: "Parkering vid båtstationer",
+  parkingAtLaunch: "Parkering vid iläggning",
+  ramp: "Båtramp",
+  rentalAgeRule: "Åldersregel för hyrbåt",
+  visitorFacilities: "Service vid sjön",
 };
 
 const PLACE_WATERCRAFT_KEYS = {
@@ -287,6 +311,13 @@ function getStateLabel(value) {
 
 function formatToken(value) {
   const token = String(value);
+  if (token.includes("+")) {
+    return token
+      .split("+")
+      .map((part) => formatToken(part))
+      .join(" + ");
+  }
+
   const mapping = {
     day: "Dagskort",
     week: "Veckokort",
@@ -310,6 +341,18 @@ function formatToken(value) {
     braxen: "Braxen",
     mort: "Mört",
     regnbage: "Regnbåge",
+    gädda: "Gädda",
+    gärs: "Gärs",
+    gös: "Gös",
+    harr: "Harr",
+    lax: "Lax",
+    mört: "Mört",
+    ruda: "Ruda",
+    sarv: "Sarv",
+    signalkräfta: "Signalkräfta",
+    siklöja: "Siklöja",
+    ål: "Ål",
+    öring: "Öring",
   };
 
   return mapping[token] ?? token;
@@ -522,6 +565,30 @@ function getSpeciesRows(detailsSpecies, selectedSpecies, showAll) {
     });
   }
 
+  const directedFishingRules = [
+    ...(Array.isArray(detailsSpecies.directedFishingProhibitions)
+      ? detailsSpecies.directedFishingProhibitions
+      : []),
+    ...(Array.isArray(detailsSpecies.directedFishingRestrictions)
+      ? detailsSpecies.directedFishingRestrictions
+      : []),
+  ];
+
+  if (directedFishingRules.length > 0) {
+    directedFishingRules
+      .filter((entry) => showAll || matchesSelectedSpecies(entry.species, selectedSpecies))
+      .forEach((entry) => {
+        rows.push({
+          label: `${formatToken(entry.species ?? "Art")} · Riktat fiske`,
+          value: "Förbjudet",
+          note: entry.note,
+          conditions: getConditionText(entry.conditions),
+          tone: getTone(entry.ruleType),
+          toneLabel: getToneLabel(entry.ruleType),
+        });
+      });
+  }
+
   return rows;
 }
 
@@ -659,7 +726,7 @@ function getPracticalRows(detailsPractical, detailsBoat, selectedPlace, showAll)
       }
 
       rows.push({
-        label: prettifyKey(key),
+        label: PRACTICAL_LABELS[key] ?? prettifyKey(key),
         value: getStateLabel(fact.value),
         note: fact.note,
         conditions: getConditionText(fact.conditions),

@@ -144,6 +144,14 @@ test("accepts verified boat-specific rules as evidence for boat use", () => {
   assert.equal(getLakeFishingStatus(lake, choices), "warning");
 });
 
+test("treats a verified hand-gear-only rule as support for hand-gear methods", () => {
+  const lake = matchingLake({
+    methods: { handGearOnly: fact("restricted") },
+  });
+
+  assert.equal(getLakeFishingStatus(lake, choices), "warning");
+});
+
 test("applies conditional restrictions only while active", () => {
   const lake = matchingLake({
     methods: {
@@ -217,6 +225,24 @@ test("evaluates cross-year conditional restrictions", () => {
 
   assert.equal(getLakeFishingStatus(lake, choices, new Date("2026-12-01T12:00:00")), "warning");
   assert.equal(getLakeFishingStatus(lake, choices, new Date("2026-02-01T12:00:00")), "allowed");
+});
+
+test("supports absolute start dates for rules that continue indefinitely", () => {
+  const lake = matchingLake({
+    methods: {
+      spin: fact("prohibited", {
+        conditions: {
+          dateFrom: "2025-03-15",
+          dateTo: null,
+          timeFrom: null,
+          timeTo: null,
+        },
+      }),
+    },
+  });
+
+  assert.equal(getLakeFishingStatus(lake, choices, new Date("2025-03-14T12:00:00")), "allowed");
+  assert.equal(getLakeFishingStatus(lake, choices, new Date("2026-09-07T12:00:00")), "warning");
 });
 
 test("keeps seasonal trolling prohibitions known outside their active period", () => {
