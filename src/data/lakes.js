@@ -2541,8 +2541,169 @@ export const lakes = {
           conditions: null,
         },
       },
-      methods: {},
-      species: {},
+      methods: {
+        fly: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Flugspö ingår i fiskekortet.",
+          conditions: null,
+        },
+        spin: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Haspelspö och spinningspö ingår i fiskekortet.",
+          conditions: null,
+        },
+        bait: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Metspö ingår i fiskekortet.",
+          conditions: null,
+        },
+        ice: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Pimpelspö ingår i fiskekortet.",
+          conditions: null,
+        },
+        maxRodsPerPermit: {
+          value: 2,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Max 2 handredskap per fiskekort.",
+          conditions: null,
+        },
+        iceMaxAngeldonPerPermit: {
+          value: 10,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Max 10 angeldon eller ismetespön per fiskekort.",
+          conditions: null,
+        },
+        publicFishing: {
+          value: "prohibited",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-07",
+          sources: [
+            {
+              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              type: "commercial-aggregator",
+            },
+          ],
+          note: "Allmänt fiske förbjudet under hela augusti.",
+          conditions: {
+            dateFrom: "08-01",
+            dateTo: "08-31",
+            timeFrom: null,
+            timeTo: null,
+          },
+        },
+      },
+      species: {
+        closedSeasons: [
+          {
+            species: "gos",
+            value: "prohibited",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: "Riktat fiske efter gös förbjudet under hela maj.",
+            conditions: {
+              dateFrom: "05-01",
+              dateTo: "05-31",
+              timeFrom: null,
+              timeTo: null,
+            },
+          },
+        ],
+        sizeLimits: [
+          {
+            species: "gos",
+            value: { minSizeCm: 45, maxSizeCm: 70 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+        ],
+        bagLimits: [
+          {
+            species: "gos",
+            value: { maxRetainedPerPermitPerDay: 2 },
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-07",
+            sources: [
+              {
+                url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+                type: "commercial-aggregator",
+              },
+            ],
+            note: null,
+            conditions: null,
+          },
+        ],
+      },
       watercraft: {},
       boat: {},
       practical: {},
