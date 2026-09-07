@@ -353,38 +353,114 @@ function getSpeciesMatch(details, species, now) {
   };
 }
 
+const FISHING_CHOICE_CATEGORIES = ["place", "method", "species"];
+
+function getSelectedChoices(selections, category) {
+  const value = selections?.[category];
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  return value ? [value] : [];
+}
+
+function getChoiceMatch(details, category, choice, now) {
+  if (category === "place") {
+    return getPlaceMatch(details, choice, now);
+  }
+
+  if (category === "method") {
+    return getMethodMatch(details, choice, now);
+  }
+
+  return getSpeciesMatch(details, choice, now);
+}
+
+function getChoiceResult(details, category, choice, now) {
+  const match = getChoiceMatch(details, category, choice, now);
+
+  return {
+    choice,
+    status: !match.supported ? "unknown" : match.warning ? "warning" : "allowed",
+    missing: match.supported ? [] : [category],
+  };
+}
+
+/**
+ * Utvärderar oberoende, valfria fiskeval med OR inom kategori och AND mellan kategorier.
+ */
+export function getLakeFishingSelectionDetails(lake, selections = {}, now = new Date()) {
+  const details = lake?.details;
+
+  if (!details) {
+    const categories = Object.fromEntries(
+      FISHING_CHOICE_CATEGORIES.map((category) => [
+        category,
+        getSelectedChoices(selections, category).map((choice) => ({
+          choice,
+          status: "unknown",
+          missing: [category],
+        })),
+      ]),
+    );
+
+    return {
+      status: Object.values(categories).some((choices) => choices.length > 0)
+        ? "unknown"
+        : null,
+      hasUnknownSelections: Object.values(categories).some((choices) => choices.length > 0),
+      categories,
+    };
+  }
+
+  const categories = Object.fromEntries(
+    FISHING_CHOICE_CATEGORIES.map((category) => [
+      category,
+      getSelectedChoices(selections, category).map((choice) =>
+        getChoiceResult(details, category, choice, now),
+      ),
+    ]),
+  );
+  const selectedCategories = Object.values(categories).filter(
+    (choices) => choices.length > 0,
+  );
+  const hasWarning = selectedCategories.flat().some((choice) => choice.status === "warning");
+  const hasUnknownSelections = selectedCategories.flat().some(
+    (choice) => choice.status === "unknown",
+  );
+  const hasMissingCategory = selectedCategories.some((choices) =>
+    choices.every((choice) => choice.status === "unknown"),
+  );
+
+  return {
+    status: selectedCategories.length === 0
+      ? null
+      : hasWarning
+        ? "warning"
+        : hasMissingCategory
+          ? "unknown"
+          : "allowed",
+    hasUnknownSelections,
+    categories,
+  };
+}
+
 /**
  * Returnerar matchstatus och saknade verifierade dimensioner för ett fiskeval.
  */
 export function getLakeFishingStatusDetails(lake, fishingChoices = {}, now = new Date()) {
-  const details = lake?.details;
-
-  if (!details) {
-    return { status: "unknown", missing: ["place", "method", "species"] };
-  }
-
-  const matches = {
-    place: getPlaceMatch(details, fishingChoices.place, now),
-    method: getMethodMatch(details, fishingChoices.method, now),
-    species: getSpeciesMatch(details, fishingChoices.species, now),
-  };
-  const missing = Object.entries(matches)
-    .filter(([, match]) => !match.supported)
-    .map(([dimension]) => dimension);
-
-  // A verified restriction is actionable even if another choice dimension is
-  // still unknown. Never hide a known prohibition behind missing data.
-  if (Object.values(matches).some((match) => match.warning)) {
-    return { status: "warning", missing: [] };
-  }
-
-  if (missing.length > 0) {
-    return { status: "unknown", missing };
-  }
+  const selections = Object.fromEntries(
+    FISHING_CHOICE_CATEGORIES.map((category) => [category, fishingChoices[category]]),
+  );
+  const result = getLakeFishingSelectionDetails(lake, selections, now);
+  const missing = Object.values(result.categories)
+    .flat()
+    .flatMap((choice) => choice.missing);
 
   return {
-    status: "allowed",
-    missing: [],
+    status: result.status ?? "unknown",
+    missing: result.status === "warning" ? [] : [...new Set(missing)],
   };
 }
 

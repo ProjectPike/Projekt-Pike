@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   getLakeFishingStatus,
   getLakeFishingStatusDetails,
+  getLakeFishingSelectionDetails,
 } from "./lakeService.js";
 
 const choices = {
@@ -75,6 +76,87 @@ test("returns diagnostic details through the same matching path", () => {
     getLakeFishingStatus(matchingLake({ watercraft: {} }), choices),
     missingPlace.status,
   );
+});
+
+test("keeps an empty selection outside matching", () => {
+  assert.deepEqual(getLakeFishingSelectionDetails(matchingLake()), {
+    status: null,
+    hasUnknownSelections: false,
+    categories: { place: [], method: [], species: [] },
+  });
+});
+
+test("evaluates one optional selected category", () => {
+  const result = getLakeFishingSelectionDetails(matchingLake(), {
+    species: ["Gädda"],
+  });
+
+  assert.equal(result.status, "allowed");
+  assert.equal(result.hasUnknownSelections, false);
+  assert.deepEqual(result.categories.species, [
+    { choice: "Gädda", status: "allowed", missing: [] },
+  ]);
+  assert.deepEqual(result.categories.place, []);
+  assert.deepEqual(result.categories.method, []);
+});
+
+test("uses OR for multiple selected values in a category", () => {
+  const result = getLakeFishingSelectionDetails(matchingLake(), {
+    species: ["Gädda", "Öring"],
+  });
+
+  assert.equal(result.status, "allowed");
+  assert.equal(result.hasUnknownSelections, true);
+  assert.deepEqual(result.categories.species, [
+    { choice: "Gädda", status: "allowed", missing: [] },
+    { choice: "Öring", status: "unknown", missing: ["species"] },
+  ]);
+});
+
+test("keeps selected warnings visible without converting unknown selections", () => {
+  const result = getLakeFishingSelectionDetails(
+    matchingLake({ watercraft: { boat: fact("prohibited") } }),
+    {
+      place: ["Land", "Båt"],
+      species: ["Gädda", "Öring"],
+    },
+  );
+
+  assert.equal(result.status, "warning");
+  assert.equal(result.hasUnknownSelections, true);
+  assert.deepEqual(result.categories.place, [
+    { choice: "Land", status: "allowed", missing: [] },
+    { choice: "Båt", status: "warning", missing: [] },
+  ]);
+  assert.deepEqual(result.categories.species.at(-1), {
+    choice: "Öring",
+    status: "unknown",
+    missing: ["species"],
+  });
+});
+
+test("returns unknown when every selected alternative lacks support", () => {
+  const result = getLakeFishingSelectionDetails(matchingLake(), {
+    method: ["Trolling", "Flugfiske"],
+  });
+
+  assert.equal(result.status, "unknown");
+  assert.equal(result.hasUnknownSelections, true);
+});
+
+test("returns warning when every selected alternative has a verified restriction", () => {
+  const result = getLakeFishingSelectionDetails(
+    matchingLake({
+      methods: {
+        spin: fact("prohibited"),
+        bait: fact("restricted"),
+      },
+    }),
+    { method: ["Spinn", "Mete"] },
+  );
+
+  assert.equal(result.status, "warning");
+  assert.equal(result.hasUnknownSelections, false);
 });
 
 test("returns unknown when a selected method or place is missing", () => {
