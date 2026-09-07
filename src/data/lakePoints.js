@@ -199,6 +199,54 @@ export const lakePointsByLakeId = {
       note: "Tre betongramper och en stor skyltad parkering. Avgift för sjösättning anges på platsens källsida.",
     },
   ],
+  ryssbysjon: [
+    {
+      id: "ryssbysjon-boat-ramp-norra",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking"],
+      name: "Ryssbysjöns norra båtramp",
+      coordinates: [14.644407, 57.714792],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-ryssbysjon",
+      verifiedAt: "2026-09-07",
+      note: "Enkel sandstrand och naturramp. Fyrhjulsdrift rekommenderas och parkeringsutrymmet är begränsat.",
+    },
+    {
+      id: "ryssbysjon-boat-rental-ryssby",
+      type: "boat-rental",
+      name: "Båtuthyrning Ryssbysjön",
+      coordinates: [14.647073, 57.71259],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batuthyrning-ryssbysjon",
+      verifiedAt: "2026-09-07",
+      note: "Sex plastbåtar anges som tillgängliga för uthyrning. Kontrollera aktuell kostnad och tillgänglighet hos uthyraren före resan.",
+    },
+  ],
+  munksjon: [
+    {
+      id: "munksjon-boat-ramp-sportfiskeklubben",
+      type: "boat-ramp",
+      name: "Jönköpings sportfiskeklubbs båtramp",
+      coordinates: [14.171458, 57.773888],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-munksjon",
+      verifiedAt: "2026-09-07",
+      note: "Asfalterad båtramp vid Jönköpings sportfiskeklubb på Munksjöns västra strand.",
+    },
+  ],
+  tenhultasjon: [
+    {
+      id: "tenhultasjon-boat-ramp-vastra",
+      type: "boat-ramp",
+      types: ["boat-ramp", "parking"],
+      name: "Tenhultasjöns västra båtramp",
+      coordinates: [14.332689, 57.69142],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-tenhultasjon",
+      verifiedAt: "2026-09-07",
+      note: "Grusramp med brygga och parkering. Rampen har låst bom och medlemskap i Tenhults SFK krävs för användning.",
+    },
+  ],
 };
 
 const layerDefinitions = {
