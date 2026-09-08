@@ -5399,6 +5399,420 @@ export const lakes = {
     },
   },
 
+  attarpsdammen: {
+    id: "attarpsdammen",
+    name: "Attarpsdammen",
+    type: "damm",
+    region: "Småland",
+    counties: ["Jönköping"],
+    coordinates: [14.116029, 57.859201],
+    coordinateSource:
+      "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
+    distance: { kilometers: 10, travelTime: "14 min" },
+    verification: {
+      status: "verified",
+      updatedAt: "2026-09-08",
+      sources: [
+        "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+        "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+        "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten",
+      ],
+    },
+    fishing: {
+      permit: { status: "verified", label: "Dagskort krävs" },
+      rules: { status: "verified", label: "Verifierade specialregler" },
+      protectedAreas: { status: "verified", label: "Lokalt fiskeförbud finns" },
+    },
+    details: {
+      access: {
+        permitRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Dagskort krävs för den som inte är medlem i Jönköpings Sportfiskeklubb. Medlemmar fiskar utan separat dagskort.",
+          conditions: null,
+        },
+        permitCost: {
+          value: 50,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+            {
+              url: "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+              type: "other",
+            },
+          ],
+          note: "Dagskortet kostar 50 kr.",
+          conditions: null,
+        },
+        permitProducts: {
+          value: ["day"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Kortet gäller ett dygn.",
+          conditions: null,
+        },
+        youthRules: {
+          value: "not-required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Barn till och med 12 år får fiska utan medlemskap eller dagskort.",
+          conditions: null,
+        },
+        purchaseChannels: {
+          value: ["digital", "physical-resellers"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+              type: "other",
+            },
+            {
+              url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten",
+              type: "municipality",
+            },
+          ],
+          note: "Betala med Swish till 123-604 67 75. Kommunen anger även Fortuna Spelbutik i Bankeryds centrum och Oljeshejkerna Jonsson i Bankeryd som återförsäljare.",
+          conditions: null,
+        },
+      },
+      methods: {
+        handGearOnly: {
+          value: "restricted",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Fiske är tillåtet från land med fiskespö.",
+          conditions: null,
+        },
+        ice: {
+          value: "allowed",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Vinterfiske med pimpelspö får bedrivas i hela dammen på egen risk.",
+          conditions: null,
+        },
+      },
+      species: {
+        knownSpecies: {
+          value: ["sutare", "braxen", "mört", "abborre", "gädda", "öring"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+              type: "other",
+            },
+          ],
+          note: "Destination Jönköping anger sutare, braxen, mört, abborre och gädda samt ett mindre bestånd av öring.",
+          conditions: null,
+        },
+      },
+      watercraft: {
+        boat: {
+          value: "prohibited",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Båtar och andra flytetyg är förbjudna.",
+          conditions: null,
+        },
+        kayak: {
+          value: "prohibited",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Kajak omfattas av förbudet mot båtar och andra flytetyg.",
+          conditions: null,
+        },
+        floatTube: {
+          value: "prohibited",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Flytring omfattas av förbudet mot båtar och andra flytetyg.",
+          conditions: null,
+        },
+      },
+      boat: {},
+      practical: {
+        visitorFacilities: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
+              type: "municipality",
+            },
+          ],
+          note: "Kommunens Naturkartan visar en grillplats vid dammen.",
+          conditions: null,
+        },
+      },
+      geography: {
+        fishingProhibitionAreas: [
+          {
+            name: "Västra stranden mot dammfästet",
+            value: "prohibited",
+            status: "verified",
+            ruleType: "rule",
+            verifiedAt: "2026-09-08",
+            sources: [
+              {
+                url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+                type: "fvo-club",
+              },
+            ],
+            note: "På västra sidan är fiske förbjudet från den skyltade gränspunkten fram till dammfästet. Följ skyltningen på plats; området skyddar fågellivet och den orörda stranden.",
+            conditions: null,
+            geometry: null,
+          },
+        ],
+      },
+      safety: {
+        winterFishingRisk: {
+          value: "caution",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              type: "fvo-club",
+            },
+          ],
+          note: "Pimpelfiske sker på egen risk. Kontrollera alltid isens bärighet lokalt.",
+          conditions: null,
+        },
+      },
+    },
+    practical: {
+      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
+      ramps: [],
+      piers: [],
+      trails: [],
+    },
+  },
+
+  klappasjon: {
+    id: "klappasjon",
+    name: "Klappasjön",
+    type: "sjö",
+    region: "Småland",
+    counties: ["Jönköping"],
+    coordinates: [14.512466, 57.563392],
+    coordinateSource:
+      "https://www.naturkartan.se/sv/jonkopings-lan/klappasjons-fvof",
+    distance: { kilometers: 38, travelTime: "34 min" },
+    verification: {
+      status: "verified",
+      updatedAt: "2026-09-08",
+      sources: [
+        "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+        "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
+      ],
+    },
+    fishing: {
+      permit: { status: "verified", label: "Fiskekort krävs" },
+      rules: { status: "verified", label: "Handredskap ingår" },
+      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    },
+    details: {
+      access: {
+        permitRequirement: {
+          value: "required",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              type: "other",
+            },
+          ],
+          note: "Fiskekort krävs och gäller fiske med handredskap.",
+          conditions: null,
+        },
+        permitCost: {
+          value: 20,
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              type: "other",
+            },
+          ],
+          note: "Dagskort 20 kr, veckokort 100 kr, årskort 200 kr och familjeårskort 250 kr.",
+          conditions: null,
+        },
+        permitProducts: {
+          value: ["day", "week", "year", "family"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              type: "other",
+            },
+          ],
+          note: "Dagskort, veckokort, årskort och familjeårskort finns.",
+          conditions: null,
+        },
+        purchaseChannels: {
+          value: ["digital"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              type: "other",
+            },
+          ],
+          note: "Swisha till 070-688 31 68 och skriv fiskekort som meddelande.",
+          conditions: null,
+        },
+      },
+      methods: {
+        handGearOnly: {
+          value: "restricted",
+          status: "verified",
+          ruleType: "rule",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              type: "other",
+            },
+          ],
+          note: "Det publicerade fiskekortet gäller fiske med handredskap. Övriga redskap omfattas inte av den verifierade kortinformationen.",
+          conditions: null,
+        },
+      },
+      species: {
+        knownSpecies: {
+          value: ["abborre", "gädda", "lake", "mört", "sutare"],
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              type: "other",
+            },
+          ],
+          note: "Klappasjöns FVOF anger abborre, gädda, lake, mört och sutare.",
+          conditions: null,
+        },
+      },
+      watercraft: {},
+      boat: {},
+      practical: {
+        visitorFacilities: {
+          value: "present",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
+              type: "municipality",
+            },
+          ],
+          note: "Klappabadet har grillplats, brygga, toalett, omklädningsrum, gungställning och cirka 20 parkeringsplatser.",
+          conditions: null,
+        },
+        accessibility: {
+          value: "absent",
+          status: "verified",
+          ruleType: "advisory",
+          verifiedAt: "2026-09-08",
+          sources: [
+            {
+              url: "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
+              type: "municipality",
+            },
+          ],
+          note: "Klappabadet anges inte vara tillgänglighetsanpassat.",
+          conditions: null,
+        },
+      },
+      geography: {},
+      safety: {},
+    },
+    practical: {
+      parking: { status: "verified", label: "Cirka 20 platser", locations: [] },
+      ramps: [],
+      piers: [],
+      trails: [],
+    },
+  },
+
   svansjon: {
     id: "svansjon",
     name: "Svansjön",

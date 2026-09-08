@@ -1046,6 +1046,7 @@ function getSourceName(url) {
       "hittafiske.se": "Hittafiske",
       "hokesjon.se": "Hökesjöns FVO",
       "ifiske.se": "iFiske",
+      "jkpg.com": "Destination Jönköping",
       "jonkoping.se": "Jönköpings kommun",
       "jsf-fiske.net": "Jönköpings sportfiskeklubb",
       "mullsjo.se": "Mullsjö kommun",

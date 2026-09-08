@@ -1,7 +1,7 @@
 import { lakes } from "../src/data/lakes.js";
 import { lakePointsByLakeId } from "../src/data/lakePoints.js";
 
-const EXPECTED_LAKE_COUNT = 20;
+const EXPECTED_LAKE_COUNT = 22;
 const DETAIL_SECTIONS = [
   "access",
   "methods",

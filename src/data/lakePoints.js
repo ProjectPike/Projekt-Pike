@@ -274,6 +274,35 @@ export const lakePointsByLakeId = {
       note: "Grusramp med brygga och parkering. Rampen har låst bom och medlemskap i Tenhults SFK krävs för användning.",
     },
   ],
+  attarpsdammen: [
+    {
+      id: "attarpsdammen-shore-access-grillplats",
+      type: "shore-access",
+      name: "Attarpsdammen – grillplats",
+      coordinates: [14.116029, 57.859201],
+      source:
+        "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
+      coordinateSource:
+        "https://www.google.com/maps/dir/?api=1&destination=57.8592006170184,14.1160291234983",
+      verifiedAt: "2026-09-08",
+      note: "Kommunalt dokumenterad grillplats och praktisk startpunkt för landåtkomst. Kontrollera den skyltade fiskeförbudsgränsen på västra stranden innan du börjar fiska.",
+    },
+  ],
+  klappasjon: [
+    {
+      id: "klappasjon-klappabadet",
+      type: "parking",
+      types: ["parking", "bathing-area", "shore-access"],
+      name: "Klappabadet",
+      coordinates: [14.512466, 57.563392],
+      source:
+        "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
+      coordinateSource:
+        "https://www.google.com/maps/dir/?api=1&destination=57.5633920410749,14.5124655844391",
+      verifiedAt: "2026-09-08",
+      note: "Badplats med brygga, grillplats, toalett, omklädningsrum och cirka 20 parkeringsplatser. Platsen är inte tillgänglighetsanpassad.",
+    },
+  ],
 };
 
 const layerDefinitions = {
