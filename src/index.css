@@ -1412,6 +1412,54 @@ a:focus-visible {
   line-height: 1.45;
 }
 
+.lake-map-depth-control {
+  position: absolute;
+  top: 76px;
+  left: 14px;
+  z-index: 2;
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-overlay-strong);
+  color: var(--color-text-soft);
+  box-shadow: var(--shadow-floating);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  backdrop-filter: blur(15px);
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease,
+    transform 150ms ease;
+}
+
+.lake-map-depth-control svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.lake-map-depth-control:hover,
+.lake-map-depth-control:focus-visible {
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.lake-map-depth-control:active {
+  transform: scale(0.97);
+}
+
+.lake-map-depth-control.is-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+}
+
 .lake-point-marker {
   --lake-point-marker-bg: var(--color-map-cluster);
   --lake-point-marker-fg: var(--color-text);
@@ -1554,7 +1602,7 @@ a:focus-visible {
 
 .lake-map-depth-source {
   position: absolute;
-  top: 76px;
+  bottom: 76px;
   left: 14px;
   z-index: 2;
   display: grid;
@@ -1577,6 +1625,11 @@ a:focus-visible {
   color: var(--color-muted);
   font-size: 9px;
   line-height: 1.35;
+}
+
+.lake-map-depth-source > div {
+  display: flex;
+  gap: 10px;
 }
 
 .lake-map-depth-source a {

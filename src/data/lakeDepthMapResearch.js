@@ -100,7 +100,7 @@ export const lakeDepthMapResearch = {
   ),
   klappasjon: available("638147-142329", [
     { mapNumber: "3-3402", formats: ["tiff"], source: "Nässjö kommun" },
-  ], { surveyYear: 1986, maxDepthMeters: 11, meanDepthMeters: 3.8, publishedInApp: true }),
+  ], { surveyYear: 1986, maxDepthMeters: 11, meanDepthMeters: 3.8 }),
   svansjon: available("641175-137986", [
     { mapNumber: "3-5723", formats: ["tiff"], source: "S. Simmeborn / P. Johansson" },
   ], { surveyYear: 1993, maxDepthMeters: 5.5, meanDepthMeters: 2.5 }),

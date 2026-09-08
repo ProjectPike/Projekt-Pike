@@ -1,31 +1,36 @@
 # Djupkartor
 
-## Klappasjön
+Pike innehåller bearbetade djupunderlag för de 17 av projektets 22 sjöar som
+har en publicerad karta i SMHI:s Damm- och sjöregister. Källposter, kartnummer,
+mätår och inventeringsstatus finns i `src/data/lakeDepthMapResearch.js`.
 
-- Pike-fil: `klappasjon-depth-overlay.png`
-- Original: `3-3402_Klappasjön_638147-142329.tif`
-- Hämtad från: https://vattenwebb.smhi.se/svarwebb/rest/downloadmap/638147-142329
-- Uppgiftskälla i SMHI: Nässjö kommun
-- Kartdatum: 1986-06-02
+## Källor och licens
+
+- Original: SMHI:s Damm- och sjöregister
+- Nedladdningslänk per sjö: `lakeDepthMapResearch.js`
 - Licens: CC BY 4.0 enligt
   https://www.smhi.se/data/om-smhis-data/villkor-for-anvandning
-- Bearbetning: SMHI-skannens historiska djupkurvor har frilagts och färgsatts.
-  Den gamla skannade ytterkonturen har tagits bort. Sjöyta, strandlinje och öar
-  bygger i stället på OpenStreetMap-data levererad via OpenFreeMap. Resultatet
-  är ett transparent, strandlinjeklippt djupkurvelager i appens ordinarie
-  interaktiva karta. Där kan djup, verifierade platser och aktuell GPS-position
-  användas tillsammans.
-- Kartdesign och sammanställning: Pike, 2026.
-- Strandlinjedata: © OpenStreetMap contributors, ODbL.
+- Strandlinje och öar: © OpenStreetMap contributors, ODbL
+- Bearbetning och kartdesign: Pike, 2026
 
-Kartbilden är ett historiskt och ungefärligt underlag. Den ska inte användas
-för navigering. Djupkurvorna kan avvika från den moderna strandlinjen eftersom
+## Bearbetning
+
+SMHI-underlagens historiska djupkurvor och djupobservationer har frilagts och
+färgsatts för Pikes mörka kartdesign. Sjöyta, strandlinje och öar kommer från
+modern OpenStreetMap-geometri. Den moderna geometrin används som slutlig mask,
+så gamla skannade ytterkonturer och öformer inte målas över dagens baskarta.
+
+Originalen varierar mycket i ålder, upplösning och metod. Vissa är fullständiga
+djupkurvekartor, andra visar mätlinjer eller enstaka lodningar. Pike återger det
+underlag SMHI faktiskt publicerar och hittar inte på mellanliggande djup.
+
+Kartorna är historiska och ungefärliga underlag. De ska inte användas för
+navigering. Djupkurvor och lodningar kan avvika från modern strandlinje eftersom
 underlagen kommer från olika tidpunkter och mätmetoder.
 
-## Inventering
+## Arbetsflöde för nya sjöar
 
-Status för samtliga Pike-sjöar finns i `src/data/lakeDepthMapResearch.js`.
-`npm run validate:lakes` kräver en forskningspost för varje sjö och
-`npm run audit:depth-maps` skriver ut kön av hittade kartor som återstår att
-bearbeta. Därmed går en ny sjö inte igenom valideringen innan djupkarteläget har
-kontrollerats.
+`npm run validate:lakes` kräver en inventeringspost för varje ny sjö.
+`npm run audit:depth-maps` visar hittade och publicerade SMHI-kartor. Ett
+djupunderlag ska publiceras först efter kontroll av rätt sjö, källhänvisning,
+modern vattenmask och visuell passning.

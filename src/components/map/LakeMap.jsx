@@ -688,6 +688,23 @@ function LakeMap({ lake, onBack, themeId }) {
         </div>
       ) : null}
 
+      {depthMap && !mapError ? (
+        <button
+          type="button"
+          className={`lake-map-depth-control${isDepthMapVisible ? " is-active" : ""}`}
+          aria-pressed={isDepthMapVisible}
+          aria-label={`${isDepthMapVisible ? "Dölj" : "Visa"} djupkarta`}
+          onClick={() => setIsDepthMapVisible((current) => !current)}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 7c3-3 6-3 9 0s6 3 9 0" />
+            <path d="M3 12c3-3 6-3 9 0s6 3 9 0" />
+            <path d="M3 17c3-3 6-3 9 0s6 3 9 0" />
+          </svg>
+          <span>Djup</span>
+        </button>
+      ) : null}
+
       {mapError ? (
         <div className="lake-map-fallback" role="status">
           <p>Kartan stöds inte i den här webbläsaren.</p>
@@ -712,9 +729,14 @@ function LakeMap({ lake, onBack, themeId }) {
         <aside className="lake-map-depth-source" title={depthMap.note}>
           <strong>Djupkurvor {depthMap.year}</strong>
           <span>{depthMap.sourceLabel} · Ej för navigering</span>
-          <a href={depthMap.sourceUrl} target="_blank" rel="noreferrer">
-            Källa
-          </a>
+          <div>
+            <a href={depthMap.sourceUrl} target="_blank" rel="noreferrer">
+              Källa
+            </a>
+            <a href={depthMap.licenseUrl} target="_blank" rel="noreferrer">
+              {depthMap.licenseLabel}
+            </a>
+          </div>
         </aside>
       ) : null}
 
