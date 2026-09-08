@@ -46,6 +46,8 @@
   --color-map-point-rental: #59628d;
   --color-map-user: #7fbf8b;
   --color-map-user-outline: #e1f5ec;
+  --color-bathymetry-contour: #dfd1ac;
+  --color-bathymetry-halo: rgb(15 54 70 / 88%);
   --color-hero-sky: #86b4c9;
   --color-hero-water: #2e6f8e;
   --color-hero-water-deep: #173f53;
@@ -108,6 +110,8 @@
   --color-map-point-rental: #8a664f;
   --color-map-user: #8bb88a;
   --color-map-user-outline: #e7e1d6;
+  --color-bathymetry-contour: #d9c7a5;
+  --color-bathymetry-halo: rgb(22 49 43 / 90%);
   --color-hero-sky: #899c8e;
   --color-hero-water: #496b65;
   --color-hero-water-deep: #263e36;
@@ -157,6 +161,8 @@
   --color-map-point-rental: #536e9b;
   --color-map-user: #83c59a;
   --color-map-user-outline: #eff5f7;
+  --color-bathymetry-contour: #e2d8b7;
+  --color-bathymetry-halo: rgb(13 60 76 / 90%);
   --color-hero-sky: #7fb3c8;
   --color-hero-water: #2d7890;
   --color-hero-water-deep: #123f59;
@@ -206,6 +212,8 @@
   --color-map-point-rental: #416da9;
   --color-map-user: #83bd8b;
   --color-map-user-outline: #edf4e8;
+  --color-bathymetry-contour: #d8cfad;
+  --color-bathymetry-halo: rgb(12 57 47 / 90%);
   --color-hero-sky: #679c91;
   --color-hero-water: #2f72a8;
   --color-hero-water-deep: #16445d;
@@ -1458,6 +1466,17 @@ a:focus-visible {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-primary-text);
+}
+
+.lake-map-depth-control small {
+  padding-left: 7px;
+  border-left: 1px solid currentColor;
+  color: inherit;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  opacity: 0.76;
+  text-transform: uppercase;
 }
 
 .lake-point-marker {

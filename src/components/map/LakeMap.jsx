@@ -14,7 +14,10 @@ import {
   getPointTypeLabel,
   getPointTypes,
 } from "../../data/lakePoints";
-import { getLakeDepthMap } from "../../data/lakeDepthMaps";
+import {
+  getLakeBathymetryStatus,
+  getLakeDepthMap,
+} from "../../data/lakeDepthMaps";
 import { supportsInteractiveMap } from "../../utils/mapSupport";
 import {
   applyNaturalBasemapPalette,
@@ -30,7 +33,8 @@ const CLUSTER_COUNT_LAYER_ID = "lake-map-point-cluster-count";
 const UNCLUSTERED_CIRCLE_LAYER_ID = "lake-map-point-unclustered-circle";
 const UNCLUSTERED_SYMBOL_LAYER_ID = "lake-map-point-unclustered-symbol";
 const DEPTH_MAP_SOURCE_ID = "lake-depth-map";
-const DEPTH_MAP_LAYER_ID = "lake-depth-map-overlay";
+const DEPTH_MAP_CONTOUR_LAYER_ID = "lake-depth-map-contours";
+const DEPTH_MAP_LABEL_LAYER_ID = "lake-depth-map-labels";
 const EMPTY_FEATURE_COLLECTION = {
   type: "FeatureCollection",
   features: [],
@@ -115,6 +119,10 @@ function LakeMap({ lake, onBack, themeId }) {
   const availableLayers = useMemo(() => getLakePointLayers(lake.id), [lake.id]);
   const lakePoints = useMemo(() => getLakePoints(lake.id), [lake.id]);
   const depthMap = useMemo(() => getLakeDepthMap(lake.id), [lake.id]);
+  const bathymetryStatus = useMemo(
+    () => getLakeBathymetryStatus(lake.id),
+    [lake.id],
+  );
   const [isLayersOpen, setIsLayersOpen] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [isDepthMapVisible, setIsDepthMapVisible] = useState(Boolean(depthMap));
@@ -214,24 +222,82 @@ function LakeMap({ lake, onBack, themeId }) {
 
       if (!map.getSource(DEPTH_MAP_SOURCE_ID)) {
         map.addSource(DEPTH_MAP_SOURCE_ID, {
-          type: "image",
-          url: depthMap.imageUrl,
-          coordinates: depthMap.coordinates,
+          type: "geojson",
+          data: depthMap.dataUrl,
         });
       }
 
-      if (!map.getLayer(DEPTH_MAP_LAYER_ID)) {
+      const colors = getPikeMapColors();
+
+      if (!map.getLayer(DEPTH_MAP_CONTOUR_LAYER_ID)) {
         map.addLayer({
-          id: DEPTH_MAP_LAYER_ID,
-          type: "raster",
+          id: DEPTH_MAP_CONTOUR_LAYER_ID,
+          type: "line",
           source: DEPTH_MAP_SOURCE_ID,
+          filter: ["==", ["get", "kind"], "contour"],
           layout: {
             visibility: isDepthMapVisible ? "visible" : "none",
+            "line-cap": "round",
+            "line-join": "round",
           },
           paint: {
-            "raster-opacity": 1,
-            "raster-fade-duration": 0,
-            "raster-resampling": "linear",
+            "line-color": colors.bathymetryContour,
+            "line-opacity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              9,
+              0.62,
+              13,
+              0.82,
+              16,
+              0.94,
+            ],
+            "line-width": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              9,
+              0.65,
+              13,
+              1,
+              16,
+              1.35,
+            ],
+          },
+        });
+      }
+
+      if (!map.getLayer(DEPTH_MAP_LABEL_LAYER_ID)) {
+        map.addLayer({
+          id: DEPTH_MAP_LABEL_LAYER_ID,
+          type: "symbol",
+          source: DEPTH_MAP_SOURCE_ID,
+          minzoom: 11.2,
+          filter: ["==", ["get", "kind"], "contour"],
+          layout: {
+            visibility: isDepthMapVisible ? "visible" : "none",
+            "symbol-placement": "line",
+            "symbol-spacing": 420,
+            "text-field": ["to-string", ["get", "depth"]],
+            "text-size": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              11.2,
+              9,
+              15,
+              11,
+            ],
+            "text-padding": 7,
+            "text-max-angle": 35,
+            "text-keep-upright": true,
+          },
+          paint: {
+            "text-color": colors.bathymetryContour,
+            "text-halo-color": colors.bathymetryHalo,
+            "text-halo-width": 1.2,
+            "text-halo-blur": 0.4,
           },
         });
       }
@@ -251,13 +317,15 @@ function LakeMap({ lake, onBack, themeId }) {
   useEffect(() => {
     const map = mapRef.current;
 
-    if (map?.getLayer(DEPTH_MAP_LAYER_ID)) {
-      map.setLayoutProperty(
-        DEPTH_MAP_LAYER_ID,
-        "visibility",
-        isDepthMapVisible ? "visible" : "none",
-      );
-    }
+    [DEPTH_MAP_CONTOUR_LAYER_ID, DEPTH_MAP_LABEL_LAYER_ID].forEach((layerId) => {
+      if (map?.getLayer(layerId)) {
+        map.setLayoutProperty(
+          layerId,
+          "visibility",
+          isDepthMapVisible ? "visible" : "none",
+        );
+      }
+    });
   }, [isDepthMapVisible]);
 
   useEffect(() => {
@@ -612,6 +680,27 @@ function LakeMap({ lake, onBack, themeId }) {
         map.setPaintProperty(UNCLUSTERED_SYMBOL_LAYER_ID, "text-color", colors.text);
         map.setPaintProperty(UNCLUSTERED_SYMBOL_LAYER_ID, "text-halo-color", colors.labelHalo);
       }
+
+      if (map.getLayer(DEPTH_MAP_CONTOUR_LAYER_ID)) {
+        map.setPaintProperty(
+          DEPTH_MAP_CONTOUR_LAYER_ID,
+          "line-color",
+          colors.bathymetryContour,
+        );
+      }
+
+      if (map.getLayer(DEPTH_MAP_LABEL_LAYER_ID)) {
+        map.setPaintProperty(
+          DEPTH_MAP_LABEL_LAYER_ID,
+          "text-color",
+          colors.bathymetryContour,
+        );
+        map.setPaintProperty(
+          DEPTH_MAP_LABEL_LAYER_ID,
+          "text-halo-color",
+          colors.bathymetryHalo,
+        );
+      }
     };
 
     const animationFrame = window.requestAnimationFrame(updateOverlayTheme);
@@ -653,38 +742,36 @@ function LakeMap({ lake, onBack, themeId }) {
         <div className="lake-map-layers" role="dialog" aria-label="Lager">
           <h2>Lager</h2>
 
-          {availableLayers.length === 0 && !depthMap ? (
-            <p>Inga tillgängliga lager för den här sjön ännu.</p>
-          ) : (
-            <div className="lake-map-layer-list">
-              {depthMap ? (
-                <label className="lake-map-layer-toggle lake-map-depth-toggle">
-                  <input
-                    type="checkbox"
-                    checked={isDepthMapVisible}
-                    onChange={() => setIsDepthMapVisible((current) => !current)}
-                  />
-                  <span>
-                    Djupkurvor ({depthMap.year})
-                    <small>Historiskt underlag</small>
-                  </span>
-                </label>
-              ) : null}
+          <div className="lake-map-layer-list">
+            {depthMap ? (
+              <label className="lake-map-layer-toggle lake-map-depth-toggle">
+                <input
+                  type="checkbox"
+                  checked={isDepthMapVisible}
+                  onChange={() => setIsDepthMapVisible((current) => !current)}
+                />
+                <span>
+                  Djupkarta ({depthMap.year})
+                  <small>Djup i meter</small>
+                </span>
+              </label>
+            ) : (
+              <p title={bathymetryStatus.note}>{bathymetryStatus.message}</p>
+            )}
 
-              {availableLayers.map((layer) => (
-                <label className="lake-map-layer-toggle" key={layer.id}>
-                  <input
-                    type="checkbox"
-                    checked={activeLayerIds.includes(layer.id)}
-                    onChange={() => toggleLayer(layer.id)}
-                  />
-                  <span>
-                    {layer.label} ({layer.points.length})
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
+            {availableLayers.map((layer) => (
+              <label className="lake-map-layer-toggle" key={layer.id}>
+                <input
+                  type="checkbox"
+                  checked={activeLayerIds.includes(layer.id)}
+                  onChange={() => toggleLayer(layer.id)}
+                />
+                <span>
+                  {layer.label} ({layer.points.length})
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       ) : null}
 
@@ -701,7 +788,8 @@ function LakeMap({ lake, onBack, themeId }) {
             <path d="M3 12c3-3 6-3 9 0s6 3 9 0" />
             <path d="M3 17c3-3 6-3 9 0s6 3 9 0" />
           </svg>
-          <span>Djup</span>
+          <span>Djupkarta</span>
+          <small>{isDepthMapVisible ? "På" : "Av"}</small>
         </button>
       ) : null}
 
@@ -727,8 +815,11 @@ function LakeMap({ lake, onBack, themeId }) {
 
       {depthMap && isDepthMapVisible && !mapError ? (
         <aside className="lake-map-depth-source" title={depthMap.note}>
-          <strong>Djupkurvor {depthMap.year}</strong>
-          <span>{depthMap.sourceLabel} · Ej för navigering</span>
+          <strong>Djup i meter</strong>
+          <span>
+            Djupdata: SMHI · karta {depthMap.sourceMapNumber} · Bearbetad för
+            Pike · Verifierad {depthMap.verifiedAt}
+          </span>
           <div>
             <a href={depthMap.sourceUrl} target="_blank" rel="noreferrer">
               Källa

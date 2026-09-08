@@ -78,6 +78,16 @@ export function getPikeMapColors() {
     pointBathing: readCssColor(style, "--color-map-point-bathing", "#16747f"),
     pointAccess: readCssColor(style, "--color-map-point-access", "#34705b"),
     pointRental: readCssColor(style, "--color-map-point-rental", "#59628d"),
+    bathymetryContour: readCssColor(
+      style,
+      "--color-bathymetry-contour",
+      "#dfd1ac",
+    ),
+    bathymetryHalo: readCssColor(
+      style,
+      "--color-bathymetry-halo",
+      "rgb(15 54 70 / 88%)",
+    ),
   };
 }
 
