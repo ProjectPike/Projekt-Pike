@@ -337,16 +337,27 @@ function matchesSpecies(value, species) {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
-  const selectedToken = normalize(species);
+  const canonicalize = (token) => ({
+    gers: "gars",
+  })[token] ?? token;
+  const selectedToken = canonicalize(normalize(species));
+  const salmonids = new Set([
+    "oring",
+    "lax",
+    "roding",
+    "backroding",
+    "regnbage",
+  ]);
 
   return normalize(value)
-    .split("+")
+    .split(/[+,/]/)
+    .map((token) => canonicalize(token.trim()))
     .some(
       (token) =>
         token === "all" ||
         token === selectedToken ||
         token.endsWith(selectedToken) ||
-        (token === "laxartad" && selectedToken === "oring"),
+        (token === "laxartad" && salmonids.has(selectedToken)),
     );
 }
 

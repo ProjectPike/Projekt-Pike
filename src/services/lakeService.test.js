@@ -311,6 +311,38 @@ test("does not apply another species restriction to the selected species", () =>
   assert.equal(getLakeFishingStatus(lake, choices), "allowed");
 });
 
+test("matches additional selectable species from verified lake presence", () => {
+  const lake = matchingLake({
+    species: { knownSpecies: fact(["mört", "lake", "regnbage", "gers"]) },
+  });
+
+  for (const species of ["Mört", "Lake", "Regnbåge", "Gärs"]) {
+    assert.equal(
+      getLakeFishingStatus(lake, { ...choices, species }),
+      "allowed",
+    );
+  }
+});
+
+test("matches comma-separated species restrictions and salmonid groups", () => {
+  const lake = matchingLake({
+    species: {
+      knownSpecies: fact(["röding", "lax", "regnbåge"]),
+      sizeLimits: [
+        fact({ minSizeCm: 50 }, { species: "röding,öring,lax" }),
+        fact({ minSizeCm: 40 }, { speciesGroup: "laxartad" }),
+      ],
+    },
+  });
+
+  for (const species of ["Röding", "Lax", "Regnbåge"]) {
+    assert.equal(
+      getLakeFishingStatus(lake, { ...choices, species }),
+      "warning",
+    );
+  }
+});
+
 test("keeps unverified choices unknown", () => {
   const unverifiedMethodLake = matchingLake({
     methods: { spin: fact("allowed", { status: "unknown" }) },

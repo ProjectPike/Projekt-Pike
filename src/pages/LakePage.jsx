@@ -403,9 +403,9 @@ function getStateLabel(value) {
 
 function formatToken(value) {
   const token = String(value);
-  if (token.includes("+")) {
+  if (/[+,/]/.test(token)) {
     return token
-      .split("+")
+      .split(/[+,/]/)
       .map((part) => formatToken(part))
       .join(" + ");
   }

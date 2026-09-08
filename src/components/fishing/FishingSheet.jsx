@@ -1,5 +1,10 @@
+import { useState } from "react";
 import FishingChoices from "./FishingChoices";
-import { fishingChoices as fishingChoiceOptions } from "../../data/fishingChoices";
+import {
+  additionalFishingSpecies,
+  featuredFishingSpecies,
+  fishingChoices as fishingChoiceOptions,
+} from "../../data/fishingChoices";
 
 function FishingSheet({
   fishingChoices,
@@ -7,6 +12,14 @@ function FishingSheet({
   onReset,
   onClose,
 }) {
+  const hasSelectedAdditionalSpecies = fishingChoices.species.some((species) =>
+    additionalFishingSpecies.includes(species),
+  );
+  const [showAllSpecies, setShowAllSpecies] = useState(hasSelectedAdditionalSpecies);
+  const visibleSpecies = showAllSpecies
+    ? fishingChoiceOptions.species
+    : featuredFishingSpecies;
+
   return (
     <div className="sheet-backdrop" onClick={onClose}>
       <section
@@ -45,10 +58,21 @@ function FishingSheet({
         <FishingChoices
           title="Art"
           category="species"
-          choices={fishingChoiceOptions.species}
+          choices={visibleSpecies}
           selected={fishingChoices.species}
           onChange={onChange}
         />
+
+        <button
+          type="button"
+          className="more-species-button"
+          onClick={() => setShowAllSpecies((current) => !current)}
+          aria-expanded={showAllSpecies}
+        >
+          {showAllSpecies
+            ? "Visa färre arter"
+            : `Visa fler arter (${additionalFishingSpecies.length})`}
+        </button>
 
         <button className="reset-button" onClick={onReset}>
           Rensa val

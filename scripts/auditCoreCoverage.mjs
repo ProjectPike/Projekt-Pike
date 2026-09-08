@@ -1,4 +1,7 @@
-import { fishingChoices } from "../src/data/fishingChoices.js";
+import {
+  featuredFishingSpecies,
+  fishingChoices,
+} from "../src/data/fishingChoices.js";
 import {
   getAllLakes,
   getLakeFishingStatusDetails,
@@ -7,7 +10,7 @@ import {
 const referenceDate = new Date(2026, 8, 7, 12, 0);
 const referenceDateTime = "2026-09-07 12:00";
 const coreChoices = { place: "Land", method: "Spinn" };
-const coreSpecies = fishingChoices.species;
+const coreSpecies = featuredFishingSpecies;
 
 function createStatusTotals() {
   return { allowed: 0, warning: 0, unknown: 0 };

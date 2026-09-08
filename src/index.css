@@ -1134,6 +1134,23 @@ a:focus-visible {
   box-shadow: inset 0 0 0 1px var(--color-primary);
 }
 
+.more-species-button {
+  margin-top: 11px;
+  padding: 8px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.more-species-button:hover,
+.more-species-button:focus-visible {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .reset-button {
   display: block;
   margin: 28px auto 0;
