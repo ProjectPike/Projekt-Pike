@@ -3,15 +3,21 @@ const lakeDepthMaps = {
     id: "klappasjon-smhi-1986",
     label: "Djupkarta",
     year: 1986,
-    presentation: "standalone",
-    imageUrl: "/depth-maps/klappasjon-pike-1986.png",
+    presentation: "map-overlay",
+    imageUrl: "/depth-maps/klappasjon-depth-overlay.png",
+    coordinates: [
+      [14.51102695463256, 57.55953047371568],
+      [14.52448931511576, 57.55953047371568],
+      [14.52448931511576, 57.54787169041902],
+      [14.51102695463256, 57.54787169041902],
+    ],
     sourceLabel: "SMHI · uppgiftskälla Nässjö kommun",
     sourceUrl:
       "https://vattenwebb.smhi.se/svarwebb/rest/downloadmap/638147-142329",
     licenseLabel: "CC BY 4.0",
     licenseUrl:
       "https://www.smhi.se/data/om-smhis-data/villkor-for-anvandning",
-    note: "Historisk djupkarta från 1986, bearbetad som en fristående Pike-karta. Underlaget ska inte användas för navigering.",
+    note: "Historiska djupkurvor från 1986, klippta mot modern strandlinje och visade i den ordinarie fiskekartan. Underlaget ska inte användas för navigering.",
   },
 };
 

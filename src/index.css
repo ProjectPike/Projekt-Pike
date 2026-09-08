@@ -1267,7 +1267,6 @@ a:focus-visible {
 }
 
 .lake-mini-map,
-.lake-depth-map-card,
 .lake-fishing-summary,
 .information-card {
   border: 1px solid var(--color-border);
@@ -1290,8 +1289,6 @@ a:focus-visible {
 
 .lake-mini-map:hover,
 .lake-mini-map:focus-visible,
-.lake-depth-map-card:hover,
-.lake-depth-map-card:focus-visible,
 .lake-fishing-summary:hover,
 .lake-fishing-summary:focus-visible {
   border-color: var(--color-primary);
@@ -1299,7 +1296,6 @@ a:focus-visible {
 }
 
 .lake-mini-map:active,
-.lake-depth-map-card:active,
 .lake-fishing-summary:active {
   transform: scale(0.99);
 }
@@ -1311,36 +1307,6 @@ a:focus-visible {
 }
 
 .lake-mini-map small {
-  color: var(--color-text-soft);
-  font-size: 11px;
-}
-
-.lake-depth-map-card {
-  display: flex;
-  min-height: 88px;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 16px;
-  border-radius: 18px;
-  background:
-    linear-gradient(90deg, transparent 0 46%, var(--color-surface-overlay) 78%),
-    repeating-radial-gradient(
-      ellipse at 20% 120%,
-      var(--color-map-water-light) 0 2px,
-      transparent 3px 15px
-    ),
-    var(--color-map-land-dark);
-  color: var(--color-text);
-  text-align: left;
-  transition: border-color 150ms ease, filter 150ms ease, transform 150ms ease;
-}
-
-.lake-depth-map-card > span {
-  display: grid;
-  gap: 3px;
-}
-
-.lake-depth-map-card small {
   color: var(--color-text-soft);
   font-size: 11px;
 }
@@ -1426,6 +1392,17 @@ a:focus-visible {
 
 .lake-map-layer-toggle input {
   accent-color: var(--color-primary);
+}
+
+.lake-map-depth-toggle span {
+  display: grid;
+  gap: 2px;
+}
+
+.lake-map-depth-toggle small {
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .lake-map-layers p {
@@ -1575,108 +1552,44 @@ a:focus-visible {
   font-size: 12px;
 }
 
-.lake-depth-map-shell {
-  display: flex;
-  width: 100%;
-  height: 100dvh;
-  flex-direction: column;
-  background: var(--color-background);
+.lake-map-depth-source {
+  position: absolute;
+  top: 76px;
+  left: 14px;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  width: min(230px, calc(100vw - 88px));
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 13px;
+  background: var(--color-surface-overlay);
+  box-shadow: var(--shadow-floating);
+  backdrop-filter: blur(15px);
 }
 
-.lake-depth-map-source-link {
-  display: grid;
-  place-items: center;
+.lake-map-depth-source strong {
+  color: var(--color-text);
+  font-size: 11px;
+}
+
+.lake-map-depth-source span {
+  color: var(--color-muted);
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.lake-map-depth-source a {
+  width: max-content;
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 700;
   text-decoration: none;
 }
 
-.lake-depth-map-viewport {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  background:
-    radial-gradient(circle at 50% 20%, var(--color-surface-raised), transparent 55%),
-    var(--color-background-soft);
-  overscroll-behavior: contain;
-  scrollbar-color: var(--color-border) transparent;
-}
-
-.lake-depth-map-viewport img {
-  display: block;
-  height: auto;
-  max-width: none;
-  user-select: none;
-}
-
-.lake-depth-map-controls {
-  z-index: 2;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface-overlay-strong);
-  backdrop-filter: blur(16px);
-}
-
-.lake-depth-map-controls > span {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-}
-
-.lake-depth-map-controls strong {
-  font-size: 12px;
-}
-
-.lake-depth-map-controls small {
-  overflow: hidden;
-  color: var(--color-muted);
-  font-size: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.lake-depth-map-controls > div {
-  display: grid;
-  flex: 0 0 auto;
-  grid-template-columns: 36px 54px 36px;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-}
-
-.lake-depth-map-controls button {
-  width: 36px;
-  height: 36px;
-  border: 0;
-  background: transparent;
-  color: var(--color-text);
-  font-size: 20px;
-}
-
-.lake-depth-map-controls button:hover:not(:disabled),
-.lake-depth-map-controls button:focus-visible:not(:disabled) {
-  background: var(--color-surface-hover);
-}
-
-.lake-depth-map-controls button:disabled {
-  color: var(--color-muted);
-  opacity: 0.45;
-}
-
-.lake-depth-map-controls output {
-  color: var(--color-muted);
-  font-size: 11px;
-  text-align: center;
-}
-
-@media (max-width: 430px) {
-  .lake-depth-map-controls > span small {
-    max-width: 140px;
-  }
+.lake-map-depth-source a:hover,
+.lake-map-depth-source a:focus-visible {
+  text-decoration: underline;
 }
 
 .lake-fishing-summary > span {
