@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "audit:fishing": "node scripts/auditFishingChoices.mjs",
     "audit:core": "node scripts/auditCoreCoverage.mjs",
+    "audit:depth-maps": "node scripts/auditDepthMaps.mjs",
     "validate:lakes": "node scripts/validateLakeData.mjs",
     "preview": "vite preview"
   },

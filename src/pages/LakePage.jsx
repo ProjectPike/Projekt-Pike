@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import InformationCard from "../components/lake/InformationCard";
 import LakeHero from "../components/lake/LakeHero";
+import LakeDepthMap from "../components/map/LakeDepthMap";
 import LakeMap from "../components/map/LakeMap";
+import { getLakeDepthMap } from "../data/lakeDepthMaps";
 import { getLakePoints, getPointTypes } from "../data/lakePoints";
 import { getLakeFishingSelectionDetails } from "../services/lakeService";
 
@@ -1236,6 +1238,7 @@ function LakePage({
   children,
 }) {
   const [showLakeMap, setShowLakeMap] = useState(false);
+  const [showDepthMap, setShowDepthMap] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [showDirectConditions, setShowDirectConditions] = useState(false);
   const [expandedUnknownChoice, setExpandedUnknownChoice] = useState(null);
@@ -1245,6 +1248,7 @@ function LakePage({
   const missingChoiceLabels = getUnknownChoiceLabels(fishingStatusDetails.categories);
   const warningChoiceLabels = getWarningChoiceLabels(fishingStatusDetails.categories);
   const hasSelectedChoices = Object.values(fishingChoices).some((choices) => choices.length > 0);
+  const depthMap = getLakeDepthMap(lake.id);
 
   function openDirectConditions() {
     setShowDirectConditions(true);
@@ -1287,6 +1291,16 @@ function LakePage({
         lake={lake}
         themeId={themeId}
         onBack={() => setShowLakeMap(false)}
+      />
+    );
+  }
+
+  if (showDepthMap && depthMap) {
+    return (
+      <LakeDepthMap
+        lake={lake}
+        depthMap={depthMap}
+        onBack={() => setShowDepthMap(false)}
       />
     );
   }
@@ -1375,6 +1389,19 @@ function LakePage({
           </span>
           <strong>›</strong>
         </button>
+
+        {depthMap?.presentation === "standalone" ? (
+          <button
+            className="lake-depth-map-card"
+            onClick={() => setShowDepthMap(true)}
+          >
+            <span>
+              <small>Historiskt kartunderlag</small>
+              <strong>Öppna djupkarta {depthMap.year}</strong>
+            </span>
+            <strong>›</strong>
+          </button>
+        ) : null}
 
         <button className="lake-fishing-summary" onClick={onOpenFishing}>
           <span>

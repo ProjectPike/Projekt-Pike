@@ -1,5 +1,6 @@
 import { lakes } from "../src/data/lakes.js";
 import { lakePointsByLakeId } from "../src/data/lakePoints.js";
+import { lakeDepthMapResearch } from "../src/data/lakeDepthMapResearch.js";
 
 const EXPECTED_LAKE_COUNT = 22;
 const DETAIL_SECTIONS = [
@@ -138,6 +139,36 @@ for (const [lakeId, lake] of Object.entries(lakes)) {
   }
 
   validateDetails(lake.details, `${lakeId}.details`);
+
+  const depthMapResearch = lakeDepthMapResearch[lakeId];
+
+  if (!depthMapResearch) {
+    addError(`${lakeId}.depthMapResearch`, "djupkartestatus har inte kontrollerats");
+  } else {
+    if (!["available", "not-found"].includes(depthMapResearch.status)) {
+      addError(`${lakeId}.depthMapResearch.status`, `okänd status ${depthMapResearch.status}`);
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(depthMapResearch.checkedAt ?? "")) {
+      addError(`${lakeId}.depthMapResearch.checkedAt`, "giltigt kontrolldatum saknas");
+    }
+
+    if (depthMapResearch.status === "available") {
+      if (!depthMapResearch.smhiLakeId || !URL.canParse(depthMapResearch.sourceUrl ?? "")) {
+        addError(`${lakeId}.depthMapResearch`, "SMHI-id eller käll-URL saknas");
+      }
+
+      if (!Array.isArray(depthMapResearch.maps) || depthMapResearch.maps.length === 0) {
+        addError(`${lakeId}.depthMapResearch.maps`, "hittad djupkarta saknar kartpost");
+      }
+    }
+  }
+}
+
+for (const lakeId of Object.keys(lakeDepthMapResearch)) {
+  if (!lakes[lakeId]) {
+    addError(`lakeDepthMapResearch.${lakeId}`, "refererar till okänd sjö");
+  }
 }
 
 for (const [lakeId, points] of Object.entries(lakePointsByLakeId)) {
@@ -177,6 +208,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Lake-data validation passed: ${Object.keys(lakes).length} lakes, ${verifiedFactCount}/${factCount} verified facts, ${pointIds.size} map points.`,
+    `Lake-data validation passed: ${Object.keys(lakes).length} lakes, ${verifiedFactCount}/${factCount} verified facts, ${pointIds.size} map points, ${Object.keys(lakeDepthMapResearch).length} depth-map checks.`,
   );
 }
