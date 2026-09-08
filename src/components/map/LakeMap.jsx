@@ -8,6 +8,7 @@ import {
   getPointTypeLabel,
   getPointTypes,
 } from "../../data/lakePoints";
+import { getLakeDepthMap } from "../../data/lakeDepthMaps";
 import { supportsInteractiveMap } from "../../utils/mapSupport";
 import {
   applyNaturalBasemapPalette,
@@ -22,6 +23,8 @@ const CLUSTER_CIRCLE_LAYER_ID = "lake-map-point-clusters";
 const CLUSTER_COUNT_LAYER_ID = "lake-map-point-cluster-count";
 const UNCLUSTERED_CIRCLE_LAYER_ID = "lake-map-point-unclustered-circle";
 const UNCLUSTERED_SYMBOL_LAYER_ID = "lake-map-point-unclustered-symbol";
+const DEPTH_MAP_SOURCE_ID = "lake-depth-map";
+const DEPTH_MAP_LAYER_ID = "lake-depth-map-overlay";
 const EMPTY_FEATURE_COLLECTION = {
   type: "FeatureCollection",
   features: [],
@@ -38,6 +41,7 @@ const LAKE_MAP_ZOOM_BY_ID = {
   munksjon: 13.2,
   nommen: 10.7,
   risbrodammen: 13.2,
+  klappasjon: 13.1,
   rocksjon: 13.4,
   ryssbysjon: 12.5,
   sandhemssjon: 12.8,
@@ -104,8 +108,10 @@ function LakeMap({ lake, onBack, themeId }) {
   const popupRef = useRef(null);
   const availableLayers = useMemo(() => getLakePointLayers(lake.id), [lake.id]);
   const lakePoints = useMemo(() => getLakePoints(lake.id), [lake.id]);
+  const depthMap = useMemo(() => getLakeDepthMap(lake.id), [lake.id]);
   const [isLayersOpen, setIsLayersOpen] = useState(false);
   const [mapError, setMapError] = useState(false);
+  const [isDepthMapVisible, setIsDepthMapVisible] = useState(Boolean(depthMap));
   const [activeLayerIds, setActiveLayerIds] = useState(() =>
     getLakePointLayers(lake.id).map((layer) => layer.id),
   );
@@ -172,6 +178,68 @@ function LakeMap({ lake, onBack, themeId }) {
       mapRef.current = null;
     };
   }, [lake.coordinates, lake.id]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map || !depthMap) {
+      return undefined;
+    }
+
+    const ensureDepthMap = () => {
+      if (!map.isStyleLoaded()) {
+        return;
+      }
+
+      if (!map.getSource(DEPTH_MAP_SOURCE_ID)) {
+        map.addSource(DEPTH_MAP_SOURCE_ID, {
+          type: "image",
+          url: depthMap.imageUrl,
+          coordinates: depthMap.coordinates,
+        });
+      }
+
+      if (!map.getLayer(DEPTH_MAP_LAYER_ID)) {
+        map.addLayer({
+          id: DEPTH_MAP_LAYER_ID,
+          type: "raster",
+          source: DEPTH_MAP_SOURCE_ID,
+          layout: {
+            visibility: isDepthMapVisible ? "visible" : "none",
+          },
+          paint: {
+            "raster-opacity": 0.78,
+            "raster-fade-duration": 0,
+            "raster-resampling": "linear",
+          },
+        });
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      ensureDepthMap();
+    } else {
+      map.once("load", ensureDepthMap);
+    }
+
+    return () => {
+      map.off("load", ensureDepthMap);
+    };
+  }, [depthMap, isDepthMapVisible]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map?.getLayer(DEPTH_MAP_LAYER_ID)) {
+      return;
+    }
+
+    map.setLayoutProperty(
+      DEPTH_MAP_LAYER_ID,
+      "visibility",
+      isDepthMapVisible ? "visible" : "none",
+    );
+  }, [isDepthMapVisible]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -566,10 +634,24 @@ function LakeMap({ lake, onBack, themeId }) {
         <div className="lake-map-layers" role="dialog" aria-label="Lager">
           <h2>Lager</h2>
 
-          {availableLayers.length === 0 ? (
+          {availableLayers.length === 0 && !depthMap ? (
             <p>Inga tillgängliga lager för den här sjön ännu.</p>
           ) : (
             <div className="lake-map-layer-list">
+              {depthMap ? (
+                <label className="lake-map-layer-toggle lake-map-depth-toggle">
+                  <input
+                    type="checkbox"
+                    checked={isDepthMapVisible}
+                    onChange={() => setIsDepthMapVisible((current) => !current)}
+                  />
+                  <span>
+                    {depthMap.label} ({depthMap.year})
+                    <small>Historiskt underlag</small>
+                  </span>
+                </label>
+              ) : null}
+
               {availableLayers.map((layer) => (
                 <label className="lake-map-layer-toggle" key={layer.id}>
                   <input
@@ -597,10 +679,35 @@ function LakeMap({ lake, onBack, themeId }) {
           >
             Öppna {lake.name} i Google Maps
           </a>
+          {depthMap ? (
+            <a href={depthMap.sourceUrl} target="_blank" rel="noreferrer">
+              Ladda ner djupkartan från SMHI
+            </a>
+          ) : null}
         </div>
       ) : (
         <div ref={mapContainerRef} className="lake-map-view" />
       )}
+
+      {depthMap && isDepthMapVisible && !mapError ? (
+        <aside
+          className="lake-map-depth-source"
+          aria-label="Källa för djupkarta"
+          title={depthMap.note}
+        >
+          <strong>Djupkarta {depthMap.year}</strong>
+          <span>{depthMap.sourceLabel}</span>
+          <span>{depthMap.licenseLabel} · Ej för navigering</span>
+          <div>
+            <a href={depthMap.sourceUrl} target="_blank" rel="noreferrer">
+              Källa
+            </a>
+            <a href={depthMap.licenseUrl} target="_blank" rel="noreferrer">
+              Licens
+            </a>
+          </div>
+        </aside>
+      ) : null}
 
       <div className="lake-map-footer">
         <small>{lakePoints.length > 0 ? "Verifierade platser" : "Kartläge"}</small>

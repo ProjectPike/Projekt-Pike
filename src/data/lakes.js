@@ -5662,9 +5662,9 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.512466, 57.563392],
+    coordinates: [14.51712, 57.55435],
     coordinateSource:
-      "https://www.naturkartan.se/sv/jonkopings-lan/klappasjons-fvof",
+      "https://vattenwebb.smhi.se/svarwebb/",
     distance: { kilometers: 38, travelTime: "34 min" },
     verification: {
       status: "verified",
