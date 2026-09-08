@@ -127,6 +127,10 @@ for (const [lakeId, lake] of Object.entries(lakes)) {
     addError(`${lakeId}.coordinates`, "ogiltiga koordinater");
   }
 
+  if (!lake.coordinateSource || !URL.canParse(lake.coordinateSource)) {
+    addError(`${lakeId}.coordinateSource`, "giltig koordinatkälla saknas");
+  }
+
   for (const section of DETAIL_SECTIONS) {
     if (!lake.details || typeof lake.details[section] !== "object") {
       addError(`${lakeId}.details.${section}`, "sektion saknas");

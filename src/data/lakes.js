@@ -63,7 +63,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Kronoberg", "Jönköping", "Halland"],
-    coordinates: [13.68, 56.92],
+    coordinates: [13.698374, 56.9209012],
+    coordinateSource: "https://www.openstreetmap.org/relation/7130",
     distance: { kilometers: 84, travelTime: "1 h 8 min" },
     verification: { status: "unverified", updatedAt: null, sources: [] },
     fishing: {
@@ -502,7 +503,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.48, 57.91],
+    coordinates: [14.512562, 57.9761304],
+    coordinateSource: "https://www.openstreetmap.org/relation/9560",
     distance: { kilometers: 18, travelTime: "21 min" },
     verification: { status: "unverified", updatedAt: null, sources: [] },
     fishing: {
@@ -811,7 +813,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping", "Östergötland"],
-    coordinates: [15.27, 58.0],
+    coordinates: [15.1800048, 58.011567],
+    coordinateSource: "https://www.openstreetmap.org/relation/254688",
     distance: { kilometers: 97, travelTime: "1 h 19 min" },
     verification: { status: "unverified", updatedAt: null, sources: [] },
     fishing: {
@@ -1376,7 +1379,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping", "Västra Götaland", "Örebro", "Östergötland"],
-    coordinates: [14.55, 58.3],
+    coordinates: [14.5309404, 58.3794802],
+    coordinateSource: "https://www.openstreetmap.org/relation/253599",
     distance: { kilometers: 0, travelTime: "0 min" },
     verification: {
       status: "verified",
@@ -1758,7 +1762,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.165, 57.7725],
+    coordinates: [14.1651865, 57.7724818],
+    coordinateSource: "https://www.openstreetmap.org/way/15749182",
     distance: { kilometers: 1, travelTime: "5 min" },
     verification: {
       status: "verified",
@@ -2085,7 +2090,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.18889, 57.77367],
+    coordinates: [14.1891229, 57.77376],
+    coordinateSource: "https://www.openstreetmap.org/relation/9893021",
     distance: { kilometers: 2, travelTime: "6 min" },
     verification: {
       status: "verified",
@@ -2252,7 +2258,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.31667, 57.86667],
+    coordinates: [14.3149637, 57.8679365],
+    coordinateSource: "https://www.openstreetmap.org/relation/15776409",
     distance: { kilometers: 17, travelTime: "20 min" },
     verification: {
       status: "verified",
@@ -2582,7 +2589,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.0931, 57.757],
+    coordinates: [14.0929832, 57.7570076],
+    coordinateSource: "https://www.openstreetmap.org/way/23543708",
     distance: { kilometers: 7, travelTime: "12 min" },
     verification: {
       status: "verified",
@@ -2823,7 +2831,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.33, 57.69],
+    coordinates: [14.3426768, 57.6924286],
+    coordinateSource: "https://www.openstreetmap.org/way/23212660",
     distance: { kilometers: 18, travelTime: "20 min" },
     verification: {
       status: "verified",
@@ -3081,7 +3090,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.85, 57.95],
+    coordinates: [13.8451091, 57.8998112],
+    coordinateSource: "https://www.openstreetmap.org/relation/8027895",
     distance: { kilometers: 31, travelTime: "32 min" },
     verification: {
       status: "verified",
@@ -3390,7 +3400,9 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.66, 57.61],
+    coordinates: [14.67226, 57.60664],
+    coordinateSource:
+      "https://viss.lansstyrelsen.se/ProtectedAreas.aspx?managementCycleName=Cykel_2%2C5&protectedAreaEUID=SEA7SE638925-143297",
     distance: { kilometers: 45, travelTime: "43 min" },
     verification: {
       status: "verified",
@@ -3683,7 +3695,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.63, 57.69],
+    coordinates: [14.6379637, 57.7030572],
+    coordinateSource: "https://www.openstreetmap.org/relation/2381619",
     distance: { kilometers: 43, travelTime: "42 min" },
     verification: {
       status: "verified",
@@ -3887,7 +3900,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.8, 57.57],
+    coordinates: [14.8488384, 57.5413176],
+    coordinateSource: "https://www.openstreetmap.org/relation/9452",
     distance: { kilometers: 55, travelTime: "52 min" },
     verification: {
       status: "verified",
@@ -4120,7 +4134,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [14.013443, 57.850559],
+    coordinates: [14.018581, 57.851],
+    coordinateSource: "https://www.openstreetmap.org/relation/10523512",
     distance: { kilometers: 19, travelTime: "22 min" },
     verification: {
       status: "verified",
@@ -4452,7 +4467,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.881149, 57.910816],
+    coordinates: [13.8814229, 57.9097852],
+    coordinateSource: "https://www.openstreetmap.org/relation/8027934",
     distance: { kilometers: 31, travelTime: "32 min" },
     verification: {
       status: "verified",
@@ -4621,7 +4637,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.887164, 57.97047],
+    coordinates: [13.8875261, 57.9706602],
+    coordinateSource: "https://www.openstreetmap.org/way/43674265",
     distance: { kilometers: 37, travelTime: "38 min" },
     verification: {
       status: "verified",
@@ -4792,7 +4809,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.780182, 57.995918],
+    coordinates: [13.7861561, 58.0001589],
+    coordinateSource: "https://www.openstreetmap.org/relation/123702",
     distance: { kilometers: 46, travelTime: "45 min" },
     verification: {
       status: "verified",
@@ -4960,7 +4978,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.89825, 57.93869],
+    coordinates: [13.8988537, 57.9374914],
+    coordinateSource: "https://www.openstreetmap.org/relation/8150669",
     distance: { kilometers: 34, travelTime: "35 min" },
     verification: {
       status: "partially-verified",
@@ -5090,7 +5109,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.978597, 57.901005],
+    coordinates: [13.9765853, 57.8992456],
+    coordinateSource: "https://www.openstreetmap.org/relation/8150509",
     distance: { kilometers: 23, travelTime: "26 min" },
     verification: {
       status: "verified",
@@ -5385,7 +5405,8 @@ export const lakes = {
     type: "sjö",
     region: "Småland",
     counties: ["Jönköping"],
-    coordinates: [13.785222, 57.810722],
+    coordinates: [13.7839315, 57.8077537],
+    coordinateSource: "https://www.openstreetmap.org/relation/2719114",
     distance: { kilometers: 36, travelTime: "38 min" },
     verification: {
       status: "verified",
