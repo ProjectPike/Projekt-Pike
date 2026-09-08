@@ -3,6 +3,11 @@ import { Map, Marker, NavigationControl, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import MapPlaceholder from "./MapPlaceholder";
+import {
+  applyNaturalBasemapPalette,
+  getPikeMapColors,
+  NATURAL_BASEMAP_STYLE_URL,
+} from "./mapTheme";
 import { supportsInteractiveMap } from "../../utils/mapSupport";
 
 setWorkerUrl(workerUrl);
@@ -42,6 +47,7 @@ function MapView({
   matchingLakeIds = [],
   hasSearch = false,
   userPosition = null,
+  themeId,
 }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -105,7 +111,7 @@ function MapView({
     try {
       map = new Map({
         container: mapContainerRef.current,
-        style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+        style: NATURAL_BASEMAP_STYLE_URL,
         center: [14.5, 57.2],
         zoom: 7.4,
       });
@@ -127,6 +133,10 @@ function MapView({
 
     map.on("error", (event) => {
       console.error("Kartfel:", event.error);
+    });
+
+    map.on("style.load", () => {
+      applyNaturalBasemapPalette(map);
     });
 
     requestAnimationFrame(() => {
@@ -203,6 +213,8 @@ function MapView({
         });
       }
 
+      const colors = getPikeMapColors();
+
       if (!map.getSource(SELECTED_LAKE_SOURCE_ID)) {
         map.addSource(SELECTED_LAKE_SOURCE_ID, {
           type: "geojson",
@@ -217,7 +229,7 @@ function MapView({
           source: LAKE_SOURCE_ID,
           filter: ["has", "point_count"],
           paint: {
-            "circle-color": "#123f56",
+            "circle-color": colors.cluster,
             "circle-radius": [
               "step",
               ["get", "point_count"],
@@ -228,7 +240,7 @@ function MapView({
               24,
             ],
             "circle-stroke-width": 1.5,
-            "circle-stroke-color": "rgba(255, 255, 255, 0.82)",
+            "circle-stroke-color": colors.markerOutline,
             "circle-opacity": ["case", [">", ["get", "matchingCount"], 0], 1, 0.35],
             "circle-stroke-opacity": ["case", [">", ["get", "matchingCount"], 0], 1, 0.35],
           },
@@ -247,8 +259,8 @@ function MapView({
             "text-allow-overlap": true,
           },
           paint: {
-            "text-color": "#f2f7fb",
-            "text-halo-color": "rgba(7, 26, 42, 0.8)",
+            "text-color": colors.text,
+            "text-halo-color": colors.labelHalo,
             "text-halo-width": 0.8,
             "text-opacity": ["case", [">", ["get", "matchingCount"], 0], 1, 0.45],
           },
@@ -266,14 +278,14 @@ function MapView({
               "match",
               ["get", "status"],
               "allowed",
-              "#7fbf8b",
+              colors.supported,
               "warning",
-              "#dba55d",
-              "#8b95a2",
+              colors.warning,
+              colors.unknown,
             ],
             "circle-radius": 8,
             "circle-stroke-width": 2,
-            "circle-stroke-color": "#ffffff",
+            "circle-stroke-color": colors.markerOutline,
             "circle-stroke-opacity": [
               "case",
               ["==", ["get", "isMatch"], 1],
@@ -298,9 +310,9 @@ function MapView({
           filter: ["==", ["get", "showHighlight"], 1],
           paint: {
             "circle-radius": 10.25,
-            "circle-color": "rgba(255, 255, 255, 0.08)",
+            "circle-color": colors.selectionSoft,
             "circle-stroke-width": 2,
-            "circle-stroke-color": "rgba(255, 255, 255, 0.82)",
+            "circle-stroke-color": colors.selection,
           },
         });
       }
@@ -320,8 +332,8 @@ function MapView({
             "text-ignore-placement": true,
           },
           paint: {
-            "text-color": "#f3f6f6",
-            "text-halo-color": "rgba(10, 19, 24, 0.92)",
+            "text-color": colors.text,
+            "text-halo-color": colors.labelHalo,
             "text-halo-width": 2.2,
           },
         });
@@ -478,6 +490,75 @@ function MapView({
   useEffect(() => {
     const map = mapRef.current;
 
+    if (!map) {
+      return undefined;
+    }
+
+    const updateOverlayTheme = () => {
+      const colors = getPikeMapColors();
+
+      if (map.getLayer(CLUSTER_CIRCLE_LAYER_ID)) {
+        map.setPaintProperty(CLUSTER_CIRCLE_LAYER_ID, "circle-color", colors.cluster);
+        map.setPaintProperty(
+          CLUSTER_CIRCLE_LAYER_ID,
+          "circle-stroke-color",
+          colors.markerOutline,
+        );
+      }
+
+      if (map.getLayer(CLUSTER_COUNT_LAYER_ID)) {
+        map.setPaintProperty(CLUSTER_COUNT_LAYER_ID, "text-color", colors.text);
+        map.setPaintProperty(CLUSTER_COUNT_LAYER_ID, "text-halo-color", colors.labelHalo);
+      }
+
+      if (map.getLayer(UNCLUSTERED_CIRCLE_LAYER_ID)) {
+        map.setPaintProperty(UNCLUSTERED_CIRCLE_LAYER_ID, "circle-color", [
+          "match",
+          ["get", "status"],
+          "allowed",
+          colors.supported,
+          "warning",
+          colors.warning,
+          colors.unknown,
+        ]);
+        map.setPaintProperty(
+          UNCLUSTERED_CIRCLE_LAYER_ID,
+          "circle-stroke-color",
+          colors.markerOutline,
+        );
+      }
+
+      if (map.getLayer(SELECTED_HIGHLIGHT_LAYER_ID)) {
+        map.setPaintProperty(
+          SELECTED_HIGHLIGHT_LAYER_ID,
+          "circle-color",
+          colors.selectionSoft,
+        );
+        map.setPaintProperty(
+          SELECTED_HIGHLIGHT_LAYER_ID,
+          "circle-stroke-color",
+          colors.selection,
+        );
+      }
+
+      if (map.getLayer(SELECTED_LABEL_LAYER_ID)) {
+        map.setPaintProperty(SELECTED_LABEL_LAYER_ID, "text-color", colors.text);
+        map.setPaintProperty(SELECTED_LABEL_LAYER_ID, "text-halo-color", colors.labelHalo);
+      }
+    };
+
+    const animationFrame = window.requestAnimationFrame(updateOverlayTheme);
+    map.on("load", updateOverlayTheme);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      map.off("load", updateOverlayTheme);
+    };
+  }, [themeId]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
     if (!map || !userPosition) {
       return;
     }
@@ -487,14 +568,7 @@ function MapView({
     if (!userMarkerRef.current) {
       const markerElement = document.createElement("button");
       markerElement.type = "button";
-      markerElement.style.width = "12px";
-      markerElement.style.height = "12px";
-      markerElement.style.border = "2px solid #d4f8ff";
-      markerElement.style.borderRadius = "50%";
-      markerElement.style.background = "#87d596";
-      markerElement.style.boxShadow = "0 0 0 3px rgba(0, 0, 0, 0.24)";
-      markerElement.style.padding = "0";
-      markerElement.style.cursor = "auto";
+      markerElement.className = "map-user-marker";
 
       userMarkerRef.current = new Marker({ element: markerElement })
         .setLngLat([longitude, latitude])

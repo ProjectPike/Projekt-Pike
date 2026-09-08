@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import BottomNavigation from "../components/layout/BottomNavigation";
 import SearchBar from "../components/layout/SearchBar";
 import MapView from "../components/map/MapView";
@@ -114,7 +114,7 @@ function HomePage() {
     }
   }, [fishingChoices, normalizedFishingSelections, setFishingChoices]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.dataset.theme = themeId;
 
     if (storedThemeId !== themeId) {
@@ -243,6 +243,7 @@ function HomePage() {
     return (
       <LakePage
         lake={selectedLake}
+        themeId={themeId}
         fishingChoices={normalizedFishingSelections}
         fishingSelectionSummary={fishingSelectionSummary}
         isFavorite={favoriteLakeIds.includes(selectedLake.id)}
@@ -282,6 +283,7 @@ function HomePage() {
       <main className="home-page">
         <MapView
           lakes={lakes}
+          themeId={themeId}
           lakeStatuses={lakeStatuses}
           matchingLakeIds={matchingLakeIds}
           hasSearch={searchQuery.trim().length > 0}

@@ -1225,6 +1225,7 @@ function isDirectConditionRow(row, section) {
 
 function LakePage({
   lake,
+  themeId,
   fishingChoices,
   fishingSelectionSummary,
   isFavorite,
@@ -1283,6 +1284,7 @@ function LakePage({
       <LakeMap
         key={lake.id}
         lake={lake}
+        themeId={themeId}
         onBack={() => setShowLakeMap(false)}
       />
     );

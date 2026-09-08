@@ -9,6 +9,11 @@ import {
   getPointTypes,
 } from "../../data/lakePoints";
 import { supportsInteractiveMap } from "../../utils/mapSupport";
+import {
+  applyNaturalBasemapPalette,
+  getPikeMapColors,
+  NATURAL_BASEMAP_STYLE_URL,
+} from "./mapTheme";
 
 setWorkerUrl(workerUrl);
 
@@ -93,7 +98,7 @@ function createPopupContent(featureProperties) {
   return popupContent;
 }
 
-function LakeMap({ lake, onBack }) {
+function LakeMap({ lake, onBack, themeId }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const popupRef = useRef(null);
@@ -120,10 +125,9 @@ function LakeMap({ lake, onBack }) {
     try {
       map = new Map({
         container: mapContainerRef.current,
-        style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+        style: NATURAL_BASEMAP_STYLE_URL,
         center: lake.coordinates,
         zoom: getLakeMapZoom(lake.id),
-        attributionControl: false,
       });
     } catch (error) {
       console.error("Sjökartan kunde inte startas:", error);
@@ -143,6 +147,10 @@ function LakeMap({ lake, onBack }) {
 
     map.on("error", (event) => {
       console.error("Kartfel:", event.error);
+    });
+
+    map.on("style.load", () => {
+      applyNaturalBasemapPalette(map);
     });
 
     const focusLake = () => {
@@ -221,6 +229,8 @@ function LakeMap({ lake, onBack }) {
         });
       }
 
+      const colors = getPikeMapColors();
+
       if (!map.getLayer(CLUSTER_CIRCLE_LAYER_ID)) {
         map.addLayer({
           id: CLUSTER_CIRCLE_LAYER_ID,
@@ -228,7 +238,7 @@ function LakeMap({ lake, onBack }) {
           source: POINT_SOURCE_ID,
           filter: ["has", "point_count"],
           paint: {
-            "circle-color": "#123f56",
+            "circle-color": colors.cluster,
             "circle-radius": [
               "step",
               ["get", "point_count"],
@@ -239,7 +249,7 @@ function LakeMap({ lake, onBack }) {
               24,
             ],
             "circle-stroke-width": 1.5,
-            "circle-stroke-color": "rgba(255, 255, 255, 0.82)",
+            "circle-stroke-color": colors.markerOutline,
           },
         });
       }
@@ -256,8 +266,8 @@ function LakeMap({ lake, onBack }) {
             "text-allow-overlap": true,
           },
           paint: {
-            "text-color": "#f2f7fb",
-            "text-halo-color": "rgba(7, 26, 42, 0.8)",
+            "text-color": colors.text,
+            "text-halo-color": colors.labelHalo,
             "text-halo-width": 0.8,
           },
         });
@@ -274,20 +284,20 @@ function LakeMap({ lake, onBack }) {
               "match",
               ["get", "type"],
               "boat-ramp",
-              "#1c526e",
+              colors.pointRamp,
               "parking",
-              "#295068",
+              colors.pointParking,
               "bathing-area",
-              "#16747f",
+              colors.pointBathing,
               "shore-access",
-              "#34705b",
+              colors.pointAccess,
               "boat-rental",
-              "#4f5f91",
-              "#1a4d67",
+              colors.pointRental,
+              colors.cluster,
             ],
             "circle-radius": 12,
             "circle-stroke-width": 1.5,
-            "circle-stroke-color": "rgba(255, 255, 255, 0.7)",
+            "circle-stroke-color": colors.markerOutline,
           },
         });
       }
@@ -319,8 +329,8 @@ function LakeMap({ lake, onBack }) {
             "text-ignore-placement": true,
           },
           paint: {
-            "text-color": "#f2f7fb",
-            "text-halo-color": "rgba(7, 26, 42, 0.8)",
+            "text-color": colors.text,
+            "text-halo-color": colors.labelHalo,
             "text-halo-width": 0.9,
           },
         });
@@ -463,6 +473,68 @@ function LakeMap({ lake, onBack }) {
       popupRef.current = null;
     };
   }, [activeLayerIds, lake.id, lakePoints]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map) {
+      return undefined;
+    }
+
+    const updateOverlayTheme = () => {
+      const colors = getPikeMapColors();
+
+      if (map.getLayer(CLUSTER_CIRCLE_LAYER_ID)) {
+        map.setPaintProperty(CLUSTER_CIRCLE_LAYER_ID, "circle-color", colors.cluster);
+        map.setPaintProperty(
+          CLUSTER_CIRCLE_LAYER_ID,
+          "circle-stroke-color",
+          colors.markerOutline,
+        );
+      }
+
+      if (map.getLayer(CLUSTER_COUNT_LAYER_ID)) {
+        map.setPaintProperty(CLUSTER_COUNT_LAYER_ID, "text-color", colors.text);
+        map.setPaintProperty(CLUSTER_COUNT_LAYER_ID, "text-halo-color", colors.labelHalo);
+      }
+
+      if (map.getLayer(UNCLUSTERED_CIRCLE_LAYER_ID)) {
+        map.setPaintProperty(UNCLUSTERED_CIRCLE_LAYER_ID, "circle-color", [
+          "match",
+          ["get", "type"],
+          "boat-ramp",
+          colors.pointRamp,
+          "parking",
+          colors.pointParking,
+          "bathing-area",
+          colors.pointBathing,
+          "shore-access",
+          colors.pointAccess,
+          "boat-rental",
+          colors.pointRental,
+          colors.cluster,
+        ]);
+        map.setPaintProperty(
+          UNCLUSTERED_CIRCLE_LAYER_ID,
+          "circle-stroke-color",
+          colors.markerOutline,
+        );
+      }
+
+      if (map.getLayer(UNCLUSTERED_SYMBOL_LAYER_ID)) {
+        map.setPaintProperty(UNCLUSTERED_SYMBOL_LAYER_ID, "text-color", colors.text);
+        map.setPaintProperty(UNCLUSTERED_SYMBOL_LAYER_ID, "text-halo-color", colors.labelHalo);
+      }
+    };
+
+    const animationFrame = window.requestAnimationFrame(updateOverlayTheme);
+    map.on("load", updateOverlayTheme);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      map.off("load", updateOverlayTheme);
+    };
+  }, [themeId]);
 
   const toggleLayer = (layerId) => {
     setActiveLayerIds((current) =>
