@@ -792,10 +792,10 @@ a:focus-visible {
 }
 
 .map-legend-swatch {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  border: 1px solid var(--color-border-strong);
+  border: 1.5px solid var(--color-map-marker-outline);
   flex-shrink: 0;
 }
 
@@ -805,10 +805,6 @@ a:focus-visible {
 
 .map-legend-swatch-amber {
   background: var(--color-status-warning);
-}
-
-.map-legend-swatch-gray {
-  background: var(--color-status-unknown);
 }
 
 .fishing-button {

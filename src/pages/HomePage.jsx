@@ -340,40 +340,38 @@ function HomePage() {
         />
 
         <div className="map-overlay-controls" ref={legendContainerRef}>
-          <button
-            type="button"
-            className="map-help-button"
-            onClick={() => setIsLegendOpen((current) => !current)}
-            aria-label="Förklara färgerna på kartan"
-            aria-expanded={isLegendOpen}
-          >
-            ?
-          </button>
+          {hasFishingSelections ? (
+            <>
+              <button
+                type="button"
+                className="map-help-button"
+                onClick={() => setIsLegendOpen((current) => !current)}
+                aria-label="Förklara klustrens statusprickar"
+                aria-expanded={isLegendOpen}
+              >
+                ?
+              </button>
 
-          {isLegendOpen ? (
-            <div className="map-legend-panel" role="dialog" aria-label="Förklaring av kartfärger">
-              {hasFishingSelections ? (
-                <>
-                  <h2>Vad betyder färgerna?</h2>
+              {isLegendOpen ? (
+                <div
+                  className="map-legend-panel"
+                  role="dialog"
+                  aria-label="Förklaring av klustrens statusprickar"
+                >
+                  <h2>Statusprickar på kluster</h2>
                   <ul>
                     <li>
                       <span className="map-legend-swatch map-legend-swatch-green" />
-                      Matchar ditt fiske
+                      Tillåten match finns
                     </li>
                     <li>
                       <span className="map-legend-swatch map-legend-swatch-amber" />
-                      Villkor finns – läs reglerna
-                    </li>
-                    <li>
-                      <span className="map-legend-swatch map-legend-swatch-gray" />
-                      Pike saknar tillräcklig information
+                      Varning eller villkor finns
                     </li>
                   </ul>
-                </>
-              ) : (
-                <p>Välj fiske för att se hur sjöarna matchar.</p>
-              )}
-            </div>
+                </div>
+              ) : null}
+            </>
           ) : null}
 
           <button
