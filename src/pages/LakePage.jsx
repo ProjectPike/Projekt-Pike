@@ -4,6 +4,11 @@ import LakeHero from "../components/lake/LakeHero";
 import LakeMap from "../components/map/LakeMap";
 import { getLakePoints, getPointTypes } from "../data/lakePoints";
 import { getLakeFishingSelectionDetails } from "../services/lakeService";
+import {
+  DEFAULT_ACCESS_PROFILE,
+  FEATURES,
+  isFeatureAllowed,
+} from "../services/entitlementService";
 
 const SOURCE_TYPE_LABELS = {
   authority: "Myndighet",
@@ -1226,6 +1231,7 @@ function isDirectConditionRow(row, section) {
 
 function LakePage({
   lake,
+  accessProfile = DEFAULT_ACCESS_PROFILE,
   themeId,
   fishingChoices,
   fishingSelectionSummary,
@@ -1286,6 +1292,7 @@ function LakePage({
         key={lake.id}
         lake={lake}
         themeId={themeId}
+        depthMapLocked={!isFeatureAllowed(FEATURES.DEPTH_MAPS, accessProfile)}
         onBack={() => setShowLakeMap(false)}
       />
     );
