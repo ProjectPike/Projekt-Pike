@@ -23,6 +23,7 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Konsekvent kartlegend/statusvisning.
 - `LakeMap`-läge för låst djupkarta.
 - Central feature entitlement engine.
+- Pike Data Ingest v1 del 1: fristående kandidatformat och deterministisk validator.
 
 ### Entitlement-arkitektur
 
@@ -53,8 +54,8 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
 ### C. Nästa större tekniska infrastruktur
 
 - Pike Data Ingest v1.
-- Validator.
-- Flödet `candidate -> validate -> review -> publish`.
+- Kandidatformat och validator är klara i del 1; samla erfarenhet från källbelagda kandidater.
+- Nästa delar: review/import/publish, efter separat avgränsning och arkitekturgranskning.
 
 ### D. Efter datainfrastrukturen
 
@@ -224,6 +225,12 @@ Intern utveckling kan fortsätta Småland-first. Releasemålet är fortfarande h
 ## 10. Pike Data Ingest v1
 
 Detta är sannolikt nästa större engineeringprojekt efter nuvarande kärnstabilisering.
+
+Del 1 är implementerad: `data/candidates/`, en separat syntetisk testfixture och
+`scripts/validateCandidateLakes.mjs` (`npm run validate:candidates`). Formatet
+återanvänder Pikes faktastatus, regeltyper och källtyper. Se
+`data/candidates/README.md` för schema och begränsningar. Endast
+`candidate -> validate` finns; ingen import, review-UI eller publicering sker.
 
 Arkitektur:
 

@@ -12,6 +12,7 @@
     "audit:depth-maps": "node scripts/auditDepthMaps.mjs",
     "validate:bathymetry": "node scripts/validateBathymetryData.mjs",
     "validate:lakes": "node scripts/validateLakeData.mjs",
+    "validate:candidates": "node scripts/validateCandidateLakes.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
