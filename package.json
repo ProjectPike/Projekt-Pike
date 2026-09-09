@@ -13,6 +13,8 @@
     "validate:bathymetry": "node scripts/validateBathymetryData.mjs",
     "validate:lakes": "node scripts/validateLakeData.mjs",
     "validate:candidates": "node scripts/validateCandidateLakes.mjs",
+    "hash:candidate": "node scripts/publishCandidateLake.mjs hash",
+    "publish:candidate": "node scripts/publishCandidateLake.mjs publish",
     "preview": "vite preview"
   },
   "dependencies": {

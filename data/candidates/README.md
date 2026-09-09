@@ -5,7 +5,9 @@ eller `node scripts/validateCandidateLakes.mjs <katalog>`.
 Tom katalog är tillåten och rapporteras som 0 kandidater. Exemplet ligger separat
 i `scripts/fixtures/candidate-lake.json` och är syntetiskt, inte en ny verklig sjö.
 
-Flödet är nu endast **candidate -> validate**. Godkänd validering betyder korrekt
+Flödet är **candidate -> validate -> review -> publish**, där publiceringen är
+isolerad från appen. Se `../reviews/README.md` för det manuella arbetsflödet.
+Godkänd validering betyder korrekt
 struktur, aldrig granskad juridisk sanning eller publiceringsgodkännande.
 Inga kandidater importeras av appen. Validatorn skriver ingenting och använder
 varken nätverk eller aktuell tid. Produktionsdatans enum-definitioner återanvänds
@@ -57,7 +59,7 @@ källbelagd kartreferens. Text och note bevarar komplexa uppgifter tills ett sä
 schema finns. Ingen fri text tolkas till maskinella regler eller geometri.
 
 Okända fält och typer avvisas för att fånga stavfel. Nya strukturer kräver en
-avsiktlig schemauppdatering. Del 2 får hantera import/review/publish separat;
-databas, produktionsmigrering, publiceringskontroll och koll mot produktions-ID:n
+avsiktlig schemauppdatering. Del 2 har separat manuell review och isolerad publish;
+databas, produktionsmigrering, appimport och koll mot produktions-ID:n
 ingår inte här. JSON-objekt ska ha unika fältnamn (JSON.parse behåller annars sista
 värdet); validatorn kontrollerar dubbletter av kandidat-ID, källor och faktaposter.
