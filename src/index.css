@@ -613,6 +613,11 @@ a:focus-visible {
   gap: 8px;
 }
 
+.search-combobox {
+  position: relative;
+  min-width: 0;
+}
+
 .search-field,
 .round-button,
 .fishing-button {
@@ -624,6 +629,7 @@ a:focus-visible {
 }
 
 .search-field {
+  width: 100%;
   min-width: 0;
   height: 44px;
   padding: 0 16px;
@@ -638,6 +644,55 @@ a:focus-visible {
 .search-field:focus {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-floating), inset 0 0 0 1px var(--color-primary);
+}
+
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  display: grid;
+  gap: 2px;
+  overflow: hidden;
+  margin: 0;
+  padding: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-overlay-strong);
+  box-shadow: var(--shadow-floating);
+  backdrop-filter: blur(15px);
+  list-style: none;
+}
+
+.search-suggestion {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 9px 11px;
+  border-radius: var(--radius-small);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.search-suggestion span,
+.search-suggestion small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-suggestion span {
+  font-weight: 650;
+}
+
+.search-suggestion small {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.search-suggestion:hover,
+.search-suggestion-highlighted {
+  background: var(--color-primary-soft);
 }
 
 .round-button {

@@ -153,6 +153,11 @@ function HomePage() {
     setSelectedLake(lake);
   }
 
+  function openSearchSuggestion(lake) {
+    setSearchQuery("");
+    openLake(lake);
+  }
+
   function useCurrentLocation() {
     if (!navigator.geolocation) {
       return;
@@ -197,6 +202,40 @@ function HomePage() {
         return searchText.includes(normalizedQuery);
       })
       .map((lake) => lake.id);
+  }, [searchQuery]);
+
+  const searchSuggestions = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLocaleLowerCase("sv-SE");
+
+    if (!normalizedQuery) {
+      return [];
+    }
+
+    return Object.values(lakes)
+      .map((lake) => {
+        const normalizedName = lake.name.toLocaleLowerCase("sv-SE");
+
+        if (normalizedName.startsWith(normalizedQuery)) {
+          return { lake, rank: 0 };
+        }
+
+        if (normalizedName.includes(normalizedQuery)) {
+          return { lake, rank: 1 };
+        }
+
+        const locationMatches = [lake.region, ...lake.counties].some((location) =>
+          location?.toLocaleLowerCase("sv-SE").includes(normalizedQuery),
+        );
+
+        return locationMatches ? { lake, rank: 2 } : null;
+      })
+      .filter(Boolean)
+      .sort(
+        (first, second) =>
+          first.rank - second.rank || first.lake.name.localeCompare(second.lake.name, "sv-SE"),
+      )
+      .slice(0, 6)
+      .map(({ lake }) => lake);
   }, [searchQuery]);
 
   const lakeStatuses = useMemo(() => {
@@ -293,7 +332,9 @@ function HomePage() {
 
         <SearchBar
           searchQuery={searchQuery}
+          suggestions={searchSuggestions}
           onSearchChange={setSearchQuery}
+          onSelectSuggestion={openSearchSuggestion}
           onUseLocation={useCurrentLocation}
           onOpenSettings={() => setActiveTab("more")}
         />
