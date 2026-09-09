@@ -47,6 +47,7 @@
   --color-map-user: #7fbf8b;
   --color-map-user-outline: #e1f5ec;
   --color-bathymetry-contour: #dfd1ac;
+  --color-bathymetry-label: #f7efdc;
   --color-bathymetry-halo: rgb(15 54 70 / 88%);
   --color-hero-sky: #86b4c9;
   --color-hero-water: #2e6f8e;
@@ -111,6 +112,7 @@
   --color-map-user: #8bb88a;
   --color-map-user-outline: #e7e1d6;
   --color-bathymetry-contour: #d9c7a5;
+  --color-bathymetry-label: #f4e9d3;
   --color-bathymetry-halo: rgb(22 49 43 / 90%);
   --color-hero-sky: #899c8e;
   --color-hero-water: #496b65;
@@ -162,6 +164,7 @@
   --color-map-user: #83c59a;
   --color-map-user-outline: #eff5f7;
   --color-bathymetry-contour: #e2d8b7;
+  --color-bathymetry-label: #faf3df;
   --color-bathymetry-halo: rgb(13 60 76 / 90%);
   --color-hero-sky: #7fb3c8;
   --color-hero-water: #2d7890;
@@ -213,6 +216,7 @@
   --color-map-user: #83bd8b;
   --color-map-user-outline: #edf4e8;
   --color-bathymetry-contour: #d8cfad;
+  --color-bathymetry-label: #f5edd6;
   --color-bathymetry-halo: rgb(12 57 47 / 90%);
   --color-hero-sky: #679c91;
   --color-hero-water: #2f72a8;

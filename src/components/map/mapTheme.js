@@ -83,6 +83,11 @@ export function getPikeMapColors() {
       "--color-bathymetry-contour",
       "#dfd1ac",
     ),
+    bathymetryLabel: readCssColor(
+      style,
+      "--color-bathymetry-label",
+      "#f7efdc",
+    ),
     bathymetryHalo: readCssColor(
       style,
       "--color-bathymetry-halo",
