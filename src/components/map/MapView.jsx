@@ -16,6 +16,8 @@ const LAKE_SOURCE_ID = "discovery-map-lakes";
 const SELECTED_LAKE_SOURCE_ID = "discovery-map-selected-lake";
 const CLUSTER_CIRCLE_LAYER_ID = "discovery-map-clusters";
 const CLUSTER_COUNT_LAYER_ID = "discovery-map-cluster-count";
+const CLUSTER_ALLOWED_INDICATOR_LAYER_ID = "discovery-map-cluster-allowed-indicator";
+const CLUSTER_WARNING_INDICATOR_LAYER_ID = "discovery-map-cluster-warning-indicator";
 const UNCLUSTERED_CIRCLE_LAYER_ID = "discovery-map-lake-circles";
 const SELECTED_HIGHLIGHT_LAYER_ID = "discovery-map-selected-highlight";
 const SELECTED_LABEL_LAYER_ID = "discovery-map-selected-label";
@@ -55,6 +57,9 @@ function MapView({
   const selectedHighlightTimeoutRef = useRef(null);
   const selectedLabelTimeoutRef = useRef(null);
   const [mapError, setMapError] = useState(false);
+  const hasActiveFishingSelections = Object.values(lakeStatuses).some(
+    (status) => status !== "neutral",
+  );
 
   const lakeFeatureCollection = useMemo(() => {
     const matchingLakeIdSet = new Set(matchingLakeIds);
@@ -209,6 +214,22 @@ function MapView({
           clusterMaxZoom: 13,
           clusterProperties: {
             matchingCount: [["+", ["accumulated"], ["get", "isMatch"]], ["get", "isMatch"]],
+            allowedCount: [
+              [
+                "+",
+                ["accumulated"],
+                ["case", ["==", ["get", "status"], "allowed"], 1, 0],
+              ],
+              ["case", ["==", ["get", "status"], "allowed"], 1, 0],
+            ],
+            warningCount: [
+              [
+                "+",
+                ["accumulated"],
+                ["case", ["==", ["get", "status"], "warning"], 1, 0],
+              ],
+              ["case", ["==", ["get", "status"], "warning"], 1, 0],
+            ],
           },
         });
       }
@@ -266,6 +287,55 @@ function MapView({
           },
         });
       }
+
+      if (!map.getLayer(CLUSTER_ALLOWED_INDICATOR_LAYER_ID)) {
+        map.addLayer({
+          id: CLUSTER_ALLOWED_INDICATOR_LAYER_ID,
+          type: "circle",
+          source: LAKE_SOURCE_ID,
+          filter: ["all", ["has", "point_count"], [">", ["get", "allowedCount"], 0]],
+          layout: {
+            visibility: hasActiveFishingSelections ? "visible" : "none",
+          },
+          paint: {
+            "circle-color": colors.supported,
+            "circle-radius": 3.5,
+            "circle-stroke-width": 1.5,
+            "circle-stroke-color": colors.markerOutline,
+            "circle-translate": [12, 12],
+          },
+        });
+      }
+
+      if (!map.getLayer(CLUSTER_WARNING_INDICATOR_LAYER_ID)) {
+        map.addLayer({
+          id: CLUSTER_WARNING_INDICATOR_LAYER_ID,
+          type: "circle",
+          source: LAKE_SOURCE_ID,
+          filter: ["all", ["has", "point_count"], [">", ["get", "warningCount"], 0]],
+          layout: {
+            visibility: hasActiveFishingSelections ? "visible" : "none",
+          },
+          paint: {
+            "circle-color": colors.warning,
+            "circle-radius": 3.5,
+            "circle-stroke-width": 1.5,
+            "circle-stroke-color": colors.markerOutline,
+            "circle-translate": [18, 7],
+          },
+        });
+      }
+
+      map.setLayoutProperty(
+        CLUSTER_ALLOWED_INDICATOR_LAYER_ID,
+        "visibility",
+        hasActiveFishingSelections ? "visible" : "none",
+      );
+      map.setLayoutProperty(
+        CLUSTER_WARNING_INDICATOR_LAYER_ID,
+        "visibility",
+        hasActiveFishingSelections ? "visible" : "none",
+      );
 
       if (!map.getLayer(UNCLUSTERED_CIRCLE_LAYER_ID)) {
         map.addLayer({
@@ -485,7 +555,7 @@ function MapView({
       map.off("load", initializeLakeRendering);
       unbindLakeEvents();
     };
-  }, [hasSearch, lakeFeatureCollection, lakes, onSelectLake]);
+  }, [hasActiveFishingSelections, hasSearch, lakeFeatureCollection, lakes, onSelectLake]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -509,6 +579,32 @@ function MapView({
       if (map.getLayer(CLUSTER_COUNT_LAYER_ID)) {
         map.setPaintProperty(CLUSTER_COUNT_LAYER_ID, "text-color", colors.text);
         map.setPaintProperty(CLUSTER_COUNT_LAYER_ID, "text-halo-color", colors.labelHalo);
+      }
+
+      if (map.getLayer(CLUSTER_ALLOWED_INDICATOR_LAYER_ID)) {
+        map.setPaintProperty(
+          CLUSTER_ALLOWED_INDICATOR_LAYER_ID,
+          "circle-color",
+          colors.supported,
+        );
+        map.setPaintProperty(
+          CLUSTER_ALLOWED_INDICATOR_LAYER_ID,
+          "circle-stroke-color",
+          colors.markerOutline,
+        );
+      }
+
+      if (map.getLayer(CLUSTER_WARNING_INDICATOR_LAYER_ID)) {
+        map.setPaintProperty(
+          CLUSTER_WARNING_INDICATOR_LAYER_ID,
+          "circle-color",
+          colors.warning,
+        );
+        map.setPaintProperty(
+          CLUSTER_WARNING_INDICATOR_LAYER_ID,
+          "circle-stroke-color",
+          colors.markerOutline,
+        );
       }
 
       if (map.getLayer(UNCLUSTERED_CIRCLE_LAYER_ID)) {
