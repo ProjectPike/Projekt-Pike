@@ -112,7 +112,7 @@ function createPopupContent(featureProperties) {
   return popupContent;
 }
 
-function LakeMap({ lake, onBack, themeId }) {
+function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const popupRef = useRef(null);
@@ -125,7 +125,9 @@ function LakeMap({ lake, onBack, themeId }) {
   );
   const [isLayersOpen, setIsLayersOpen] = useState(false);
   const [mapError, setMapError] = useState(false);
-  const [isDepthMapVisible, setIsDepthMapVisible] = useState(Boolean(depthMap));
+  const [isDepthMapVisible, setIsDepthMapVisible] = useState(
+    Boolean(depthMap) && !depthMapLocked,
+  );
   const [activeLayerIds, setActiveLayerIds] = useState(() =>
     getLakePointLayers(lake.id).map((layer) => layer.id),
   );
@@ -211,7 +213,7 @@ function LakeMap({ lake, onBack, themeId }) {
   useEffect(() => {
     const map = mapRef.current;
 
-    if (!map || !depthMap) {
+    if (!map || !depthMap || depthMapLocked) {
       return undefined;
     }
 
@@ -236,7 +238,7 @@ function LakeMap({ lake, onBack, themeId }) {
           source: DEPTH_MAP_SOURCE_ID,
           filter: ["==", ["get", "kind"], "contour"],
           layout: {
-            visibility: isDepthMapVisible ? "visible" : "none",
+            visibility: isDepthMapVisible && !depthMapLocked ? "visible" : "none",
             "line-cap": "round",
             "line-join": "round",
           },
@@ -276,7 +278,7 @@ function LakeMap({ lake, onBack, themeId }) {
           minzoom: 11.2,
           filter: ["==", ["get", "kind"], "contour"],
           layout: {
-            visibility: isDepthMapVisible ? "visible" : "none",
+            visibility: isDepthMapVisible && !depthMapLocked ? "visible" : "none",
             "symbol-placement": "line",
             // Labels stay upright regardless of contour direction/map pitch;
             // spacing still follows the line so density scales with zoom.
@@ -327,7 +329,7 @@ function LakeMap({ lake, onBack, themeId }) {
     return () => {
       map.off("load", ensureDepthMap);
     };
-  }, [depthMap, isDepthMapVisible]);
+  }, [depthMap, depthMapLocked, isDepthMapVisible]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -337,11 +339,11 @@ function LakeMap({ lake, onBack, themeId }) {
         map.setLayoutProperty(
           layerId,
           "visibility",
-          isDepthMapVisible ? "visible" : "none",
+          isDepthMapVisible && !depthMapLocked ? "visible" : "none",
         );
       }
     });
-  }, [isDepthMapVisible]);
+  }, [depthMapLocked, isDepthMapVisible]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -762,12 +764,13 @@ function LakeMap({ lake, onBack, themeId }) {
               <label className="lake-map-layer-toggle lake-map-depth-toggle">
                 <input
                   type="checkbox"
-                  checked={isDepthMapVisible}
+                  checked={!depthMapLocked && isDepthMapVisible}
+                  disabled={depthMapLocked}
                   onChange={() => setIsDepthMapVisible((current) => !current)}
                 />
                 <span>
-                  Djupkarta ({depthMap.year})
-                  <small>Djup i meter</small>
+                  {depthMapLocked ? "Djupkarta 🔒" : `Djupkarta (${depthMap.year})`}
+                  <small>{depthMapLocked ? "Låst" : "Djup i meter"}</small>
                 </span>
               </label>
             ) : (
@@ -790,12 +793,19 @@ function LakeMap({ lake, onBack, themeId }) {
         </div>
       ) : null}
 
-      {depthMap && !mapError ? (
+      {depthMap && (!mapError || depthMapLocked) ? (
         <button
           type="button"
-          className={`lake-map-depth-control${isDepthMapVisible ? " is-active" : ""}`}
-          aria-pressed={isDepthMapVisible}
-          aria-label={`${isDepthMapVisible ? "Dölj" : "Visa"} djupkarta`}
+          className={`lake-map-depth-control${
+            isDepthMapVisible && !depthMapLocked ? " is-active" : ""
+          }`}
+          aria-pressed={depthMapLocked ? undefined : isDepthMapVisible}
+          aria-label={
+            depthMapLocked
+              ? "Djupkarta låst"
+              : `${isDepthMapVisible ? "Dölj" : "Visa"} djupkarta`
+          }
+          disabled={depthMapLocked}
           onClick={() => setIsDepthMapVisible((current) => !current)}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -803,8 +813,8 @@ function LakeMap({ lake, onBack, themeId }) {
             <path d="M3 12c3-3 6-3 9 0s6 3 9 0" />
             <path d="M3 17c3-3 6-3 9 0s6 3 9 0" />
           </svg>
-          <span>Djupkarta</span>
-          <small>{isDepthMapVisible ? "På" : "Av"}</small>
+          <span>{depthMapLocked ? "Djupkarta 🔒" : "Djupkarta"}</span>
+          {depthMapLocked ? null : <small>{isDepthMapVisible ? "På" : "Av"}</small>}
         </button>
       ) : null}
 
@@ -818,7 +828,7 @@ function LakeMap({ lake, onBack, themeId }) {
           >
             Öppna {lake.name} i Google Maps
           </a>
-          {depthMap ? (
+          {depthMap && !depthMapLocked ? (
             <a href={depthMap.sourceUrl} target="_blank" rel="noreferrer">
               Öppna originalets djupkarta
             </a>
@@ -828,7 +838,7 @@ function LakeMap({ lake, onBack, themeId }) {
         <div ref={mapContainerRef} className="lake-map-view" />
       )}
 
-      {depthMap && isDepthMapVisible && !mapError ? (
+      {depthMap && isDepthMapVisible && !depthMapLocked && !mapError ? (
         <aside className="lake-map-depth-source" title={depthMap.note}>
           <strong>Djup i meter</strong>
           <span>
