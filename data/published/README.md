@@ -17,3 +17,49 @@ inga aktuella tidsstämplar eller härledda fakta läggs till.
 
 Appen läser inte denna katalog. Ingen av de 22 produktionssjöarna migreras eller
 ändras. Appimport, uppdateringar/återkallelse och batchpublicering är senare arbete.
+
+## Compatibility contract mot dagens app
+
+`scripts/publishedLakeCompatibility.mjs` är ett rent, deterministiskt preflight-
+kontrakt. Det skriver ingenting och kopplar inte `data/published/` till appen.
+Kontraktet kräver ett intakt, approved och hashbundet published-dokument innan
+något kandidatfält kan klassas som kompatibelt.
+
+Säkert mappningsbart idag:
+
+- `candidate.id` och `candidate.name`.
+- `region`, `counties` och `location.coordinates` när de uttryckligen finns.
+- Ett enda faktum per uttryckligen känd `details.<section>.<key>` när appen använder
+  en singleton-post. Käll-ID:n expanderas deterministiskt till appens inline-format
+  `{ url, type }`; `note` och datum-/tidsvillkor bevaras utan tolkning.
+- Faktumets `valueType` måste motsvara nyckelns nuvarande apprepresentation;
+  exempelvis artlistor som `string-list` och numeriska gränser som `number`.
+- Saknade appsektioner i `details` skapas som tomma objekt. Tomt betyder inga
+  uppgifter och ger inget tillstånd.
+
+Följande måste levereras uttryckligen av en framtida integration och får inte
+härledas ur kandidatens namn, källordning eller faktatext: `type`,
+`coordinateSource`, `distance`, `verification`, `fishing`, det äldre top-level-
+fältet `practical` och en separat `lakeDepthMapResearch`-post. Även `region`,
+`counties` och `coordinates` måste levereras om kandidaten saknar dem.
+
+Integration blockeras när kandidaten innehåller:
+
+- `depthMap`-fakta; appens djupdata har separat research-, georefererings- och
+  publiceringsmodell.
+- art-, metod- eller platsvillkor. Nuvarande runtime bevarar bara datum och tid i
+  ett vanligt faktum och får inte tyst bredda ett avgränsat påstående.
+- flera varianter av samma singleton-nyckel.
+- arraybaserade fakta som kräver app-only-discriminatorer eller geometri, till
+  exempel `species.sizeLimits`, `species.closedSeasons`, områden, ramper och
+  säkerhetslistor.
+- en faktanyckel som inte uttryckligen känns igen av dagens app.
+- en `valueType` som dagens representation för den specifika nyckeln inte kan
+  bevara utan betydelseförändring.
+
+För att häva blockeringarna krävs en avsiktlig kandidat-schemaversion för
+discriminatorer (`species`/`speciesGroup`/namngiven plats), komplexa värden och
+geometri, plus runtime-stöd för urvalsavgränsningar och flera scoped fakta utan
+att ändra deras innebörd. Djupkartor ska fortsatt ha ett separat kompatibilitets-
+och granskningsflöde. Appens legacy-sammanfattningar bör senare ersättas eller få
+ett explicit byggsteg; de får tills dess inte syntetiseras från published-data.

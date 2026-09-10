@@ -25,6 +25,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Central feature entitlement engine.
 - Pike Data Ingest v1 del 1: fristående kandidatformat och deterministisk validator.
 - Pike Data Ingest v1 del 2: manuell hashbunden review och isolerad publicering.
+- Pike Data Ingest v1 del 3A.0: explicit published-to-app-kompatibilitetskontrakt;
+  ingen appimport eller produktionsändring.
 
 ### Entitlement-arkitektur
 
@@ -237,6 +239,12 @@ kandidatens canonical JSON via SHA-256. Publicering kräver validering och match
 approved-beslut och skriver endast till `data/published/`. Identisk output är en
 no-op; annat befintligt innehåll blockeras. Se `data/reviews/README.md`.
 Ingen appimport, review-UI eller ändring av produktionssjöarna sker.
+
+Del 3A.0 är implementerad som ett rent compatibility-kontrakt i
+`scripts/publishedLakeCompatibility.mjs`. Det klassar säkra kandidatfält,
+appfält som måste levereras explicit och konstruktioner som dagens app inte kan
+bevara. Se `data/published/README.md`. Kontraktet är preflight; appen läser
+fortfarande inte `data/published/`.
 
 Arkitektur:
 
