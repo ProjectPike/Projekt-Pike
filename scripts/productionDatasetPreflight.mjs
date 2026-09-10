@@ -46,6 +46,54 @@ async function importSerializedModule(content) {
   return import(`data:text/javascript;base64,${encoded}#${sha256(content)}`);
 }
 
+export function fingerprintPublishedDocuments(documents) {
+  return sha256(canonicalJson([...documents]
+    .sort((left, right) => compareText(left.file, right.file))
+    .map(({ file, content, readError }) => ({
+      file,
+      ...(content === undefined ? {} : { content }),
+      ...(readError === undefined ? {} : { readError }),
+    }))));
+}
+
+export async function validateSerializedProductionFiles({
+  serializedFiles,
+  lakePointsByLakeId,
+  expectedLakeCount,
+}) {
+  try {
+    const [lakeModule, depthModule] = await Promise.all([
+      importSerializedModule(serializedFiles[productionDatasetFiles.lakes]),
+      importSerializedModule(serializedFiles[productionDatasetFiles.lakeDepthMapResearch]),
+    ]);
+    return validateLakeDataState({
+      lakes: lakeModule.lakes,
+      lakeDepthMapResearch: depthModule.lakeDepthMapResearch,
+      lakePointsByLakeId,
+      expectedLakeCount,
+    });
+  } catch (error) {
+    return {
+      errors: [`serialized production modules: ${error.message}`],
+      stats: null,
+    };
+  }
+}
+
+export function productionProposalFingerprint({
+  productionFingerprints,
+  proposedOutputFingerprints,
+  additionIds,
+  publishedInputFingerprint = null,
+}) {
+  return sha256(canonicalJson({
+    productionFingerprints,
+    proposedOutputFingerprints,
+    additionIds: [...additionIds].sort(compareText),
+    publishedInputFingerprint,
+  }));
+}
+
 function validateNewLakesOnly({
   productionLakes,
   productionDepthMapResearch,
@@ -139,6 +187,7 @@ export async function createProductionDatasetPreflight({
   productionDepthMapResearch,
   lakePointsByLakeId,
   currentFiles,
+  publishedInputFingerprint = null,
 }) {
   const blockers = validateNewLakesOnly({
     productionLakes,
@@ -183,39 +232,29 @@ export async function createProductionDatasetPreflight({
   const proposedOutputFingerprints = Object.fromEntries(
     Object.entries(serializedFiles).map(([path, content]) => [path, sha256(content)]),
   );
-  const validationErrors = [];
-  let validation = null;
-
-  try {
-    const [lakeModule, depthModule] = await Promise.all([
-      importSerializedModule(serializedFiles[productionDatasetFiles.lakes]),
-      importSerializedModule(serializedFiles[productionDatasetFiles.lakeDepthMapResearch]),
-    ]);
-    validation = validateLakeDataState({
-      lakes: lakeModule.lakes,
-      lakeDepthMapResearch: depthModule.lakeDepthMapResearch,
-      lakePointsByLakeId,
-      expectedLakeCount: Object.keys(productionLakes).length + buildResult.additions.length,
-    });
-    validationErrors.push(...validation.errors);
-  } catch (error) {
-    validationErrors.push(`serialized production modules: ${error.message}`);
-  }
+  const validation = await validateSerializedProductionFiles({
+    serializedFiles,
+    lakePointsByLakeId,
+    expectedLakeCount: Object.keys(productionLakes).length + buildResult.additions.length,
+  });
+  const validationErrors = [...validation.errors];
 
   const filesToChange = Object.keys(serializedFiles)
     .filter((path) => productionFingerprints[path] !== proposedOutputFingerprints[path])
     .sort(compareText);
   const additionIds = buildResult.additions.map(({ id }) => id).sort(compareText);
-  const proposalFingerprint = sha256(canonicalJson({
+  const proposalFingerprint = productionProposalFingerprint({
     productionFingerprints,
     proposedOutputFingerprints,
     additionIds,
-  }));
+    publishedInputFingerprint,
+  });
 
   return {
     eligible: blockers.length === 0 && validationErrors.length === 0,
     productionFingerprints,
     proposedOutputFingerprints,
+    publishedInputFingerprint,
     proposalFingerprint,
     filesToChange,
     additions: additionIds,

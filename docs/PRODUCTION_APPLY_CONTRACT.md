@@ -1,8 +1,9 @@
 # Production dataset apply contract
 
-Part 3B.0 is preflight only. It computes replacement bytes and safety metadata in
-memory; it does not write production, staging or backup files. Run
-`npm run preflight:lake-data` to inspect the current proposal.
+Part 3B.0 computes replacement bytes and safety metadata in memory. Run
+`npm run preflight:lake-data` to inspect the current proposal without writes.
+Part 3B.1 implements the separate, explicit `npm run apply:lake-data` command.
+Apply is never triggered by validation, build, review or publish.
 
 ## Eligibility
 
@@ -22,10 +23,14 @@ The serializer preserves all current production bytes and their observable lake
 order, then appends approved new IDs in lexical order. With no additions, proposed
 output is byte-identical to current production and no file would change.
 
-## Future apply sequence
+## Implemented apply sequence
 
-An actual Part 3B apply must consume the preflight result without rebuilding or
-editing it and then:
+The apply command constructs a preflight, recomputes it immediately before write
+preparation and requires the combined proposal fingerprint to remain identical.
+The fingerprint also binds the complete ordered published-input bytes, so changed
+reviewed/published input blocks apply even if production has not changed.
+
+For a proposal with changes, apply then:
 
 1. Re-read both destinations and verify every production fingerprint immediately
    before staging. A mismatch makes the proposal stale and blocks apply.
@@ -41,6 +46,8 @@ editing it and then:
 7. Remove backups only after every final check succeeds.
 
 No force, overwrite-bypass or partial-success mode is permitted.
+If no files would change, apply is a write-free no-op: it creates no stage or
+backup artifacts.
 
 ## Rollback
 
@@ -58,3 +65,16 @@ proposal.
 
 Existing-lake updates and removals require a different reviewed workflow and are
 not eligible under this contract.
+
+### Failure reporting
+
+The command reports one unambiguous state: `APPLY SUCCESS`, `APPLY NO-OP`,
+`APPLY BLOCKED`, `APPLY FAILED — PRODUCTION UNCHANGED`,
+`APPLY FAILED — ROLLBACK VERIFIED`, or
+`CRITICAL — ROLLBACK VERIFICATION FAILED`. A critical result retains deterministic
+backup/staging paths for manual recovery. Normal success and verified rollback
+remove their temporary artifacts.
+
+The first real lake apply should be run as a deliberately observed milestone only
+after its published document, dry-run report and preflight fingerprint have been
+reviewed by a human. Current support remains new lake IDs only.

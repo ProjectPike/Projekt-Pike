@@ -15,6 +15,7 @@
     "validate:candidates": "node scripts/validateCandidateLakes.mjs",
     "build:lake-data": "node scripts/buildLakeDataset.mjs",
     "preflight:lake-data": "node scripts/preflightLakeDataset.mjs",
+    "apply:lake-data": "node scripts/applyLakeDataset.mjs",
     "hash:candidate": "node scripts/publishCandidateLake.mjs hash",
     "publish:candidate": "node scripts/publishCandidateLake.mjs publish",
     "preview": "vite preview"

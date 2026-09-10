@@ -11,18 +11,15 @@ import {
 } from "./buildLakeDataset.mjs";
 import {
   createProductionDatasetPreflight,
+  fingerprintPublishedDocuments,
   formatProductionDatasetPreflight,
   productionDatasetFiles,
 } from "./productionDatasetPreflight.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
-export async function run(args = process.argv.slice(2), output = console.log) {
-  if (args.length !== 0) {
-    throw new Error("Usage: node scripts/preflightLakeDataset.mjs (preflight only; no options)");
-  }
-
-  const publishedDocuments = await loadPublishedDocuments(join(repositoryRoot, "data", "published"));
+export async function createRepositoryPreflight(root = repositoryRoot) {
+  const publishedDocuments = await loadPublishedDocuments(join(root, "data", "published"));
   const buildResult = buildLakeDatasetDryRun({
     productionLakes: lakes,
     productionDepthMapResearch: lakeDepthMapResearch,
@@ -31,7 +28,7 @@ export async function run(args = process.argv.slice(2), output = console.log) {
   const currentFiles = Object.fromEntries(await Promise.all(
     Object.values(productionDatasetFiles).map(async (path) => [
       path,
-      await readFile(join(repositoryRoot, path), "utf8"),
+      await readFile(join(root, path), "utf8"),
     ]),
   ));
   const preflight = await createProductionDatasetPreflight({
@@ -40,7 +37,17 @@ export async function run(args = process.argv.slice(2), output = console.log) {
     productionDepthMapResearch: lakeDepthMapResearch,
     lakePointsByLakeId,
     currentFiles,
+    publishedInputFingerprint: fingerprintPublishedDocuments(publishedDocuments),
   });
+  return preflight;
+}
+
+export async function run(args = process.argv.slice(2), output = console.log) {
+  if (args.length !== 0) {
+    throw new Error("Usage: node scripts/preflightLakeDataset.mjs (preflight only; no options)");
+  }
+
+  const preflight = await createRepositoryPreflight();
   output(formatProductionDatasetPreflight(preflight).trimEnd());
   return preflight;
 }

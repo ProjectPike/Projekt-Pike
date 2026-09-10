@@ -32,7 +32,9 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Pike Data Ingest v1 del 3A: deterministisk dry-run som föreslår kompatibla nya
   appsjöar i minnet; ingen produktionsdata skrivs.
 - Pike Data Ingest v1 del 3B.0: SHA-256-bunden produktionspreflight med komplett
-  outputvalidering och rollback-kontrakt; ingen apply finns ännu.
+  outputvalidering och rollback-kontrakt; preflight skriver aldrig produktion.
+- Pike Data Ingest v1 del 3B.1: explicit, fingerprint-bunden apply för endast nya
+  sjöar med verifierad staging, backup och kompenserande rollback.
 
 ### Entitlement-arkitektur
 
@@ -64,8 +66,9 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
 
 - Pike Data Ingest v1.
 - Kandidatformat och validator är klara i del 1; samla erfarenhet från källbelagda kandidater.
-- Del 2 har manuell review och isolerad publish; del 3A kan nu föreslå nya
-  kompatibla appsjöar, medan apply- och uppdateringsflöden kräver separat avgränsning.
+- Del 2 har manuell review och isolerad publish; del 3A kan föreslå och del 3B.1
+  explicit applicera nya kompatibla appsjöar. Uppdatering av befintliga sjöar
+  kräver fortsatt ett separat granskat flöde.
 
 ### D. Efter datainfrastrukturen
 
@@ -269,12 +272,19 @@ Del 3B.0 är implementerad som en read-only produktionspreflight i
 aktuella produktionsfiler och fullständiga föreslagna ersättningsbytes med SHA-256,
 bevarar befintliga sjöposter och ordning, validerar hela framtida datasetet och
 beskriver staging/backup/rollback för två filer. Preflight är inte apply;
-produktionsskrivning är en separat explicit del 3B. Se
-`docs/PRODUCTION_APPLY_CONTRACT.md`.
+produktionsskrivning sker endast genom den separata explicita del 3B.1-kommandot.
+
+Del 3B.1 är implementerad som `npm run apply:lake-data`. Kommandot räknar om
+preflight, binder även ordered published-input, kontrollerar produktionsfingerprint
+omedelbart före staging och igen före replacement, verifierar båda backuperna och
+de kompletta staged/finala dataseten samt återställer samtliga filer vid fel.
+Apply är aldrig automatisk och stöder endast nya ID:n; befintliga sjöar kan inte
+uppdateras eller tas bort. Första verkliga sjön ska appliceras som en separat,
+mänskligt observerad milstolpe. Se `docs/PRODUCTION_APPLY_CONTRACT.md`.
 
 Arkitektur:
 
-`candidate -> validate -> review -> publish -> compatibility -> dry-run build -> production preflight`
+`candidate -> validate -> review -> publish -> compatibility -> dry-run build -> production preflight -> explicit production apply`
 
 En JSON-kandidat per sjö är utgångspunkten. Konceptuella platser är `data/candidates/`, `data/published/` och scripts som `validateCandidateLakes.mjs`, `importCandidateLakes.mjs` och `buildLakeDataset.mjs`. Exakta sökvägar och filnamn bestäms först efter inspektion av aktuell arkitektur och är inte implementationstvång.
 
