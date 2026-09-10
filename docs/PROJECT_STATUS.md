@@ -29,6 +29,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   ingen appimport eller produktionsändring.
 - Pike Data Ingest v1 del 3A.1: review-bundna, explicit författade appfält;
   research-valid är fortfarande inte samma sak som integrationsredo.
+- Pike Data Ingest v1 del 3A: deterministisk dry-run som föreslår kompatibla nya
+  appsjöar i minnet; ingen produktionsdata skrivs.
 
 ### Entitlement-arkitektur
 
@@ -60,7 +62,8 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
 
 - Pike Data Ingest v1.
 - Kandidatformat och validator är klara i del 1; samla erfarenhet från källbelagda kandidater.
-- Del 2 har manuell review och isolerad publish; appintegration och uppdateringsflöde kräver separat avgränsning.
+- Del 2 har manuell review och isolerad publish; del 3A kan nu föreslå nya
+  kompatibla appsjöar, medan apply- och uppdateringsflöden kräver separat avgränsning.
 
 ### D. Efter datainfrastrukturen
 
@@ -251,11 +254,17 @@ fortfarande inte `data/published/`.
 Del 3A.1 lägger de explicita app-/legacyfälten i kandidatens valfria `app`-block,
 så de valideras och binds av samma review-hash före publish. Researchkandidater
 utan full appmetadata förblir giltiga men blockeras tydligt från integration.
-Published är inte live; Part 3A-buildern är fortfarande ett separat nästa steg.
+
+Del 3A är implementerad som en deterministisk dry-run i
+`scripts/buildLakeDataset.mjs` (`npm run build:lake-data`). Den läser endast
+`data/published/`, återanvänder compatibility-kontraktet och föreslår kompatibla
+nya sjöar samt djupkartestatus i minnet. Befintliga ID:n och alla
+kompatibilitetsfel blockeras. Published är inte live: buildern saknar apply- och
+skrivläge och produktionsdata förblir orörd.
 
 Arkitektur:
 
-`candidate -> validate -> review -> publish -> compatibility`
+`candidate -> validate -> review -> publish -> compatibility -> dry-run build`
 
 En JSON-kandidat per sjö är utgångspunkten. Konceptuella platser är `data/candidates/`, `data/published/` och scripts som `validateCandidateLakes.mjs`, `importCandidateLakes.mjs` och `buildLakeDataset.mjs`. Exakta sökvägar och filnamn bestäms först efter inspektion av aktuell arkitektur och är inte implementationstvång.
 
