@@ -3,7 +3,7 @@
 En UTF-8 JSON-fil per sjö: `<lake-id>.json`. Kör `npm run validate:candidates`
 eller `node scripts/validateCandidateLakes.mjs <katalog>`.
 Tom katalog är tillåten och rapporteras som 0 kandidater. Exemplet ligger separat
-i `scripts/fixtures/candidate-lake.json` och är syntetiskt, inte en ny verklig sjö.
+i `scripts/fixtures/` och är syntetiska, inte nya verkliga sjöar.
 
 Flödet är **candidate -> validate -> review -> publish**, där publiceringen är
 isolerad från appen. Se `../reviews/README.md` för det manuella arbetsflödet.
@@ -17,12 +17,32 @@ read-only; ingen produktionsdata ändras.
 
 - Obligatoriskt: `schemaVersion: 1`, `id` (gemener/siffror/bindestreck), `name`,
   `sources` (array), `details` (array). Tomma arrayer betyder inga insamlade uppgifter.
-- Valfritt: `region`, `counties` och `location`.
+- Valfritt: `region`, `counties`, `location` och det separata appblocket `app`.
 - `location`: `coordinates: [longitude, latitude]`, `sources` (käll-ID:n) och
   `verifiedAt: YYYY-MM-DD`. Utelämna hela location om koordinater saknas.
 - En källa har `id`, `type`, `title` (källa/organisation), HTTP(S)-`url` och
   `checkedAt: YYYY-MM-DD`. Källtyperna är Pikes befintliga typer.
   Datum anger forskarens kontroll, inte att webbplatsen är juridiskt auktoritativ.
+
+## Explicit appintegration
+
+`app` är separat från researchfakta och ingår i exakt samma canonical candidate-
+hash som resten av kandidaten. Ändras ett appvärde efter review blir det gamla
+godkännandet ogiltigt. Avsaknad av `app`, eller ett ofullständigt block, är tillåtet
+för pågående research men betyder att kandidaten inte är redo för appintegration.
+Inga värden fylls i eller härleds av validatorn.
+
+Endast följande nycklar är tillåtna: `type`, `coordinateSource`, `distance`,
+`verification`, `fishing`, `practical` och `lakeDepthMapResearch`. För en
+integrationsredo kandidat kräver compatibility-kontraktet samtliga. Blocket
+bevarar dagens minsta appform: uttrycklig typ och koordinatkälla, avstånd med
+visningstext, verifieringsstatus med URL-källor, tre fishing-sammanfattningar,
+parking samt uttryckligen tomma legacy-listor för ramps/piers/trails.
+
+`lakeDepthMapResearch` stöder här endast en explicit, kontrollerad `not-found`-
+post med datum, provider, SMHI-id eller null, tom maps-lista och konkret note.
+Tillgänglig eller publicerad djupdata har fler granskningsgrindar och kan inte
+läggas i detta block. Okända appnycklar och godtyckliga produktionsobjekt avvisas.
 
 Varje details-post har:
 

@@ -108,6 +108,7 @@ export const publishedToAppCompatibilityContract = Object.freeze({
   safeCandidateFields: ["id", "name", "region", "counties", "location.coordinates"],
   appOnlyFields,
   appDetailSections,
+  appIntegrationFields: appOnlyFields,
   singletonFactKeys: Object.fromEntries(
     Object.entries(singletonFactKeys).map(([section, keys]) => [section, [...keys]]),
   ),
@@ -193,6 +194,11 @@ export function assessPublishedLakeCompatibility(publication) {
     if (candidate.location) {
       safeMappings.push({ from: "candidate.location.coordinates", to: "coordinates" });
     }
+    for (const field of appOnlyFields) {
+      if (Object.hasOwn(candidate.app ?? {}, field)) {
+        safeMappings.push({ from: `candidate.app.${field}`, to: field });
+      }
+    }
 
     for (const [index, fact] of (candidate.details ?? []).entries()) {
       const path = `$.candidate.details[${index}]`;
@@ -240,10 +246,18 @@ export function assessPublishedLakeCompatibility(publication) {
     }
   }
 
-  const requiredExplicitFields = [...appOnlyFields];
+  const requiredExplicitFields = appOnlyFields.filter(
+    (field) => !Object.hasOwn(candidate?.app ?? {}, field),
+  );
   if (!candidate?.region) requiredExplicitFields.push("region");
   if (!candidate?.counties) requiredExplicitFields.push("counties");
   if (!candidate?.location) requiredExplicitFields.push("coordinates");
+  for (const field of requiredExplicitFields) {
+    const path = ["region", "counties", "coordinates"].includes(field)
+      ? `$.candidate.${field === "coordinates" ? "location" : field}`
+      : `$.candidate.app.${field}`;
+    blockers.push(blocker("missing-explicit-field", path, `${field} must be explicitly reviewed for app integration`));
+  }
 
   return {
     compatible: blockers.length === 0,
@@ -294,9 +308,16 @@ export function mapPublishedLakeCompatibleFields(publication) {
   return {
     id: candidate.id,
     name: candidate.name,
-    ...(candidate.region ? { region: candidate.region } : {}),
-    ...(candidate.counties ? { counties: [...candidate.counties] } : {}),
-    ...(candidate.location ? { coordinates: [...candidate.location.coordinates] } : {}),
+    region: candidate.region,
+    counties: [...candidate.counties],
+    coordinates: [...candidate.location.coordinates],
+    type: candidate.app.type,
+    coordinateSource: candidate.app.coordinateSource,
+    distance: structuredClone(candidate.app.distance),
+    verification: structuredClone(candidate.app.verification),
+    fishing: structuredClone(candidate.app.fishing),
+    practical: structuredClone(candidate.app.practical),
+    lakeDepthMapResearch: structuredClone(candidate.app.lakeDepthMapResearch),
     details,
   };
 }

@@ -37,6 +37,9 @@ fält, ändrade källor och omordnade arrayer kräver ny granskning. Ingen jurid
 eller semantisk normalisering görs. JSON.parse används som i del 1; duplicerade
 JSON-fältnamn får inte användas (parsern behåller sista värdet).
 
+Kandidatens valfria `app`-block ligger inne i samma hashdomän. Appmetadata får
+alltså inte läggas till eller ändras efter approval utan en ny mänsklig review.
+
 Granskarfältet är en mänsklig deklaration, inte verifierad identitet eller digital
 signatur. Git-historik bevarar ändringar av review-filen. Behörigheter, revokering
 och uppdatering av redan publicerat innehåll kräver ett senare separat flöde.

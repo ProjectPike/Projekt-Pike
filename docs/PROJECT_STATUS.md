@@ -27,6 +27,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Pike Data Ingest v1 del 2: manuell hashbunden review och isolerad publicering.
 - Pike Data Ingest v1 del 3A.0: explicit published-to-app-kompatibilitetskontrakt;
   ingen appimport eller produktionsändring.
+- Pike Data Ingest v1 del 3A.1: review-bundna, explicit författade appfält;
+  research-valid är fortfarande inte samma sak som integrationsredo.
 
 ### Entitlement-arkitektur
 
@@ -246,9 +248,14 @@ appfält som måste levereras explicit och konstruktioner som dagens app inte ka
 bevara. Se `data/published/README.md`. Kontraktet är preflight; appen läser
 fortfarande inte `data/published/`.
 
+Del 3A.1 lägger de explicita app-/legacyfälten i kandidatens valfria `app`-block,
+så de valideras och binds av samma review-hash före publish. Researchkandidater
+utan full appmetadata förblir giltiga men blockeras tydligt från integration.
+Published är inte live; Part 3A-buildern är fortfarande ett separat nästa steg.
+
 Arkitektur:
 
-`candidate -> validate -> review -> publish`
+`candidate -> validate -> review -> publish -> compatibility`
 
 En JSON-kandidat per sjö är utgångspunkten. Konceptuella platser är `data/candidates/`, `data/published/` och scripts som `validateCandidateLakes.mjs`, `importCandidateLakes.mjs` och `buildLakeDataset.mjs`. Exakta sökvägar och filnamn bestäms först efter inspektion av aktuell arkitektur och är inte implementationstvång.
 

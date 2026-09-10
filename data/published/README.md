@@ -29,6 +29,9 @@ Säkert mappningsbart idag:
 
 - `candidate.id` och `candidate.name`.
 - `region`, `counties` och `location.coordinates` när de uttryckligen finns.
+- De sju strikt validerade fälten i `candidate.app`, när hela integrationsblocket
+  finns: `type`, `coordinateSource`, `distance`, `verification`, `fishing`,
+  `practical` och `lakeDepthMapResearch`.
 - Ett enda faktum per uttryckligen känd `details.<section>.<key>` när appen använder
   en singleton-post. Käll-ID:n expanderas deterministiskt till appens inline-format
   `{ url, type }`; `note` och datum-/tidsvillkor bevaras utan tolkning.
@@ -37,11 +40,11 @@ Säkert mappningsbart idag:
 - Saknade appsektioner i `details` skapas som tomma objekt. Tomt betyder inga
   uppgifter och ger inget tillstånd.
 
-Följande måste levereras uttryckligen av en framtida integration och får inte
-härledas ur kandidatens namn, källordning eller faktatext: `type`,
-`coordinateSource`, `distance`, `verification`, `fishing`, det äldre top-level-
-fältet `practical` och en separat `lakeDepthMapResearch`-post. Även `region`,
-`counties` och `coordinates` måste levereras om kandidaten saknar dem.
+Fälten ovan måste vara uttryckligen författade i kandidatens review-bundna
+`app`-block och får inte härledas ur namn, källordning eller faktatext. Även
+`region`, `counties` och `coordinates` måste finnas. Kandidatvalidering betyder
+inte integrationsredo: compatibility rapporterar varje saknat explicitfält med
+`missing-explicit-field`.
 
 Integration blockeras när kandidaten innehåller:
 
@@ -61,5 +64,8 @@ För att häva blockeringarna krävs en avsiktlig kandidat-schemaversion för
 discriminatorer (`species`/`speciesGroup`/namngiven plats), komplexa värden och
 geometri, plus runtime-stöd för urvalsavgränsningar och flera scoped fakta utan
 att ändra deras innebörd. Djupkartor ska fortsatt ha ett separat kompatibilitets-
-och granskningsflöde. Appens legacy-sammanfattningar bör senare ersättas eller få
-ett explicit byggsteg; de får tills dess inte syntetiseras från published-data.
+och granskningsflöde. Appens legacy-sammanfattningar är tills vidare explicit
+review-bunden appmetadata och får inte syntetiseras från domain-fakta.
+
+**Published är fortfarande inte live.** Kontraktet kan nu godkänna en fullständig
+minimal representation, men ingen builder eller produktionskoppling finns ännu.

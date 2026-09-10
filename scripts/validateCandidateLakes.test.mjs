@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { validateCandidate, validateCandidateDocuments } from "./validateCandidateLakes.mjs";
 
 const minimal = () => JSON.parse(readFileSync(new URL("./fixtures/candidate-lake.json", import.meta.url), "utf8"));
+const integrationReady = () => JSON.parse(readFileSync(new URL("./fixtures/candidate-app.json", import.meta.url), "utf8"));
 const sourced = () => {
   const candidate = minimal();
   candidate.sources = [{ id: "source", type: "other", title: "Synthetic fixture", url: "https://example.org/rules", checkedAt: "2024-02-29" }];
@@ -15,7 +16,7 @@ const sourced = () => {
 };
 
 test("minimal, sourced and recommendation candidates pass without mutation", () => {
-  for (const candidate of [minimal(), sourced()]) {
+  for (const candidate of [minimal(), sourced(), integrationReady()]) {
     const before = JSON.stringify(candidate);
     assert.deepEqual(validateCandidate(candidate), []);
     assert.equal(JSON.stringify(candidate), before);
@@ -24,6 +25,37 @@ test("minimal, sourced and recommendation candidates pass without mutation", () 
   candidate.details[0].ruleType = "recommendation";
   assert.deepEqual(validateCandidate(candidate), []);
   assert.equal(candidate.details[0].ruleType, "recommendation");
+});
+
+test("research candidates need no app block and app fields are never defaulted", () => {
+  const candidate = minimal();
+  assert.deepEqual(validateCandidate(candidate), []);
+  assert.equal(Object.hasOwn(candidate, "app"), false);
+  candidate.app = {};
+  assert.deepEqual(validateCandidate(candidate), []);
+  assert.deepEqual(candidate.app, {});
+});
+
+test("app integration rejects unknown keys and invalid field shapes", () => {
+  const unknown = integrationReady();
+  unknown.app.extra = true;
+  assert.ok(validateCandidate(unknown).some((error) => error.includes("app.extra: unsupported field")));
+
+  const cases = [
+    ["type", (candidate) => { candidate.app.type = "lake"; }],
+    ["coordinateSource", (candidate) => { candidate.app.coordinateSource = "javascript:bad"; }],
+    ["distance", (candidate) => { candidate.app.distance = "near"; }],
+    ["verification", (candidate) => { candidate.app.verification.status = "complete"; }],
+    ["fishing", (candidate) => { delete candidate.app.fishing.permit; }],
+    ["practical", (candidate) => { candidate.app.practical.ramps = ["invented"]; }],
+    ["lakeDepthMapResearch", (candidate) => { candidate.app.lakeDepthMapResearch.status = "available"; }],
+  ];
+
+  for (const [field, mutate] of cases) {
+    const candidate = integrationReady();
+    mutate(candidate);
+    assert.ok(validateCandidate(candidate).some((error) => error.includes(`app.${field}`)), field);
+  }
 });
 
 test("every required root field and wrong containers fail", () => {
@@ -126,7 +158,7 @@ test("CLI succeeds on fixture and fails on unreadable input directory", () => {
   const script = fileURLToPath(new URL("./validateCandidateLakes.mjs", import.meta.url));
   const good = spawnSync(process.execPath, [script, fileURLToPath(new URL("./fixtures/", import.meta.url))], { encoding: "utf8" });
   assert.equal(good.status, 0, good.stderr);
-  assert.match(good.stdout, /1 candidate/);
+  assert.match(good.stdout, /2 candidate/);
   const bad = spawnSync(process.execPath, [script, script], { encoding: "utf8" });
   assert.equal(bad.status, 1);
 });

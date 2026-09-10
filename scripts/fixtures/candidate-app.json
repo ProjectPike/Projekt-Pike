@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "id": "synthetic-app-lake",
+  "name": "Synthetic app lake — not for publication",
+  "region": "Småland",
+  "counties": [
+    "Jönköping"
+  ],
+  "sources": [
+    {
+      "id": "synthetic-source",
+      "type": "authority",
+      "title": "Synthetic authority",
+      "url": "https://example.org/rules",
+      "checkedAt": "2026-09-10"
+    }
+  ],
+  "location": {
+    "coordinates": [
+      14,
+      57
+    ],
+    "sources": [
+      "synthetic-source"
+    ],
+    "verifiedAt": "2026-09-10"
+  },
+  "details": [
+    {
+      "section": "methods",
+      "key": "spin",
+      "valueType": "state",
+      "value": "unknown",
+      "status": "unknown",
+      "ruleType": null,
+      "sources": [],
+      "verifiedAt": null
+    }
+  ],
+  "app": {
+    "type": "sjö",
+    "coordinateSource": "https://example.org/coordinates",
+    "distance": {
+      "kilometers": 12.5,
+      "travelTime": "18 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-09-10",
+      "sources": [
+        "https://example.org/rules"
+      ]
+    },
+    "fishing": {
+      "permit": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
+    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    },
+    "lakeDepthMapResearch": {
+      "status": "not-found",
+      "checkedAt": "2026-09-10",
+      "provider": "Synthetic depth registry",
+      "smhiLakeId": null,
+      "maps": [],
+      "note": "No matching depth map was found in the synthetic review."
+    }
+  }
+}

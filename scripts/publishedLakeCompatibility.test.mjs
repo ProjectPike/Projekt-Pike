@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { candidateHash } from "./publishCandidateLake.mjs";
 import {
   assessPublishedLakeCompatibility,
   mapPublishedLakeCompatibleFields,
 } from "./publishedLakeCompatibility.mjs";
 
-function publication(details = []) {
+function appIntegration() {
+  return JSON.parse(readFileSync(new URL("./fixtures/candidate-app.json", import.meta.url), "utf8")).app;
+}
+
+function publication(details = [], includeApp = true) {
   const candidate = {
     schemaVersion: 1,
     id: "synthetic-lake",
@@ -26,6 +31,7 @@ function publication(details = []) {
       verifiedAt: "2026-09-10",
     },
     details,
+    ...(includeApp ? { app: appIntegration() } : {}),
   };
   return {
     schemaVersion: 1,
@@ -68,10 +74,7 @@ test("maps only compatible candidate fields and expands source references", () =
 
   const assessment = assessPublishedLakeCompatibility(input);
   assert.equal(assessment.compatible, true);
-  assert.deepEqual(assessment.requiredExplicitFields, [
-    "type", "coordinateSource", "distance", "verification", "fishing",
-    "practical", "lakeDepthMapResearch",
-  ]);
+  assert.deepEqual(assessment.requiredExplicitFields, []);
 
   const mapped = mapPublishedLakeCompatibleFields(input);
   assert.deepEqual(mapped.coordinates, [14, 57]);
@@ -85,18 +88,45 @@ test("maps only compatible candidate fields and expands source references", () =
     timeTo: null,
   });
   assert.deepEqual(mapped.details.access, {});
+  assert.deepEqual(mapped.fishing, input.candidate.app.fishing);
+  assert.deepEqual(mapped.practical, input.candidate.app.practical);
+  assert.deepEqual(mapped.lakeDepthMapResearch, input.candidate.app.lakeDepthMapResearch);
 });
 
 test("reports app fields that an incomplete candidate must explicitly supply", () => {
-  const input = publication();
+  const input = publication([], false);
   delete input.candidate.region;
   delete input.candidate.counties;
   delete input.candidate.location;
   input.review.candidateHash = candidateHash(input.candidate);
 
+  const result = assessPublishedLakeCompatibility(input);
+  assert.equal(result.compatible, false);
+  assert.deepEqual(result.requiredExplicitFields, [
+    "type", "coordinateSource", "distance", "verification", "fishing",
+    "practical", "lakeDepthMapResearch", "region", "counties", "coordinates",
+  ]);
+  assert.equal(
+    result.blockers.filter(({ code }) => code === "missing-explicit-field").length,
+    10,
+  );
+});
+
+test("reports one missing reviewed integration field exactly", () => {
+  const input = publication();
+  delete input.candidate.app.fishing;
+  input.review.candidateHash = candidateHash(input.candidate);
+  const result = assessPublishedLakeCompatibility(input);
+
+  assert.equal(result.compatible, false);
+  assert.deepEqual(result.requiredExplicitFields, ["fishing"]);
   assert.deepEqual(
-    assessPublishedLakeCompatibility(input).requiredExplicitFields.slice(-3),
-    ["region", "counties", "coordinates"],
+    result.blockers.find(({ code }) => code === "missing-explicit-field"),
+    {
+      code: "missing-explicit-field",
+      path: "$.candidate.app.fishing",
+      message: "fishing must be explicitly reviewed for app integration",
+    },
   );
 });
 
@@ -146,4 +176,26 @@ test("blocks candidate value types that change current app fact semantics", () =
 
   assert.equal(result.compatible, false);
   assert.ok(result.blockers.some(({ code }) => code === "unsupported-value-type"));
+});
+
+test("preserves unknown domain semantics without deriving app permissions", () => {
+  const input = publication([
+    fact("methods", "spin", {
+      value: "unknown",
+      status: "unknown",
+      ruleType: null,
+      sources: [],
+      verifiedAt: null,
+    }),
+  ]);
+
+  assert.deepEqual(mapPublishedLakeCompatibleFields(input).details.methods.spin, {
+    value: "unknown",
+    status: "unknown",
+    ruleType: null,
+    verifiedAt: null,
+    sources: [],
+    note: null,
+    conditions: null,
+  });
 });

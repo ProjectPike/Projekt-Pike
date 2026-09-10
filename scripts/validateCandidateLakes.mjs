@@ -33,7 +33,7 @@ export function validateCandidate(candidate) {
     for (const key of Object.keys(v)) if (![...required, ...optional].includes(key)) fail(`${path}.${key}`, "unsupported field");
     return true;
   };
-  if (!shape(candidate, "$", ["schemaVersion", "id", "name", "sources", "details"], ["region", "counties", "location"])) return errors;
+  if (!shape(candidate, "$", ["schemaVersion", "id", "name", "sources", "details"], ["region", "counties", "location", "app"])) return errors;
   if (candidate.schemaVersion !== 1) fail("schemaVersion", "expected 1");
   if (!id(candidate.id)) fail("id", "expected lowercase slug");
   if (!text(candidate.name)) fail("name", "expected non-empty name");
@@ -72,6 +72,91 @@ export function validateCandidate(candidate) {
       || Math.abs(coordinates[0]) > 180 || Math.abs(coordinates[1]) > 90) fail("location.coordinates", "expected [longitude, latitude] within geographic bounds");
     refs(sources, "location.sources", true);
     if (!date(verifiedAt)) fail("location.verifiedAt", "expected real YYYY-MM-DD date");
+  }
+  const appFields = [
+    "type",
+    "coordinateSource",
+    "distance",
+    "verification",
+    "fishing",
+    "practical",
+    "lakeDepthMapResearch",
+  ];
+  if ("app" in candidate && shape(candidate.app, "app", [], appFields)) {
+    const app = candidate.app;
+    if ("type" in app && !["sjö", "damm"].includes(app.type)) fail("app.type", "expected sjö or damm");
+    if ("coordinateSource" in app && !url(app.coordinateSource)) fail("app.coordinateSource", "expected HTTP(S) URL");
+
+    if ("distance" in app && shape(app.distance, "app.distance", ["kilometers", "travelTime"])) {
+      if (!Number.isFinite(app.distance.kilometers) || app.distance.kilometers < 0) {
+        fail("app.distance.kilometers", "expected non-negative number");
+      }
+      if (!text(app.distance.travelTime)) fail("app.distance.travelTime", "expected non-empty text");
+    }
+
+    if ("verification" in app && shape(app.verification, "app.verification", ["status", "updatedAt", "sources"])) {
+      const { status, updatedAt, sources } = app.verification;
+      if (!["verified", "partially-verified", "unverified"].includes(status)) {
+        fail("app.verification.status", "unsupported verification status");
+      }
+      if (!Array.isArray(sources) || new Set(sources).size !== sources.length || !sources.every(url)) {
+        fail("app.verification.sources", "expected unique HTTP(S) URL array");
+      }
+      if (status === "unverified") {
+        if (updatedAt !== null || !Array.isArray(sources) || sources.length !== 0) {
+          fail("app.verification", "unverified requires updatedAt null and no asserted sources");
+        }
+      } else {
+        if (!date(updatedAt)) fail("app.verification.updatedAt", "verified status requires real YYYY-MM-DD date");
+        if (!Array.isArray(sources) || sources.length === 0) fail("app.verification.sources", "verified status requires source URLs");
+      }
+    }
+
+    const summary = (value, path, statuses) => {
+      if (!shape(value, path, ["status", "label"])) return;
+      if (!statuses.includes(value.status)) fail(`${path}.status`, "unsupported summary status");
+      if (!text(value.label)) fail(`${path}.label`, "expected non-empty label");
+    };
+    if ("fishing" in app && shape(app.fishing, "app.fishing", ["permit", "rules", "protectedAreas"])) {
+      const statuses = ["unknown", "unverified", "checking", "verified", "restricted", "prohibited"];
+      summary(app.fishing.permit, "app.fishing.permit", statuses);
+      summary(app.fishing.rules, "app.fishing.rules", statuses);
+      summary(app.fishing.protectedAreas, "app.fishing.protectedAreas", statuses);
+    }
+
+    if ("practical" in app && shape(app.practical, "app.practical", ["parking", "ramps", "piers", "trails"])) {
+      if (shape(app.practical.parking, "app.practical.parking", ["status", "label", "locations"])) {
+        summary(
+          { status: app.practical.parking.status, label: app.practical.parking.label },
+          "app.practical.parking",
+          ["unknown", "verified"],
+        );
+        if (!Array.isArray(app.practical.parking.locations) || app.practical.parking.locations.length !== 0) {
+          fail("app.practical.parking.locations", "only an explicitly empty legacy location list is supported");
+        }
+      }
+      for (const key of ["ramps", "piers", "trails"]) {
+        if (!Array.isArray(app.practical[key]) || app.practical[key].length !== 0) {
+          fail(`app.practical.${key}`, "only an explicitly empty legacy list is supported");
+        }
+      }
+    }
+
+    if ("lakeDepthMapResearch" in app && shape(app.lakeDepthMapResearch, "app.lakeDepthMapResearch", [
+      "status", "checkedAt", "provider", "smhiLakeId", "maps", "note",
+    ])) {
+      const research = app.lakeDepthMapResearch;
+      if (research.status !== "not-found") fail("app.lakeDepthMapResearch.status", "only explicit not-found research is supported");
+      if (!date(research.checkedAt)) fail("app.lakeDepthMapResearch.checkedAt", "expected real YYYY-MM-DD date");
+      if (!text(research.provider)) fail("app.lakeDepthMapResearch.provider", "expected non-empty provider");
+      if (research.smhiLakeId !== null && (typeof research.smhiLakeId !== "string" || !/^\d{6}-\d{6}$/.test(research.smhiLakeId))) {
+        fail("app.lakeDepthMapResearch.smhiLakeId", "expected SMHI lake ID or null");
+      }
+      if (!Array.isArray(research.maps) || research.maps.length !== 0) {
+        fail("app.lakeDepthMapResearch.maps", "not-found requires an explicitly empty map list");
+      }
+      if (!text(research.note)) fail("app.lakeDepthMapResearch.note", "expected non-empty research note");
+    }
   }
   const seen = new Set();
   if (!Array.isArray(candidate.details)) fail("details", "expected fact array");

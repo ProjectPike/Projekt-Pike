@@ -80,6 +80,39 @@ test("hash ignores formatting/key order, but preserves arrays and exact string v
   assert.notEqual(candidateHash("text"), candidateHash("text "));
   assert.notEqual(candidateHash({ a: null }), candidateHash({}));
   assert.equal(canonicalJson(JSON.parse('{"__proto__":{"a":1}}')), '{"__proto__":{"a":1}}');
+  assert.equal(candidateHash({ app: { type: "sjö", distance: 12 } }), candidateHash({ app: { distance: 12, type: "sjö" } }));
+});
+
+test("published app integration is preserved and any later change invalidates approval", async (t) => {
+  const repositoryRoot = await mkdtemp(join(tmpdir(), "pike-publish-app-test-"));
+  t.after(() => rm(repositoryRoot, { recursive: true, force: true }));
+  for (const area of ["candidates", "reviews", "published"]) {
+    await mkdir(join(repositoryRoot, "data", area), { recursive: true });
+  }
+  const candidate = JSON.parse(await readFile(new URL("./fixtures/candidate-app.json", import.meta.url), "utf8"));
+  const review = {
+    schemaVersion: 1,
+    candidateId: candidate.id,
+    decision: "approved",
+    reviewer: "Test reviewer",
+    reviewedAt: "2026-09-10",
+    hashStrategy: "sha256-canonical-json-v1",
+    candidateHash: candidateHash(candidate),
+  };
+  const path = (area) => join(repositoryRoot, "data", area, `${candidate.id}.json`);
+  await writeFile(path("candidates"), JSON.stringify(candidate));
+  await writeFile(path("reviews"), JSON.stringify(review));
+
+  assert.equal(await publishCandidate(candidate.id, repositoryRoot), "published");
+  const published = JSON.parse(await readFile(path("published"), "utf8"));
+  assert.deepEqual(published.candidate.app, candidate.app);
+
+  candidate.app.distance.travelTime = "19 min";
+  await writeFile(path("candidates"), JSON.stringify(candidate));
+  await assert.rejects(
+    publishCandidate(candidate.id, repositoryRoot),
+    /changed after approval/,
+  );
 });
 
 test("all review fields and real date are required, unsupported fields rejected", async (t) => {
