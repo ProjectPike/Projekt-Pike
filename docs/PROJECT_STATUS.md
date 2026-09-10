@@ -31,6 +31,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   research-valid är fortfarande inte samma sak som integrationsredo.
 - Pike Data Ingest v1 del 3A: deterministisk dry-run som föreslår kompatibla nya
   appsjöar i minnet; ingen produktionsdata skrivs.
+- Pike Data Ingest v1 del 3B.0: SHA-256-bunden produktionspreflight med komplett
+  outputvalidering och rollback-kontrakt; ingen apply finns ännu.
 
 ### Entitlement-arkitektur
 
@@ -262,9 +264,17 @@ nya sjöar samt djupkartestatus i minnet. Befintliga ID:n och alla
 kompatibilitetsfel blockeras. Published är inte live: buildern saknar apply- och
 skrivläge och produktionsdata förblir orörd.
 
+Del 3B.0 är implementerad som en read-only produktionspreflight i
+`scripts/preflightLakeDataset.mjs` (`npm run preflight:lake-data`). Den binder
+aktuella produktionsfiler och fullständiga föreslagna ersättningsbytes med SHA-256,
+bevarar befintliga sjöposter och ordning, validerar hela framtida datasetet och
+beskriver staging/backup/rollback för två filer. Preflight är inte apply;
+produktionsskrivning är en separat explicit del 3B. Se
+`docs/PRODUCTION_APPLY_CONTRACT.md`.
+
 Arkitektur:
 
-`candidate -> validate -> review -> publish -> compatibility -> dry-run build`
+`candidate -> validate -> review -> publish -> compatibility -> dry-run build -> production preflight`
 
 En JSON-kandidat per sjö är utgångspunkten. Konceptuella platser är `data/candidates/`, `data/published/` och scripts som `validateCandidateLakes.mjs`, `importCandidateLakes.mjs` och `buildLakeDataset.mjs`. Exakta sökvägar och filnamn bestäms först efter inspektion av aktuell arkitektur och är inte implementationstvång.
 
