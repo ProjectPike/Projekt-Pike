@@ -10,6 +10,22 @@ import {
 } from "../src/data/lakes.js";
 
 const sections = ["access", "methods", "species", "watercraft", "boat", "practical", "geography", "safety", "depthMap"];
+export const numericMethodFactKeys = Object.freeze([
+  "dragRowingMaxAnglers",
+  "familyPermitMaxLinesPerAngler",
+  "iceMaxAngeldonPerAngelkort",
+  "iceMaxAngeldonPerAngler",
+  "iceMaxAngeldonPerPermit",
+  "iceMaxBaitsPerAngler",
+  "iceMaxLuresPerPerson",
+  "maxFishingDepthMeters",
+  "maxHooksPerPerson",
+  "maxLinesPerFishingCard",
+  "maxLinesPerFishingPermit",
+  "maxRodsPerPermit",
+  "maxRodsPerPerson",
+  "openWaterMaxLuresPerPerson",
+]);
 const object = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
 const text = (v) => typeof v === "string" && v.trim().length > 0;
 const id = (v) => typeof v === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v);
@@ -184,7 +200,13 @@ export function validateCandidate(candidate) {
       if (fact.status === "verified" ? !date(fact.verifiedAt) : fact.verifiedAt !== null) fail(`${path}.verifiedAt`, "verified requires real YYYY-MM-DD; otherwise null");
       if (fact.ruleType === "unknown") fail(`${path}.ruleType`, "unclassified claim must remain unknown");
     }
-    if (["methods", "watercraft"].includes(fact.section) && fact.valueType !== "state") fail(`${path}.valueType`, "permission sections require state values");
+    if (fact.section === "methods") {
+      const expectedValueType = numericMethodFactKeys.includes(fact.key) ? "number" : "state";
+      if (fact.valueType !== expectedValueType) {
+        fail(`${path}.valueType`, `methods.${fact.key} requires ${expectedValueType}`);
+      }
+    }
+    if (fact.section === "watercraft" && fact.valueType !== "state") fail(`${path}.valueType`, "watercraft permissions require state values");
     if (fact.valueType === "state" && fact.status !== "unknown" && fact.ruleType === null) fail(`${path}.ruleType`, "state claims require explicit rule/recommendation/advisory distinction");
     refs(fact.sources, `${path}.sources`, fact.status !== "unknown");
     if (fact.conditions !== undefined && fact.conditions !== null

@@ -93,6 +93,32 @@ test("maps only compatible candidate fields and expands source references", () =
   assert.deepEqual(mapped.lakeDepthMapResearch, input.candidate.app.lakeDepthMapResearch);
 });
 
+test("maps generic rod, chumming and floating-craft facts without semantic aliases", () => {
+  const input = publication([
+    fact("methods", "maxRodsPerPerson", { valueType: "number", value: 2 }),
+    fact("methods", "chumming"),
+    fact("watercraft", "floatingCraft", { value: "prohibited" }),
+  ]);
+
+  const assessment = assessPublishedLakeCompatibility(input);
+  assert.equal(assessment.compatible, true);
+
+  const mapped = mapPublishedLakeCompatibleFields(input);
+  assert.equal(mapped.details.methods.maxRodsPerPerson.value, 2);
+  assert.equal(mapped.details.methods.maxRodsPerPerson.valueType, undefined);
+  assert.equal(Object.hasOwn(mapped.details.methods, "maxRodsPerPermit"), false);
+  assert.equal(mapped.details.methods.chumming.value, "allowed");
+  assert.equal(mapped.details.watercraft.floatingCraft.value, "prohibited");
+  for (const key of ["boat", "kayak", "floatTube"]) {
+    assert.equal(Object.hasOwn(mapped.details.watercraft, key), false, key);
+  }
+
+  const prohibitedChumming = mapPublishedLakeCompatibleFields(publication([
+    fact("methods", "chumming", { value: "prohibited" }),
+  ]));
+  assert.equal(prohibitedChumming.details.methods.chumming.value, "prohibited");
+});
+
 test("reports app fields that an incomplete candidate must explicitly supply", () => {
   const input = publication([], false);
   delete input.candidate.region;
@@ -136,6 +162,8 @@ test("blocks constructions the current app cannot preserve", () => {
     [fact("species", "sizeLimits", { valueType: "number", value: 50 }), "unsupported-array-fact"],
     [fact("methods", "futureMethod"), "unsupported-fact-key"],
     [fact("methods", "spin", { conditions: { species: ["Gädda"] } }), "unsupported-selection-condition"],
+    [fact("methods", "spin", { conditions: { method: ["Trolling"] } }), "unsupported-selection-condition"],
+    [fact("methods", "spin", { conditions: { place: ["Båt"] } }), "unsupported-selection-condition"],
   ];
 
   for (const [candidateFact, code] of cases) {

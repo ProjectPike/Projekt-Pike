@@ -154,6 +154,41 @@ test("typed factual values and explicit unknown placeholders are validated", () 
   assert.ok(validateCandidate(candidate).some((e) => e.includes("unsupported field")));
 });
 
+test("method fact types use an explicit state or numeric contract", () => {
+  for (const key of ["maxRodsPerPerson", "maxRodsPerPermit", "maxLinesPerFishingPermit"]) {
+    const candidate = sourced();
+    Object.assign(candidate.details[0], { key, valueType: "number", value: 2 });
+    assert.deepEqual(validateCandidate(candidate), [], key);
+  }
+
+  for (const value of ["allowed", "prohibited"]) {
+    const candidate = sourced();
+    Object.assign(candidate.details[0], { key: "chumming", value });
+    assert.deepEqual(validateCandidate(candidate), [], `chumming ${value}`);
+  }
+
+  const floatingCraft = sourced();
+  Object.assign(floatingCraft.details[0], {
+    section: "watercraft",
+    key: "floatingCraft",
+    value: "prohibited",
+  });
+  assert.deepEqual(validateCandidate(floatingCraft), []);
+
+  const existingStateMethod = sourced();
+  assert.deepEqual(validateCandidate(existingStateMethod), []);
+
+  const arbitraryNumericMethod = sourced();
+  Object.assign(arbitraryNumericMethod.details[0], {
+    key: "futureNumericMethodFact",
+    valueType: "number",
+    value: 2,
+  });
+  assert.ok(validateCandidate(arbitraryNumericMethod).some(
+    (error) => error.includes("methods.futureNumericMethodFact requires state"),
+  ));
+});
+
 test("CLI succeeds on fixture and fails on unreadable input directory", () => {
   const script = fileURLToPath(new URL("./validateCandidateLakes.mjs", import.meta.url));
   const good = spawnSync(process.execPath, [script, fileURLToPath(new URL("./fixtures/", import.meta.url))], { encoding: "utf8" });

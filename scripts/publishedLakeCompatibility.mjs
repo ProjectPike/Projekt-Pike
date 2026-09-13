@@ -1,5 +1,5 @@
 import { candidateHash, validateReview } from "./publishCandidateLake.mjs";
-import { validateCandidate } from "./validateCandidateLakes.mjs";
+import { numericMethodFactKeys, validateCandidate } from "./validateCandidateLakes.mjs";
 
 export const appDetailSections = [
   "access",
@@ -19,19 +19,19 @@ const singletonFactKeys = {
   ],
   methods: [
     "angeldonContinuousSupervision", "angeldonOnlyIceCoveredWater",
-    "augustFishingHours", "augustSportFishingHours", "bait",
+    "augustFishingHours", "augustSportFishingHours", "bait", "chumming",
     "crayfishFishing", "dragFromBoatWinterIceFree", "dragRowingMaxAnglers",
     "familyPermitMaxLinesPerAngler", "fishingHoursInSeason", "fishingSeason",
     "fixedGear", "fly", "handGearOnly", "ice", "iceMaxAngeldonPerAngelkort",
     "iceMaxAngeldonPerAngler", "iceMaxAngeldonPerPermit", "iceMaxBaitsPerAngler",
     "iceMaxLuresPerPerson", "lureFishing", "maxFishingDepthMeters",
     "maxHooksPerPerson", "maxLinesPerFishingCard", "maxLinesPerFishingPermit",
-    "maxRodsPerPermit", "nets", "openWaterMaxLuresPerPerson", "outsideSeasonFishing",
+    "maxRodsPerPermit", "maxRodsPerPerson", "nets", "openWaterMaxLuresPerPerson", "outsideSeasonFishing",
     "publicFishing", "spin", "summerFishing", "trolling", "weekdayClosures",
     "winterFishing", "winterIceFishingAnnualPermit",
   ],
   species: ["knownSpecies", "stockedSportFish"],
-  watercraft: ["boat", "floatTube", "kayak"],
+  watercraft: ["boat", "floatTube", "floatingCraft", "kayak"],
   boat: [
     "boatMarkingRequirement", "boatRentalAvailable", "combustionMotor",
     "electricMotor", "fvoNotificationRequirement", "singleHookRecommendation",
@@ -70,19 +70,7 @@ const numberFactKeys = new Set([
   "access.permitCost",
   "boat.speedLimits",
   "boat.trollingMaxBaitsPerBoat",
-  "methods.dragRowingMaxAnglers",
-  "methods.familyPermitMaxLinesPerAngler",
-  "methods.iceMaxAngeldonPerAngelkort",
-  "methods.iceMaxAngeldonPerAngler",
-  "methods.iceMaxAngeldonPerPermit",
-  "methods.iceMaxBaitsPerAngler",
-  "methods.iceMaxLuresPerPerson",
-  "methods.maxFishingDepthMeters",
-  "methods.maxHooksPerPerson",
-  "methods.maxLinesPerFishingCard",
-  "methods.maxLinesPerFishingPermit",
-  "methods.maxRodsPerPermit",
-  "methods.openWaterMaxLuresPerPerson",
+  ...numericMethodFactKeys.map((key) => `methods.${key}`),
   "practical.maxRodsPerPersonFromBoat",
 ]);
 

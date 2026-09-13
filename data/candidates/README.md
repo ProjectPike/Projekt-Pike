@@ -57,8 +57,10 @@ Varje details-post har:
 - `verifiedAt`: verkligt kalenderdatum för verified, annars null.
 - Valfritt: icke-tom `note` och `conditions`.
 
-State använder allowed / prohibited / restricted / unknown. Methods och watercraft
-kräver state. Kända state-värden kräver uttrycklig regeltyp så råd inte blir regler.
+State använder allowed / prohibited / restricted / unknown. Watercraft och
+permission-liknande methods-fakta kräver state. Uttryckligen kända numeriska
+methods-gränser kräver number; godtyckliga numeriska methods-nycklar tillåts inte.
+Kända state-värden kräver uttrycklig regeltyp så råd inte blir regler.
 För unknown krävs `value: "unknown"`, `status: "unknown"`, `verifiedAt: null`
 och `ruleType: null` eller `"unknown"`; valueType anger framtida förväntad typ.
 Kända uppgifter kräver källa även när de är unverified. Unknown kan sakna källa.
@@ -77,6 +79,15 @@ watercraft tillstånd; boat motorregler; species arter och storleksregler; safet
 skyddsregler; practical parkering, ramp, brygga/access och båtuthyrning; depthMap
 källbelagd kartreferens. Text och note bevarar komplexa uppgifter tills ett särskilt
 schema finns. Ingen fri text tolkas till maskinella regler eller geometri.
+
+Tre generiska fakta bevarar vanliga källformuleringar utan alias eller inferens:
+
+- `methods.maxRodsPerPerson` (`number`) är en gräns per person/fiskare och är inte
+  samma sak som `maxRodsPerPermit`.
+- `methods.chumming` (`state`) beskriver mäskning/groundbaiting/chumming.
+- `watercraft.floatingCraft` (`state`) beskriver en uttryckligen bred regel för
+  flytande farkost/anordning och skapar inte automatiskt `boat`, `kayak` eller
+  `floatTube`.
 
 Okända fält och typer avvisas för att fånga stavfel. Nya strukturer kräver en
 avsiktlig schemauppdatering. Del 2 har separat manuell review och isolerad publish;
