@@ -10,6 +10,8 @@ Apply is never triggered by validation, build, review or publish.
 A proposal is eligible only when:
 
 - Part 3A reports no blocked publication;
+- a reviewed publication already present in production matches both its complete
+  mapped lake record and depth-research record exactly;
 - every current lake and depth-research record remains present and semantically
   unchanged;
 - every new lake ID comes from Part 3A's approved additions and has one matching
@@ -22,6 +24,11 @@ A proposal is eligible only when:
 The serializer preserves all current production bytes and their observable lake
 order, then appends approved new IDs in lexical order. With no additions, proposed
 output is byte-identical to current production and no file would change.
+
+An exactly matching reviewed publication is classified as already applied and is
+an idempotent satisfied state: it is neither a new addition nor a blocker. Any
+mismatch in either mapped record for an existing production ID remains a
+`production-id-conflict`; existing records are never merged, normalized or updated.
 
 ## Implemented apply sequence
 

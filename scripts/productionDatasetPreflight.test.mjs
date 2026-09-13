@@ -196,6 +196,46 @@ test("a valid approved new-lake proposal is eligible and names both replacement 
   assert.match(formatProductionDatasetPreflight(result), /PRODUCTION MODIFIED: NO/);
 });
 
+test("an exactly already-applied publication produces an eligible byte-identical preflight", async () => {
+  const publishedDocuments = [{
+    file: "new-lake.json",
+    content: JSON.stringify(publication("new-lake")),
+  }];
+  const initial = fixture(null);
+  const firstBuild = buildLakeDatasetDryRun({
+    productionLakes: initial.productionLakes,
+    productionDepthMapResearch: initial.productionDepthMapResearch,
+    publishedDocuments,
+  });
+  const productionLakes = structuredClone(firstBuild.proposedDataset.lakes);
+  const productionDepthMapResearch = structuredClone(
+    firstBuild.proposedDataset.lakeDepthMapResearch,
+  );
+  const buildResult = buildLakeDatasetDryRun({
+    productionLakes,
+    productionDepthMapResearch,
+    publishedDocuments,
+  });
+  const currentFiles = {
+    [productionDatasetFiles.lakes]: `export const lakes = ${JSON.stringify(productionLakes, null, 2)};\n`,
+    [productionDatasetFiles.lakeDepthMapResearch]: `export const lakeDepthMapResearch = ${JSON.stringify(productionDepthMapResearch, null, 2)};\n`,
+  };
+  const result = await preflight({
+    productionLakes,
+    productionDepthMapResearch,
+    lakePointsByLakeId: {},
+    buildResult,
+    currentFiles,
+  });
+
+  assert.equal(result.eligible, true);
+  assert.deepEqual(result.additions, []);
+  assert.deepEqual(result.alreadyApplied, ["new-lake"]);
+  assert.deepEqual(result.filesToChange, []);
+  assert.deepEqual(result.serializedFiles, currentFiles);
+  assert.deepEqual(result.proposedOutputFingerprints, result.productionFingerprints);
+});
+
 test("altered or removed existing lake and depth records are blocked", async () => {
   const altered = fixture();
   altered.buildResult.proposedDataset.lakes.existing.name = "Changed";
@@ -213,7 +253,15 @@ test("altered or removed existing lake and depth records are blocked", async () 
 });
 
 test("an existing lake ID collision remains blocked", async () => {
-  const input = fixture("existing");
+  const input = fixture(null);
+  const conflicting = publication("existing");
+  conflicting.candidate.name = "Different published lake content";
+  conflicting.review.candidateHash = candidateHash(conflicting.candidate);
+  input.buildResult = buildLakeDatasetDryRun({
+    productionLakes: input.productionLakes,
+    productionDepthMapResearch: input.productionDepthMapResearch,
+    publishedDocuments: [{ file: "existing.json", content: JSON.stringify(conflicting) }],
+  });
   const result = await preflight(input);
 
   assert.equal(result.eligible, false);
@@ -338,8 +386,12 @@ test("real repository preflight leaves production files byte-for-byte unchanged"
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.additions, []);
-  assert.deepEqual(result.filesToChange, []);
+  assert.deepEqual(result.additions, ["mogolen-hedenstorp"]);
+  assert.deepEqual(result.alreadyApplied, []);
+  assert.deepEqual(result.filesToChange, [
+    productionDatasetFiles.lakeDepthMapResearch,
+    productionDatasetFiles.lakes,
+  ]);
   assert.deepEqual(after, before);
 });
 

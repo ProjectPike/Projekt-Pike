@@ -116,6 +116,7 @@ test("no published lakes preserve an independent copy of production", () => {
     productionLakeCount: 1,
     publishedLakeCount: 0,
     compatibleAdditionCount: 0,
+    alreadyAppliedPublishedLakeCount: 0,
     blockedPublishedLakeCount: 0,
     idConflictCount: 0,
     compatibilityOrTransformationErrorCount: 0,
@@ -149,6 +150,63 @@ test("an existing production ID is blocked without update or merge", () => {
   assert.equal(result.additions.length, 0);
   assert.equal(result.summary.idConflictCount, 1);
   assert.equal(result.proposedDataset.lakes.existing.name, "Existing");
+  assert.ok(result.blocked[0].reasons.some(({ code }) => code === "production-id-conflict"));
+});
+
+test("an exactly matching published lake and depth record are already applied", () => {
+  const input = publication("already-applied");
+  const initial = build([document(input)]).proposedDataset;
+  const productionInput = {
+    lakes: structuredClone(initial.lakes),
+    depth: structuredClone(initial.lakeDepthMapResearch),
+  };
+  const before = structuredClone(productionInput);
+  const result = build([document(input)], productionInput);
+
+  assert.deepEqual(result.additions, []);
+  assert.deepEqual(result.blocked, []);
+  assert.deepEqual(result.alreadyApplied, [{
+    file: "already-applied.json",
+    id: "already-applied",
+  }]);
+  assert.equal(result.summary.alreadyAppliedPublishedLakeCount, 1);
+  assert.deepEqual(result.proposedDataset.lakes, productionInput.lakes);
+  assert.deepEqual(result.proposedDataset.lakeDepthMapResearch, productionInput.depth);
+  assert.deepEqual(productionInput, before);
+});
+
+test("an existing ID with changed lake content remains a production conflict", () => {
+  const input = publication("changed-lake");
+  const initial = build([document(input)]).proposedDataset;
+  const productionInput = {
+    lakes: structuredClone(initial.lakes),
+    depth: structuredClone(initial.lakeDepthMapResearch),
+  };
+  productionInput.lakes["changed-lake"].name = "Different production content";
+  const result = build([document(input)], productionInput);
+
+  assert.deepEqual(result.additions, []);
+  assert.deepEqual(result.alreadyApplied, []);
+  assert.equal(result.proposedDataset.lakes["changed-lake"].name, "Different production content");
+  assert.ok(result.blocked[0].reasons.some(({ code }) => code === "production-id-conflict"));
+});
+
+test("an existing ID with changed depth research remains a production conflict", () => {
+  const input = publication("changed-depth");
+  const initial = build([document(input)]).proposedDataset;
+  const productionInput = {
+    lakes: structuredClone(initial.lakes),
+    depth: structuredClone(initial.lakeDepthMapResearch),
+  };
+  productionInput.depth["changed-depth"].note = "Different production depth research.";
+  const result = build([document(input)], productionInput);
+
+  assert.deepEqual(result.additions, []);
+  assert.deepEqual(result.alreadyApplied, []);
+  assert.equal(
+    result.proposedDataset.lakeDepthMapResearch["changed-depth"].note,
+    "Different production depth research.",
+  );
   assert.ok(result.blocked[0].reasons.some(({ code }) => code === "production-id-conflict"));
 });
 
@@ -260,6 +318,7 @@ test("published and proposed ordering and report output are deterministic", () =
   ]);
   assert.equal(formatLakeDatasetDryRunReport(first), formatLakeDatasetDryRunReport(second));
   assert.match(formatLakeDatasetDryRunReport(first), /Proposed final lake count: 3/);
+  assert.match(formatLakeDatasetDryRunReport(first), /Already applied published lakes: 0/);
   assert.match(formatLakeDatasetDryRunReport(first), /Production files modified: NO/);
 });
 
@@ -295,6 +354,7 @@ test("the real-repository dry run leaves both production datasets byte-for-byte 
     productionLakeCount: 22,
     publishedLakeCount: 1,
     compatibleAdditionCount: 1,
+    alreadyAppliedPublishedLakeCount: 0,
     blockedPublishedLakeCount: 0,
     idConflictCount: 0,
     compatibilityOrTransformationErrorCount: 0,

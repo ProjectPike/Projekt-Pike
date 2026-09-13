@@ -14,6 +14,7 @@ import {
   productionProposalFingerprint,
   sha256,
 } from "./productionDatasetPreflight.mjs";
+import { createRepositoryPreflight } from "./preflightLakeDataset.mjs";
 
 function lake(id, overrides = {}) {
   return {
@@ -388,18 +389,33 @@ test("identical inputs produce deterministic successful results", async (t) => {
   assert.deepEqual(firstResult, secondResult);
 });
 
-test("real repository apply is a zero-change no-op with no artifacts", async () => {
+test("real repository apply runs only when preflight proves a zero-change no-op", async () => {
   const paths = Object.values(productionDatasetFiles).map(
     (path) => new URL(`../${path}`, import.meta.url),
   );
   const dataDirectory = new URL("../src/data/", import.meta.url);
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const artifactsBefore = (await readdir(dataDirectory)).filter((name) => name.includes(".pike-")).sort();
-  const result = await runRealApply([], () => {});
+  const preflight = await createRepositoryPreflight();
+  let result = null;
+
+  if (preflight.filesToChange.length === 0) {
+    assert.equal(preflight.eligible, true);
+    result = await runRealApply([], () => {});
+  } else {
+    assert.equal(preflight.eligible, true);
+    assert.deepEqual(preflight.additions, ["mogolen-hedenstorp"]);
+    assert.deepEqual(preflight.filesToChange, Object.values(productionDatasetFiles).sort());
+  }
+
   const after = await Promise.all(paths.map((path) => readFile(path)));
   const artifactsAfter = (await readdir(dataDirectory)).filter((name) => name.includes(".pike-")).sort();
 
-  assert.equal(result.status, "noop");
+  if (preflight.filesToChange.length === 0) {
+    assert.equal(result.status, "noop");
+  } else {
+    assert.equal(result, null, "real apply must not be invoked while production changes are pending");
+  }
   assert.deepEqual(after, before);
   assert.deepEqual(artifactsAfter, artifactsBefore);
 });

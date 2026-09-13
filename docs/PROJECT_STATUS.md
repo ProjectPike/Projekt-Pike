@@ -39,6 +39,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   outputvalidering och rollback-kontrakt; preflight skriver aldrig produktion.
 - Pike Data Ingest v1 del 3B.1: explicit, fingerprint-bunden apply för endast nya
   sjöar med verifierad staging, backup och kompenserande rollback.
+- Pike Data Ingest v1 del 3B.2: exakt redan applicerade publikationer blir ett
+  idempotent no-op-läge; avvikande befintliga ID:n förblir blockerade.
 
 ### Entitlement-arkitektur
 
@@ -276,9 +278,10 @@ härleds från fiskekortskrav, priser, produkter eller köp.
 Del 3A är implementerad som en deterministisk dry-run i
 `scripts/buildLakeDataset.mjs` (`npm run build:lake-data`). Den läser endast
 `data/published/`, återanvänder compatibility-kontraktet och föreslår kompatibla
-nya sjöar samt djupkartestatus i minnet. Befintliga ID:n och alla
-kompatibilitetsfel blockeras. Published är inte live: buildern saknar apply- och
-skrivläge och produktionsdata förblir orörd.
+nya sjöar samt djupkartestatus i minnet. Ett befintligt ID räknas som redan
+applicerat endast när både den kompletta mappade sjön och djupkartestatusen matchar
+produktion exakt; alla avvikelser och kompatibilitetsfel blockeras. Published är
+inte live: buildern saknar apply- och skrivläge och produktionsdata förblir orörd.
 
 Del 3B.0 är implementerad som en read-only produktionspreflight i
 `scripts/preflightLakeDataset.mjs` (`npm run preflight:lake-data`). Den binder
@@ -294,6 +297,11 @@ de kompletta staged/finala dataseten samt återställer samtliga filer vid fel.
 Apply är aldrig automatisk och stöder endast nya ID:n; befintliga sjöar kan inte
 uppdateras eller tas bort. Första verkliga sjön ska appliceras som en separat,
 mänskligt observerad milstolpe. Se `docs/PRODUCTION_APPLY_CONTRACT.md`.
+
+Del 3B.2 gör den beständiga publiceringshistoriken idempotent efter apply: en
+exakt match klassas explicit som redan applicerad och ger en eligible no-op.
+Apply-testet vägrar samtidigt att anropa real-repository apply när preflight visar
+väntande filändringar.
 
 Arkitektur:
 

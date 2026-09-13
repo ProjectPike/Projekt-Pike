@@ -243,6 +243,9 @@ export async function createProductionDatasetPreflight({
     .filter((path) => productionFingerprints[path] !== proposedOutputFingerprints[path])
     .sort(compareText);
   const additionIds = buildResult.additions.map(({ id }) => id).sort(compareText);
+  const alreadyAppliedIds = (buildResult.alreadyApplied ?? [])
+    .map(({ id }) => id)
+    .sort(compareText);
   const proposalFingerprint = productionProposalFingerprint({
     productionFingerprints,
     proposedOutputFingerprints,
@@ -258,6 +261,7 @@ export async function createProductionDatasetPreflight({
     proposalFingerprint,
     filesToChange,
     additions: additionIds,
+    alreadyApplied: alreadyAppliedIds,
     blockers,
     validationErrors,
     validationStats: validation?.stats ?? null,
@@ -300,6 +304,7 @@ export function formatProductionDatasetPreflight(preflight) {
     "Pike production dataset preflight",
     `Eligible for future apply: ${preflight.eligible ? "YES" : "NO"}`,
     `Approved additions: ${preflight.additions.length}`,
+    `Already applied publications: ${preflight.alreadyApplied.length}`,
     `Production files that would change: ${preflight.filesToChange.length}`,
     `Validation errors: ${preflight.validationErrors.length}`,
     `Blockers: ${preflight.blockers.length}`,
@@ -313,6 +318,10 @@ export function formatProductionDatasetPreflight(preflight) {
   if (preflight.additions.length > 0) {
     lines.push("", "Approved additions:");
     for (const id of preflight.additions) lines.push(`- ${id}`);
+  }
+  if (preflight.alreadyApplied.length > 0) {
+    lines.push("", "Already applied publications:");
+    for (const id of preflight.alreadyApplied) lines.push(`- ${id}`);
   }
   if (preflight.blockers.length > 0) {
     lines.push("", "Blockers:");

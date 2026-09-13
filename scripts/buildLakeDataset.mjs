@@ -8,6 +8,7 @@ import {
   assessPublishedLakeCompatibility,
   mapPublishedLakeCompatibleFields,
 } from "./publishedLakeCompatibility.mjs";
+import { canonicalJson } from "./publishCandidateLake.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const defaultPublishedDirectory = join(repositoryRoot, "data", "published");
@@ -28,6 +29,10 @@ function sortedReasons(reasons) {
     compareText(left.code, right.code) ||
     compareText(left.path, right.path) ||
     compareText(left.message, right.message));
+}
+
+function sameValue(left, right) {
+  return canonicalJson(left) === canonicalJson(right);
 }
 
 function parsePublishedDocument(document) {
@@ -98,6 +103,7 @@ export function buildLakeDatasetDryRun({
   }
 
   const additions = [];
+  const alreadyApplied = [];
   const blocked = [];
 
   for (const document of parsed) {
@@ -125,13 +131,6 @@ export function buildLakeDatasetDryRun({
           `published lake id ${id} occurs more than once`,
         ));
       }
-      if (id && Object.hasOwn(productionLakes, id)) {
-        reasons.push(reason(
-          "production-id-conflict",
-          "$.candidate.id",
-          `published lake id ${id} already exists in production`,
-        ));
-      }
       if (productionErrors.length > 0) {
         reasons.push(reason(
           "invalid-production-identity",
@@ -142,6 +141,13 @@ export function buildLakeDatasetDryRun({
     }
 
     if (reasons.length > 0) {
+      if (id && Object.hasOwn(productionLakes, id)) {
+        reasons.push(reason(
+          "production-id-conflict",
+          "$.candidate.id",
+          `published lake id ${id} already exists in production with different content`,
+        ));
+      }
       blocked.push({ file: document.file, id, reasons: sortedReasons(reasons) });
       continue;
     }
@@ -149,6 +155,25 @@ export function buildLakeDatasetDryRun({
     try {
       const mapped = mapPublishedLakeCompatibleFields(publication);
       const { lakeDepthMapResearch: depthMapResearch, ...lake } = mapped;
+      if (Object.hasOwn(productionLakes, id)) {
+        const matchingLake = sameValue(productionLakes[id], lake);
+        const matchingDepth = Object.hasOwn(productionDepthMapResearch, id) &&
+          sameValue(productionDepthMapResearch[id], depthMapResearch);
+        if (matchingLake && matchingDepth) {
+          alreadyApplied.push({ file: document.file, id });
+        } else {
+          blocked.push({
+            file: document.file,
+            id,
+            reasons: [reason(
+              "production-id-conflict",
+              "$.candidate.id",
+              `published lake id ${id} already exists in production with different content`,
+            )],
+          });
+        }
+        continue;
+      }
       proposedLakes[id] = lake;
       proposedDepthMapResearch[id] = depthMapResearch;
       additions.push({ file: document.file, id, lake: structuredClone(lake) });
@@ -162,6 +187,8 @@ export function buildLakeDatasetDryRun({
   }
 
   const orderedAdditions = additions.sort((left, right) => compareText(left.id, right.id));
+  const orderedAlreadyApplied = alreadyApplied.sort((left, right) =>
+    compareText(left.id, right.id) || compareText(left.file, right.file));
   const orderedBlocked = blocked.sort((left, right) =>
     compareText(left.id ?? "", right.id ?? "") || compareText(left.file, right.file));
   const orderedProposedLakes = cloneSortedRecord(proposedLakes);
@@ -180,12 +207,14 @@ export function buildLakeDatasetDryRun({
       lakeDepthMapResearch: orderedProposedDepthMapResearch,
     },
     additions: orderedAdditions,
+    alreadyApplied: orderedAlreadyApplied,
     blocked: orderedBlocked,
     productionErrors,
     summary: {
       productionLakeCount: Object.keys(productionLakes).length,
       publishedLakeCount: parsed.length,
       compatibleAdditionCount: orderedAdditions.length,
+      alreadyAppliedPublishedLakeCount: orderedAlreadyApplied.length,
       blockedPublishedLakeCount: orderedBlocked.length,
       idConflictCount: orderedBlocked.filter((entry) =>
         entry.reasons.some(({ code }) => conflictCodes.has(code))).length,
@@ -202,6 +231,7 @@ export function formatLakeDatasetDryRunReport(result) {
     `Production lakes: ${summary.productionLakeCount}`,
     `Published lakes: ${summary.publishedLakeCount}`,
     `Compatible proposed additions: ${summary.compatibleAdditionCount}`,
+    `Already applied published lakes: ${summary.alreadyAppliedPublishedLakeCount}`,
     `Blocked published lakes: ${summary.blockedPublishedLakeCount}`,
     `ID conflicts: ${summary.idConflictCount}`,
     `Compatibility/transformation errors: ${summary.compatibilityOrTransformationErrorCount}`,
@@ -219,6 +249,11 @@ export function formatLakeDatasetDryRunReport(result) {
   if (result.additions.length > 0) {
     lines.push("", "Proposed additions:");
     for (const addition of result.additions) lines.push(`- ${addition.id} (${addition.file})`);
+  }
+
+  if (result.alreadyApplied.length > 0) {
+    lines.push("", "Already applied published lakes:");
+    for (const entry of result.alreadyApplied) lines.push(`- ${entry.id} (${entry.file})`);
   }
 
   if (result.blocked.length > 0) {
