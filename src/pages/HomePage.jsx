@@ -10,6 +10,7 @@ import PlaceholderTabPage from "./PlaceholderTabPage";
 import { lakes } from "../data/lakes";
 import { fishingChoices as fishingChoiceOptions } from "../data/fishingChoices";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { getLakeAutocompleteSuggestions } from "../services/lakeAutocomplete";
 import { getLakeFishingSelectionDetails } from "../services/lakeService";
 import { defaultThemeId, isThemeId } from "../theme/themes";
 const fishingChoiceOptionsByCategory = {
@@ -205,37 +206,7 @@ function HomePage() {
   }, [searchQuery]);
 
   const searchSuggestions = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLocaleLowerCase("sv-SE");
-
-    if (!normalizedQuery) {
-      return [];
-    }
-
-    return Object.values(lakes)
-      .map((lake) => {
-        const normalizedName = lake.name.toLocaleLowerCase("sv-SE");
-
-        if (normalizedName.startsWith(normalizedQuery)) {
-          return { lake, rank: 0 };
-        }
-
-        if (normalizedName.includes(normalizedQuery)) {
-          return { lake, rank: 1 };
-        }
-
-        const locationMatches = [lake.region, ...lake.counties].some((location) =>
-          location?.toLocaleLowerCase("sv-SE").includes(normalizedQuery),
-        );
-
-        return locationMatches ? { lake, rank: 2 } : null;
-      })
-      .filter(Boolean)
-      .sort(
-        (first, second) =>
-          first.rank - second.rank || first.lake.name.localeCompare(second.lake.name, "sv-SE"),
-      )
-      .slice(0, 6)
-      .map(({ lake }) => lake);
+    return getLakeAutocompleteSuggestions(lakes, searchQuery);
   }, [searchQuery]);
 
   const lakeStatuses = useMemo(() => {
