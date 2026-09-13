@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "id": "mogolen-hedenstorp",
+  "name": "Mogölen",
+  "region": "Småland",
+  "counties": [
+    "Jönköping"
+  ],
+  "sources": [
+    {
+      "id": "jsf-mogolen",
+      "type": "fvo-club",
+      "title": "Jönköpings SFK — Mogölen",
+      "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+      "checkedAt": "2026-09-13"
+    },
+    {
+      "id": "jonkoping-mogol-plan",
+      "type": "municipality",
+      "title": "Jönköpings kommun — Hedenstorp planunderlag, Mogöl",
+      "url": "https://karta.jonkoping.se/dp/dp041125.pdf",
+      "checkedAt": "2026-09-13"
+    },
+    {
+      "id": "osm-mogol-hedenstorp",
+      "type": "open-data",
+      "title": "OpenStreetMap — Mogöl, way 23543551",
+      "url": "https://www.openstreetmap.org/way/23543551",
+      "checkedAt": "2026-09-13"
+    }
+  ],
+  "location": {
+    "coordinates": [
+      14.0921,
+      57.7638
+    ],
+    "sources": [
+      "osm-mogol-hedenstorp",
+      "jonkoping-mogol-plan"
+    ],
+    "verifiedAt": "2026-09-13"
+  },
+  "details": [
+    {
+      "section": "access",
+      "key": "membershipRequirement",
+      "valueType": "text",
+      "value": "required",
+      "status": "verified",
+      "ruleType": "rule",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Fiske är endast tillåtet för Jönköpings SFK:s medlemmar."
+    },
+    {
+      "section": "methods",
+      "key": "bait",
+      "valueType": "state",
+      "value": "allowed",
+      "status": "verified",
+      "ruleType": "rule",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Jönköpings SFK anger uttryckligen metspö som tillåtet."
+    },
+    {
+      "section": "methods",
+      "key": "maxRodsPerPerson",
+      "valueType": "number",
+      "value": 2,
+      "status": "verified",
+      "ruleType": "rule",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Regeln anges uttryckligen som 2 spön per person."
+    },
+    {
+      "section": "methods",
+      "key": "chumming",
+      "valueType": "state",
+      "value": "allowed",
+      "status": "verified",
+      "ruleType": "rule",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Mäskning är uttryckligen tillåten."
+    },
+    {
+      "section": "watercraft",
+      "key": "boat",
+      "valueType": "state",
+      "value": "prohibited",
+      "status": "verified",
+      "ruleType": "rule",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Källan anger uttryckligen att fiske från båt inte är tillåtet."
+    },
+    {
+      "section": "watercraft",
+      "key": "floatingCraft",
+      "valueType": "state",
+      "value": "prohibited",
+      "status": "verified",
+      "ruleType": "rule",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Källan förbjuder fiske från båt eller liknande flytetyg."
+    },
+    {
+      "section": "species",
+      "key": "knownSpecies",
+      "valueType": "string-list",
+      "value": [
+        "abborre",
+        "sutare",
+        "ruda",
+        "karp",
+        "mört"
+      ],
+      "status": "verified",
+      "ruleType": "advisory",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-13",
+      "note": "Jönköpings SFK uppger gott bestånd av abborre, sutare och ruda samt att karp och mört finns i vattnet."
+    }
+  ],
+  "app": {
+    "type": "sjö",
+    "coordinateSource": "https://www.openstreetmap.org/way/23543551",
+    "distance": {
+      "kilometers": 7,
+      "travelTime": "7–12 min"
+    },
+    "verification": {
+      "status": "partially-verified",
+      "updatedAt": "2026-09-13",
+      "sources": [
+        "https://www.jsf-fiske.net/sida/80557/mogolen",
+        "https://karta.jonkoping.se/dp/dp041125.pdf",
+        "https://www.openstreetmap.org/way/23543551"
+      ]
+    },
+    "fishing": {
+      "permit": {
+        "status": "restricted",
+        "label": "Endast klubbmedlemmar"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade grundregler"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
+    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    },
+    "lakeDepthMapResearch": {
+      "status": "not-found",
+      "checkedAt": "2026-09-13",
+      "provider": "SMHI Damm- och sjöregister",
+      "smhiLakeId": null,
+      "maps": [],
+      "note": "Ingen säker träff eller publicerad djupkarta har identifierats för Mogölen/Mogöl vid Hedenstorp. Namnlika vatten ska inte användas."
+    }
+  }
+}
