@@ -27,6 +27,13 @@
       "title": "OpenStreetMap — Mogöl, way 23543551",
       "url": "https://www.openstreetmap.org/way/23543551",
       "checkedAt": "2026-09-13"
+    },
+    {
+      "id": "rome2rio-jonkoping-hedenstorp",
+      "type": "commercial-aggregator",
+      "title": "Rome2Rio — Jönköping till Hedenstorp industri",
+      "url": "https://www.rome2rio.com/sv/s/J%C3%B6nk%C3%B6ping/Hedenstorp-industri",
+      "checkedAt": "2026-09-13"
     }
   ],
   "location": {
@@ -152,7 +159,8 @@
       "sources": [
         "https://www.jsf-fiske.net/sida/80557/mogolen",
         "https://karta.jonkoping.se/dp/dp041125.pdf",
-        "https://www.openstreetmap.org/way/23543551"
+        "https://www.openstreetmap.org/way/23543551",
+        "https://www.rome2rio.com/sv/s/J%C3%B6nk%C3%B6ping/Hedenstorp-industri"
       ]
     },
     "fishing": {
