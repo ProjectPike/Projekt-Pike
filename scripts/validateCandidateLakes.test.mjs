@@ -154,6 +154,18 @@ test("typed factual values and explicit unknown placeholders are validated", () 
   assert.ok(validateCandidate(candidate).some((e) => e.includes("unsupported field")));
 });
 
+test("membership requirement is a valid explicit access text fact", () => {
+  const candidate = sourced();
+  Object.assign(candidate.details[0], {
+    section: "access",
+    key: "membershipRequirement",
+    valueType: "text",
+    value: "required",
+  });
+
+  assert.deepEqual(validateCandidate(candidate), []);
+});
+
 test("method fact types use an explicit state or numeric contract", () => {
   for (const key of ["maxRodsPerPerson", "maxRodsPerPermit", "maxLinesPerFishingPermit"]) {
     const candidate = sourced();

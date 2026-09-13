@@ -31,6 +31,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   research-valid är fortfarande inte samma sak som integrationsredo.
 - Pike Data Ingest v1 del 3A.2: kompatibla generiska fakta för spögräns per
   person, mäskning och breda regler för flytande farkost utan semantiska alias.
+- Pike Data Ingest v1 del 3A.3: explicit medlemskrav för fiske, separat från
+  fiskekort, priser och köpflöden.
 - Pike Data Ingest v1 del 3A: deterministisk dry-run som föreslår kompatibla nya
   appsjöar i minnet; ingen produktionsdata skrivs.
 - Pike Data Ingest v1 del 3B.0: SHA-256-bunden produktionspreflight med komplett
@@ -266,6 +268,10 @@ Del 3A.2 stöder `methods.maxRodsPerPerson`, `methods.chumming` och
 `watercraft.floatingCraft` som separata, källbundna fakta. De mappas generiskt
 utan att per-person blir per-kort eller breda farkostregler expanderas till båt,
 kajak eller flytring.
+
+Del 3A.3 stöder `access.membershipRequirement` som ett explicit textfaktum för
+krav på medlemskap i en fiskeklubb eller organisation. Det mappas inte till eller
+härleds från fiskekortskrav, priser, produkter eller köp.
 
 Del 3A är implementerad som en deterministisk dry-run i
 `scripts/buildLakeDataset.mjs` (`npm run build:lake-data`). Den läser endast

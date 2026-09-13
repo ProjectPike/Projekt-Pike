@@ -119,6 +119,30 @@ test("maps generic rod, chumming and floating-craft facts without semantic alias
   assert.equal(prohibitedChumming.details.methods.chumming.value, "prohibited");
 });
 
+test("maps membership requirement without creating permit semantics", () => {
+  const input = publication([
+    fact("access", "membershipRequirement", {
+      valueType: "text",
+      value: "required",
+    }),
+  ]);
+
+  assert.equal(assessPublishedLakeCompatibility(input).compatible, true);
+  const mapped = mapPublishedLakeCompatibleFields(input);
+  assert.equal(mapped.details.access.membershipRequirement.value, "required");
+  for (const key of [
+    "permitRequirement", "permitCost", "permitProducts", "purchase",
+  ]) {
+    assert.equal(Object.hasOwn(mapped.details.access, key), false, key);
+  }
+
+  const permitInput = publication([fact("access", "permitRequirement")]);
+  assert.equal(
+    mapPublishedLakeCompatibleFields(permitInput).details.access.permitRequirement.value,
+    "allowed",
+  );
+});
+
 test("reports app fields that an incomplete candidate must explicitly supply", () => {
   const input = publication([], false);
   delete input.candidate.region;
@@ -160,6 +184,7 @@ test("blocks constructions the current app cannot preserve", () => {
   const cases = [
     [fact("depthMap", "source", { valueType: "text", value: "Map" }), "unsupported-depth-map"],
     [fact("species", "sizeLimits", { valueType: "number", value: 50 }), "unsupported-array-fact"],
+    [fact("access", "futureAccessFact", { valueType: "text", value: "required" }), "unsupported-fact-key"],
     [fact("methods", "futureMethod"), "unsupported-fact-key"],
     [fact("methods", "spin", { conditions: { species: ["Gädda"] } }), "unsupported-selection-condition"],
     [fact("methods", "spin", { conditions: { method: ["Trolling"] } }), "unsupported-selection-condition"],

@@ -82,6 +82,9 @@ schema finns. Ingen fri text tolkas till maskinella regler eller geometri.
 
 Tre generiska fakta bevarar vanliga källformuleringar utan alias eller inferens:
 
+- `access.membershipRequirement` (`text`, exempelvis `"required"`) beskriver
+  uttryckligt krav på medlemskap i relevant fiskeklubb/organisation. Det är inte
+  ett fiskekortskrav och skapar inga permit-, pris- eller köp-fakta.
 - `methods.maxRodsPerPerson` (`number`) är en gräns per person/fiskare och är inte
   samma sak som `maxRodsPerPermit`.
 - `methods.chumming` (`state`) beskriver mäskning/groundbaiting/chumming.

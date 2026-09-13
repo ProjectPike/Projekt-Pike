@@ -14,7 +14,7 @@ export const appDetailSections = [
 
 const singletonFactKeys = {
   access: [
-    "familyCoverage", "permitCost", "permitPrice", "permitProducts",
+    "familyCoverage", "membershipRequirement", "permitCost", "permitPrice", "permitProducts",
     "permitRequirement", "purchase", "purchaseChannels", "validity", "youthRules",
   ],
   methods: [
