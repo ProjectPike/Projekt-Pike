@@ -351,17 +351,18 @@ test("the real-repository dry run leaves both production datasets byte-for-byte 
   const after = await Promise.all([readFile(lakePath), readFile(depthPath)]);
 
   assert.deepEqual(result.summary, {
-    productionLakeCount: 22,
+    productionLakeCount: 23,
     publishedLakeCount: 1,
-    compatibleAdditionCount: 1,
-    alreadyAppliedPublishedLakeCount: 0,
+    compatibleAdditionCount: 0,
+    alreadyAppliedPublishedLakeCount: 1,
     blockedPublishedLakeCount: 0,
     idConflictCount: 0,
     compatibilityOrTransformationErrorCount: 0,
     proposedLakeCount: 23,
   });
-  assert.deepEqual(result.additions.map(({ id }) => id), ["mogolen-hedenstorp"]);
+  assert.deepEqual(result.additions, []);
+  assert.deepEqual(result.alreadyApplied.map(({ id }) => id), ["mogolen-hedenstorp"]);
   assert.equal(result.proposedDataset.lakes["mogolen-hedenstorp"].name, "Mogölen");
-  assert.equal(Object.hasOwn(lakes, "mogolen-hedenstorp"), false);
+  assert.equal(Object.hasOwn(lakes, "mogolen-hedenstorp"), true);
   assert.deepEqual(after, before);
 });

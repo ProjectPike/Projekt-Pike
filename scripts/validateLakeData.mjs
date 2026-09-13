@@ -10,7 +10,7 @@ const result = validateLakeDataState({
   lakes,
   lakeDepthMapResearch,
   lakePointsByLakeId,
-  expectedLakeCount: 22,
+  expectedLakeCount: 23,
 });
 
 if (result.errors.length > 0) {

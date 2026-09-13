@@ -41,6 +41,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   sjöar med verifierad staging, backup och kompenserande rollback.
 - Pike Data Ingest v1 del 3B.2: exakt redan applicerade publikationer blir ett
   idempotent no-op-läge; avvikande befintliga ID:n förblir blockerade.
+- Första verkliga ingestflödet är genomfört end-to-end: `mogolen-hedenstorp` är
+  produktionssjö nummer 23 och den kvarvarande publikationen är `alreadyApplied`.
 
 ### Entitlement-arkitektur
 
@@ -64,7 +66,9 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
 
 ### B. Data / research
 
-- Välja nästa sjöar runt Jönköping.
+- Nästa större arbete är Baseline Lake Audit v1 för de ursprungliga sjöarna,
+  följt senare av ett separat granskat workflow för uppdatering av befintliga sjöar.
+- Därefter välja nästa sjöar runt Jönköping.
 - Prioritera användbara vatten som inte redan är väl täckta på andra håll.
 - Samla kompletta, källbelagda sjöpaket.
 
@@ -224,7 +228,7 @@ Om exakt laglig och praktisk access är okänd ska Pike navigera till sjön, int
 
 ## 9. Dataexpansion
 
-- Nuvarande referensdataset: 22 sjöar.
+- Nuvarande referensdataset: 23 sjöar.
 - Nästa större datamål: totalt 50 sjöar.
 
 Prioritering:
@@ -302,6 +306,11 @@ Del 3B.2 gör den beständiga publiceringshistoriken idempotent efter apply: en
 exakt match klassas explicit som redan applicerad och ger en eligible no-op.
 Apply-testet vägrar samtidigt att anropa real-repository apply när preflight visar
 väntande filändringar.
+
+Det första verkliga flödet har nu körts hela vägen från kandidat via review/hash,
+publish, dry-run och preflight till explicit apply. `mogolen-hedenstorp` är live
+som sjö 23, och efterföljande preflight/apply är ett verifierat `alreadyApplied`
+no-op-läge.
 
 Arkitektur:
 

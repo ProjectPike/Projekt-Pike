@@ -386,12 +386,9 @@ test("real repository preflight leaves production files byte-for-byte unchanged"
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.additions, ["mogolen-hedenstorp"]);
-  assert.deepEqual(result.alreadyApplied, []);
-  assert.deepEqual(result.filesToChange, [
-    productionDatasetFiles.lakeDepthMapResearch,
-    productionDatasetFiles.lakes,
-  ]);
+  assert.deepEqual(result.additions, []);
+  assert.deepEqual(result.alreadyApplied, ["mogolen-hedenstorp"]);
+  assert.deepEqual(result.filesToChange, []);
   assert.deepEqual(after, before);
 });
 

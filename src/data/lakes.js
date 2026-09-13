@@ -5959,4 +5959,174 @@ export const lakes = {
       trails: [],
     },
   },
+  "mogolen-hedenstorp": {
+    "id": "mogolen-hedenstorp",
+    "name": "Mogölen",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      14.0921,
+      57.7638
+    ],
+    "type": "sjö",
+    "coordinateSource": "https://www.openstreetmap.org/way/23543551",
+    "distance": {
+      "kilometers": 7,
+      "travelTime": "7–12 min"
+    },
+    "verification": {
+      "sources": [
+        "https://www.jsf-fiske.net/sida/80557/mogolen",
+        "https://karta.jonkoping.se/dp/dp041125.pdf",
+        "https://www.openstreetmap.org/way/23543551",
+        "https://www.rome2rio.com/sv/s/J%C3%B6nk%C3%B6ping/Hedenstorp-industri"
+      ],
+      "status": "partially-verified",
+      "updatedAt": "2026-09-13"
+    },
+    "fishing": {
+      "permit": {
+        "label": "Endast klubbmedlemmar",
+        "status": "restricted"
+      },
+      "protectedAreas": {
+        "label": "Uppgift saknas",
+        "status": "unknown"
+      },
+      "rules": {
+        "label": "Verifierade grundregler",
+        "status": "verified"
+      }
+    },
+    "practical": {
+      "parking": {
+        "label": "Uppgift saknas",
+        "locations": [],
+        "status": "unknown"
+      },
+      "piers": [],
+      "ramps": [],
+      "trails": []
+    },
+    "details": {
+      "access": {
+        "membershipRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Fiske är endast tillåtet för Jönköpings SFK:s medlemmar.",
+          "conditions": null
+        }
+      },
+      "methods": {
+        "bait": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Jönköpings SFK anger uttryckligen metspö som tillåtet.",
+          "conditions": null
+        },
+        "maxRodsPerPerson": {
+          "value": 2,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Regeln anges uttryckligen som 2 spön per person.",
+          "conditions": null
+        },
+        "chumming": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Mäskning är uttryckligen tillåten.",
+          "conditions": null
+        }
+      },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "abborre",
+            "sutare",
+            "ruda",
+            "karp",
+            "mört"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Jönköpings SFK uppger gott bestånd av abborre, sutare och ruda samt att karp och mört finns i vattnet.",
+          "conditions": null
+        }
+      },
+      "watercraft": {
+        "boat": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Källan anger uttryckligen att fiske från båt inte är tillåtet.",
+          "conditions": null
+        },
+        "floatingCraft": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-13",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Källan förbjuder fiske från båt eller liknande flytetyg.",
+          "conditions": null
+        }
+      },
+      "boat": {},
+      "practical": {},
+      "geography": {},
+      "safety": {}
+    }
+  },
 };

@@ -113,4 +113,12 @@ export const lakeDepthMapResearch = {
   svansjon: available("641175-137986", [
     { mapNumber: "3-5723", formats: ["tiff"], source: "S. Simmeborn / P. Johansson" },
   ], { surveyYear: 1993, maxDepthMeters: 5.5, meanDepthMeters: 2.5, bathymetry: { sourceType: "historical TIFF with labelled contour regions", sourceMapNumber: "3-5723", processingState: "published", georeferencingStatus: "affine-shoreline-fit", qualityStatus: "verified", published: true, verifiedAt: "2026-09-08", dataUrl: "/bathymetry/svansjon.geojson", controlPointCount: 800, shorelineMeanResidualMeters: 23.9, shorelineP90ResidualMeters: 91, preclipOutsidePercent: 0.96, postclipLandPointCount: 0, postclipSampleCount: 10282, reviewNote: "Fyra uttryckligen märkta 1-, 2- och 4-metersregioner är vektoriserade. Lodpunkten 5,5 m och övrig kartgrafik är avsiktligt utelämnade; konturerna är klippta runt den moderna ön." } }),
+  "mogolen-hedenstorp": {
+    "checkedAt": "2026-09-13",
+    "maps": [],
+    "note": "Ingen säker träff eller publicerad djupkarta har identifierats för Mogölen/Mogöl vid Hedenstorp. Namnlika vatten ska inte användas.",
+    "provider": "SMHI Damm- och sjöregister",
+    "smhiLakeId": null,
+    "status": "not-found"
+  },
 };
