@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "mogolen-hedenstorp",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-13",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "candidateHash": "274c6534aeb5ba304c33ec4fd1415c87c67db6d55bb0b9f34f612ae20db51504",
+  "note": "Manuellt granskad första riktiga Pike-ingestkandidat. Identitet, källor, medlemskrav, metfiske, spöbegränsning, mäskning, flytetygsförbud och angivna arter har granskats. Kastspö har avsiktligt inte tolkats som spinnfiske. Namnlika Mogölen/Mogöl-vatten och osäker djupdata har avsiktligt exkluderats."
+}
