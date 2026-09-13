@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { lakes } from "../src/data/lakes.js";
 import { candidateHash } from "./publishCandidateLake.mjs";
 import {
   buildLakeDatasetDryRun,
@@ -290,7 +291,17 @@ test("the real-repository dry run leaves both production datasets byte-for-byte 
   const result = await run([], () => {});
   const after = await Promise.all([readFile(lakePath), readFile(depthPath)]);
 
-  assert.equal(result.summary.productionLakeCount, 22);
-  assert.equal(result.summary.publishedLakeCount, 0);
+  assert.deepEqual(result.summary, {
+    productionLakeCount: 22,
+    publishedLakeCount: 1,
+    compatibleAdditionCount: 1,
+    blockedPublishedLakeCount: 0,
+    idConflictCount: 0,
+    compatibilityOrTransformationErrorCount: 0,
+    proposedLakeCount: 23,
+  });
+  assert.deepEqual(result.additions.map(({ id }) => id), ["mogolen-hedenstorp"]);
+  assert.equal(result.proposedDataset.lakes["mogolen-hedenstorp"].name, "Mogölen");
+  assert.equal(Object.hasOwn(lakes, "mogolen-hedenstorp"), false);
   assert.deepEqual(after, before);
 });
