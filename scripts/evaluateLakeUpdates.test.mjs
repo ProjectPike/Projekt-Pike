@@ -204,7 +204,7 @@ test("malformed or unsafe update paths and missing parents are blocked", () => {
   assert.deepEqual(result.blockers.map(({ code }) => code), ["missing-update-parent"]);
 });
 
-test("the applied real Mogölen proposal is stale in the raw proposal dry run", async () => {
+test("real update proposals reflect applied Mogölen and pending baseline audit batch A", async () => {
   const paths = [
     new URL("../src/data/lakes.js", import.meta.url),
     new URL("../src/data/lakeDepthMapResearch.js", import.meta.url),
@@ -212,14 +212,21 @@ test("the applied real Mogölen proposal is stale in the raw proposal dry run", 
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const suite = await run([], () => {});
   const after = await Promise.all(paths.map((path) => readFile(path)));
-  const [result] = suite.results;
+  const mogolen = suite.results.find(({ proposalId }) =>
+    proposalId === "mogolen-hedenstorp-spin");
+  const pending = suite.results.filter(({ eligible }) => eligible);
 
-  assert.equal(suite.summary.proposalCount, 1);
-  assert.equal(suite.summary.eligibleProposalCount, 0);
+  assert.equal(suite.summary.proposalCount, 4);
+  assert.equal(suite.summary.eligibleProposalCount, 3);
   assert.equal(suite.summary.blockedProposalCount, 1);
   assert.equal(suite.summary.productionModified, false);
-  assert.equal(result.targetLakeId, targetId);
-  assert.ok(result.blockers.some(({ code }) => code === "stale-target-fingerprint"));
+  assert.deepEqual(pending.map(({ proposalId }) => proposalId), [
+    "sommen-baseline-audit-1",
+    "straken-baseline-audit-1",
+    "vattern-baseline-audit-1",
+  ]);
+  assert.equal(mogolen.targetLakeId, targetId);
+  assert.ok(mogolen.blockers.some(({ code }) => code === "stale-target-fingerprint"));
   assert.deepEqual(after, before);
 });
 

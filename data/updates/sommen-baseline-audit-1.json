@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "sommen-baseline-audit-1",
+  "targetLakeId": "sommen",
+  "targetLakeFingerprint": "994651f458c381b7f452e269e68088d645465f98aac0685faa4f8d2a792d5095",
+  "reason": "Baseline Lake Audit v1 kompletterar Sommen med FVO:s artlista och gör de minsta källstödda legacy-sammanfattningarna koherenta med redan verifierade detaljfakta.",
+  "sources": [
+    {
+      "id": "sommen-fiskarter",
+      "type": "fvo-club",
+      "title": "Sommens FVO — Fiskarter",
+      "url": "https://www.sommen.org/index.php/sv/sommen-fiske/arter",
+      "checkedAt": "2026-09-14"
+    },
+    {
+      "id": "sommen-fiskeregler",
+      "type": "fvo-club",
+      "title": "Sommens FVO — Fiskeregler",
+      "url": "https://www.sommen.org/index.php?Itemid=80&id=49&lang=sv&option=com_content&view=article",
+      "checkedAt": "2026-09-14"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "benlöja",
+          "bergsimpa",
+          "braxen",
+          "elritsa",
+          "färna",
+          "gers",
+          "gädda",
+          "gös",
+          "lake",
+          "mört",
+          "nors",
+          "ruda",
+          "röding",
+          "sarv",
+          "sik",
+          "siklöja",
+          "småspigg",
+          "sutare",
+          "vimma",
+          "öring",
+          "ål"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.sommen.org/index.php/sv/sommen-fiske/arter",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Fiskarter som Sommens FVO uttryckligen listar; kräftor redovisas separat och ingår inte här.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar Sommens FVO:s uttryckliga fiskartlista.",
+      "sources": [
+        "sommen-fiskarter"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "fishing.permit",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "status": "unknown",
+          "label": "Uppgift saknas"
+        }
+      },
+      "proposed": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "reason": "Legacy-sammanfattningen ska återspegla det verifierade FVO-kravet på fiskekort.",
+      "sources": [
+        "sommen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "fishing.rules",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "status": "unverified",
+          "label": "Ej verifierade"
+        }
+      },
+      "proposed": {
+        "status": "verified",
+        "label": "Verifierade regler"
+      },
+      "reason": "Legacy-sammanfattningen ska återspegla de verifierade FVO-reglerna som redan finns som detaljfakta.",
+      "sources": [
+        "sommen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "fishing.protectedAreas",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "status": "checking",
+          "label": "Kontrolleras"
+        }
+      },
+      "proposed": {
+        "status": "verified",
+        "label": "Fredningsområden finns"
+      },
+      "reason": "Legacy-sammanfattningen ska återspegla FVO:s verifierade fredningsområden och platsregler.",
+      "sources": [
+        "sommen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    }
+  ]
+}
