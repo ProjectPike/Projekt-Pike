@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "vattern-baseline-audit-1",
+  "targetLakeId": "vattern",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-14",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "d8f4dff36a043f7771616c25231e2e8c21e0a4ff8d19b336e79dda975375ac1e",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch A. Förslaget uppdaterar endast Vätterns uttryckligt angivna artlista och storleksgränser."
+}

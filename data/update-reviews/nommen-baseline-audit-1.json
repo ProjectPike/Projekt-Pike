@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "nommen-baseline-audit-1",
+  "targetLakeId": "nommen",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-14",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "cd583fc4c8b45c44abd827db58c9b5cb49388017fbbd2c3a8cb29161470f628b",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch A. Förslaget lägger endast till Nömmens uttryckliga familjeomfattning."
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "straken-baseline-audit-1",
+  "targetLakeId": "straken",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-14",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "fc6e1c3f79d91b87fd202b0352bf398e424bf203fee02d4729944d3d16a4ce84",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch A. Förslaget uppdaterar endast Stråkens artlista och återutsättningskrav."
+}

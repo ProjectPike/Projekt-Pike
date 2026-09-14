@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "sommen-baseline-audit-1",
+  "targetLakeId": "sommen",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-14",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "af247ad630daab0a999155d5e965ed405096706ab7edb635f14078fb6dd93374",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch A. Förslaget uppdaterar endast Sommens artlista och uttryckliga legacy-sammanfattningar."
+}

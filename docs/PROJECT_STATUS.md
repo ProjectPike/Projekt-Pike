@@ -54,9 +54,9 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Existing Lake Update v1 U1.2.1 bevarar new-lake-proveniens över senare
   granskade uppdateringar genom exakt rekonstruktion av baseline + `alreadyApplied`-
   historik; oförklarad drift fortsätter blockeras.
-- Baseline Lake Audit v1 Batch A har oreviewade, read-only-utvärderade
-  ändringsförslag för Vättern, Sommen, Stråken och Nömmen; inget är publicerat
-  eller live.
+- Baseline Lake Audit v1 Batch A har hashbundet godkända och isolerat publicerade
+  ändringsförslag för Vättern, Sommen, Stråken och Nömmen; Tenhultasjön krävde
+  ingen uppdatering och ingen produktions-apply är utförd.
 
 ### Entitlement-arkitektur
 
