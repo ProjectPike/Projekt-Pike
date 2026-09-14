@@ -218,6 +218,17 @@ function locateParent(root, segments) {
   return parent && typeof parent === "object" && !Array.isArray(parent) ? parent : null;
 }
 
+export function applyReviewedProposedValues(target, changes) {
+  const result = structuredClone(target);
+  for (const change of changes) {
+    const segments = parseUpdatePath(change.path);
+    const parent = locateParent(result, segments ?? []);
+    if (!parent) throw new Error(`${change.path}: every parent object must already exist`);
+    parent[segments.at(-1)] = structuredClone(change.proposed);
+  }
+  return result;
+}
+
 function semanticDiffPaths(before, after, path = "") {
   if (canonicalJson(before) === canonicalJson(after)) return [];
   const beforeObject = before !== null && typeof before === "object" && !Array.isArray(before);

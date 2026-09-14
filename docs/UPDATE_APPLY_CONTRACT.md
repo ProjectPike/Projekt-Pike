@@ -22,7 +22,16 @@ matching approved hash-bound review.
 One already-applied update and one pending update for a different path on the
 same lake are allowed. Multiple pending updates for one lake are not implicitly
 ordered. A pending update may not reuse a path owned by already-applied history;
-that requires a future explicit supersede/version contract.
+that requires a future explicit supersede/version contract. Overlapping
+already-applied history is likewise ambiguous and blocked without that contract.
+
+For a lake originating in the new-lake workflow, valid already-applied updates
+also form its provenance lineage. The new-lake pipeline reconstructs the complete
+expected current lake from the immutable original publication plus those exact
+reviewed SET values. Exact equality keeps the original publication satisfied;
+pending updates do not participate, and any unexplained drift remains blocked.
+Existing Lake Update v1 does not alter depth research, so its original equality
+requirement is unchanged.
 
 ## Preflight integrity
 

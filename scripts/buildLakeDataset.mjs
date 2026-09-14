@@ -4,6 +4,9 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { lakes } from "../src/data/lakes.js";
 import { lakeDepthMapResearch } from "../src/data/lakeDepthMapResearch.js";
+import { lakePointsByLakeId } from "../src/data/lakePoints.js";
+import { applyReviewedProposedValues } from "./evaluateLakeUpdates.mjs";
+import { evaluatePublishedLakeUpdates } from "./evaluatePublishedLakeUpdates.mjs";
 import {
   assessPublishedLakeCompatibility,
   mapPublishedLakeCompatibleFields,
@@ -33,6 +36,17 @@ function sortedReasons(reasons) {
 
 function sameValue(left, right) {
   return canonicalJson(left) === canonicalJson(right);
+}
+
+function reconstructReviewedLakeBaseline(baseline, lakeId, appliedUpdateHistory) {
+  let expected = structuredClone(baseline);
+  const history = appliedUpdateHistory
+    .filter(({ targetLakeId }) => targetLakeId === lakeId)
+    .sort((left, right) => compareText(left.id, right.id));
+  for (const update of history) {
+    expected = applyReviewedProposedValues(expected, update.changes);
+  }
+  return expected;
 }
 
 function parsePublishedDocument(document) {
@@ -86,6 +100,7 @@ export function buildLakeDatasetDryRun({
   productionLakes,
   productionDepthMapResearch,
   publishedDocuments,
+  appliedUpdateHistory = [],
 }) {
   const proposedLakes = cloneSortedRecord(productionLakes);
   const proposedDepthMapResearch = cloneSortedRecord(productionDepthMapResearch);
@@ -156,7 +171,14 @@ export function buildLakeDatasetDryRun({
       const mapped = mapPublishedLakeCompatibleFields(publication);
       const { lakeDepthMapResearch: depthMapResearch, ...lake } = mapped;
       if (Object.hasOwn(productionLakes, id)) {
-        const matchingLake = sameValue(productionLakes[id], lake);
+        let expectedLake = lake;
+        try {
+          expectedLake = reconstructReviewedLakeBaseline(lake, id, appliedUpdateHistory);
+        } catch {
+          // A history entry that cannot be replayed on the immutable reviewed
+          // baseline cannot explain production drift.
+        }
+        const matchingLake = sameValue(productionLakes[id], expectedLake);
         const matchingDepth = Object.hasOwn(productionDepthMapResearch, id) &&
           sameValue(productionDepthMapResearch[id], depthMapResearch);
         if (matchingLake && matchingDepth) {
@@ -287,16 +309,36 @@ export async function loadPublishedDocuments(directory = defaultPublishedDirecto
   }));
 }
 
+export async function loadPublishedUpdateLineage(
+  root = repositoryRoot,
+  productionLakes = lakes,
+  productionDepthMapResearch = lakeDepthMapResearch,
+  productionLakePointsByLakeId = lakePointsByLakeId,
+) {
+  const documents = await loadPublishedDocuments(join(root, "data", "published-updates"));
+  return {
+    documents,
+    evaluation: evaluatePublishedLakeUpdates({
+      productionLakes,
+      productionDepthMapResearch,
+      lakePointsByLakeId: productionLakePointsByLakeId,
+      publishedDocuments: documents,
+    }),
+  };
+}
+
 export async function run(args = process.argv.slice(2), output = console.log) {
   if (args.length !== 0) {
     throw new Error("Usage: node scripts/buildLakeDataset.mjs (dry run only; no options)");
   }
 
   const publishedDocuments = await loadPublishedDocuments();
+  const updateLineage = await loadPublishedUpdateLineage();
   const result = buildLakeDatasetDryRun({
     productionLakes: lakes,
     productionDepthMapResearch: lakeDepthMapResearch,
     publishedDocuments,
+    appliedUpdateHistory: updateLineage.evaluation.alreadyApplied,
   });
   output(formatLakeDatasetDryRunReport(result).trimEnd());
   return result;

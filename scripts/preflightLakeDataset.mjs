@@ -8,6 +8,7 @@ import { lakes } from "../src/data/lakes.js";
 import {
   buildLakeDatasetDryRun,
   loadPublishedDocuments,
+  loadPublishedUpdateLineage,
 } from "./buildLakeDataset.mjs";
 import {
   createProductionDatasetPreflight,
@@ -20,10 +21,12 @@ const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
 export async function createRepositoryPreflight(root = repositoryRoot) {
   const publishedDocuments = await loadPublishedDocuments(join(root, "data", "published"));
+  const updateLineage = await loadPublishedUpdateLineage(root);
   const buildResult = buildLakeDatasetDryRun({
     productionLakes: lakes,
     productionDepthMapResearch: lakeDepthMapResearch,
     publishedDocuments,
+    appliedUpdateHistory: updateLineage.evaluation.alreadyApplied,
   });
   const currentFiles = Object.fromEntries(await Promise.all(
     Object.values(productionDatasetFiles).map(async (path) => [
@@ -37,7 +40,13 @@ export async function createRepositoryPreflight(root = repositoryRoot) {
     productionDepthMapResearch: lakeDepthMapResearch,
     lakePointsByLakeId,
     currentFiles,
-    publishedInputFingerprint: fingerprintPublishedDocuments(publishedDocuments),
+    publishedInputFingerprint: fingerprintPublishedDocuments([
+      ...publishedDocuments.map((document) => ({ ...document, file: `new-lakes/${document.file}` })),
+      ...updateLineage.documents.map((document) => ({
+        ...document,
+        file: `lake-updates/${document.file}`,
+      })),
+    ]),
   });
   return preflight;
 }

@@ -146,6 +146,7 @@ export function evaluatePublishedLakeUpdates({
         id,
         targetLakeId,
         changedPaths: proposal.changes.map(({ path }) => path).sort(compareText),
+        changes: structuredClone(proposal.changes),
       });
       continue;
     }
@@ -207,8 +208,33 @@ export function evaluatePublishedLakeUpdates({
     .map(([targetLakeId]) => targetLakeId));
   let acceptedPending = pending.filter(({ targetLakeId }) => !ambiguousTargets.has(targetLakeId));
 
+  const ambiguousHistoryIds = new Set();
+  for (let index = 0; index < alreadyApplied.length; index += 1) {
+    const left = alreadyApplied[index];
+    for (const right of alreadyApplied.slice(index + 1)) {
+      if (left.targetLakeId !== right.targetLakeId) continue;
+      const overlap = left.changedPaths.find((leftPath) =>
+        right.changedPaths.some((rightPath) => pathsOverlap(leftPath, rightPath)));
+      if (!overlap) continue;
+      ambiguousHistoryIds.add(left.id);
+      ambiguousHistoryIds.add(right.id);
+    }
+  }
+  for (const entry of alreadyApplied.filter(({ id }) => ambiguousHistoryIds.has(id))) {
+    blockedEntries.push(blocked(
+      { file: entry.file },
+      { proposal: { proposalId: entry.id, targetLakeId: entry.targetLakeId } },
+      [reason(
+        "ambiguous-applied-update-history", `lakes.${entry.targetLakeId}`,
+        "already-applied updates overlap without explicit superseding history",
+      )],
+    ));
+  }
+  const acceptedAlreadyApplied = alreadyApplied
+    .filter(({ id }) => !ambiguousHistoryIds.has(id));
+
   const historicalPaths = new Map();
-  for (const entry of alreadyApplied) {
+  for (const entry of acceptedAlreadyApplied) {
     const paths = historicalPaths.get(entry.targetLakeId) ?? [];
     paths.push(...entry.changedPaths);
     historicalPaths.set(entry.targetLakeId, paths);
@@ -238,7 +264,7 @@ export function evaluatePublishedLakeUpdates({
   return {
     eligible: blockedEntries.length === 0,
     pending: acceptedPending,
-    alreadyApplied: alreadyApplied.sort((left, right) => compareText(left.id, right.id)),
+    alreadyApplied: acceptedAlreadyApplied.sort((left, right) => compareText(left.id, right.id)),
     blocked: blockedEntries.sort((left, right) =>
       compareText(left.file, right.file) || compareText(left.id ?? "", right.id ?? "")),
     proposedDataset: {
@@ -248,7 +274,7 @@ export function evaluatePublishedLakeUpdates({
     summary: {
       publishedUpdateCount: publishedDocuments.length,
       pendingUpdateCount: acceptedPending.length,
-      alreadyAppliedUpdateCount: alreadyApplied.length,
+      alreadyAppliedUpdateCount: acceptedAlreadyApplied.length,
       blockedUpdateCount: blockedEntries.length,
       productionModified: false,
     },

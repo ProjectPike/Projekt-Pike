@@ -209,6 +209,22 @@ test("changing a path owned by already-applied history requires superseding", ()
   assert.deepEqual(result.blocked[0].reasons.map(({ code }) => code), ["historical-path-conflict"]);
 });
 
+test("overlapping already-applied history is ambiguous without superseding", () => {
+  const production = state();
+  const first = proposal(production, { id: "mogolen-spin-history-one" });
+  const second = proposal(production, { id: "mogolen-spin-history-two" });
+  production.productionLakes[targetId].details.methods.spin = fact();
+  const result = evaluate(production, [
+    document(publication(first)),
+    document(publication(second)),
+  ]);
+  assert.equal(result.eligible, false);
+  assert.equal(result.summary.alreadyAppliedUpdateCount, 0);
+  assert.equal(result.summary.blockedUpdateCount, 2);
+  assert.ok(result.blocked.every(({ reasons }) =>
+    reasons[0].code === "ambiguous-applied-update-history"));
+});
+
 test("update preflight changes only lakes.js and preserves all unrelated bytes and semantics", async () => {
   const production = state();
   const update = proposal(production);

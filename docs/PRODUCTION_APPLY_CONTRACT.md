@@ -10,8 +10,9 @@ Apply is never triggered by validation, build, review or publish.
 A proposal is eligible only when:
 
 - Part 3A reports no blocked publication;
-- a reviewed publication already present in production matches both its complete
-  mapped lake record and depth-research record exactly;
+- a reviewed publication already present in production matches its complete
+  reconstructed lake record (immutable new-lake baseline plus valid
+  `alreadyApplied` update history) and its original depth-research record exactly;
 - every current lake and depth-research record remains present and semantically
   unchanged;
 - every new lake ID comes from Part 3A's approved additions and has one matching
@@ -26,9 +27,13 @@ order, then appends approved new IDs in lexical order. With no additions, propos
 output is byte-identical to current production and no file would change.
 
 An exactly matching reviewed publication is classified as already applied and is
-an idempotent satisfied state: it is neither a new addition nor a blocker. Any
-mismatch in either mapped record for an existing production ID remains a
-`production-id-conflict`; existing records are never merged, normalized or updated.
+an idempotent satisfied state: it is neither a new addition nor a blocker. Later
+existing-lake changes preserve that state only when the complete current lake is
+exactly reconstructable from the immutable new-lake baseline plus cryptographically
+valid updates already present in production. Pending, rejected, malformed or
+hash-invalid updates cannot explain drift, and depth-research equality remains
+unchanged. Any unexplained mismatch remains a `production-id-conflict`; existing
+records are never merged, normalized or updated by this workflow.
 
 ## Implemented apply sequence
 

@@ -49,6 +49,9 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   publicering; Mogölens Spinn-korrigering är godkänd och publicerad men inte live.
 - Existing Lake Update v1 U1.2 ger fingerprint-bunden produktionspreflight och
   explicit säker apply; Mogölens korrigering är preflight-redo men ännu inte live.
+- Existing Lake Update v1 U1.2.1 bevarar new-lake-proveniens över senare
+  granskade uppdateringar genom exakt rekonstruktion av baseline + `alreadyApplied`-
+  historik; oförklarad drift fortsätter blockeras.
 
 ### Entitlement-arkitektur
 
@@ -328,7 +331,10 @@ uppdateringsartefakt. U1.2 klassar publicerad historik som pending,
 `alreadyApplied` eller blockerad och återanvänder den verifierade staging-, backup-
 och rollback-motorn via separata `preflight:lake-updates` och
 `apply:lake-updates`. Den verkliga Mogölen-korrigeringen är preflight-redo men har
-inte applicerats.
+inte applicerats. U1.2.1 låter den ursprungliga new-lake-publikationen förbli
+uppfylld efter senare uppdateringar endast när hela den aktuella sjön kan
+rekonstrueras exakt från dess oföränderliga baseline och giltig `alreadyApplied`-
+historik. Pending eller ogiltiga uppdateringar förklarar aldrig produktionsdrift.
 
 Arkitektur:
 
