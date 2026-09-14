@@ -11,4 +11,12 @@ different, malformed or unsafe existing content blocks. There is no overwrite,
 force or output-path option.
 
 Published update is not live. This directory is not read by the app or the
-new-lake builder, and U1.1 has no production update apply path.
+new-lake builder. U1.2 provides separate `preflight:lake-updates` and explicit
+`apply:lake-updates` commands; publication never triggers either automatically.
+
+Preflight classifies each intact publication as pending, already applied or
+blocked. Exact reviewed path values remain satisfied history even after later
+updates change unrelated fields. Drift on a historically owned path blocks, and
+changing that same path again requires a future explicit supersede mechanism.
+Multiple pending updates for one lake are blocked unless sequencing is explicitly
+added in a later contract.

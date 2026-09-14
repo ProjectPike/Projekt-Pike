@@ -67,20 +67,7 @@ export function validateUpdateReview(review) {
   return errors;
 }
 
-function eligibilityErrors(result) {
-  return [
-    ...result.blockers.map(({ code, path, message }) => `[${code}] ${path}: ${message}`),
-    ...result.validationErrors.map((error) => `[production-validation] ${error}`),
-  ];
-}
-
-export function prepareUpdatePublication({
-  proposal,
-  review,
-  productionLakes = lakes,
-  productionDepthMapResearch = lakeDepthMapResearch,
-  productionLakePointsByLakeId = lakePointsByLakeId,
-}) {
+export function prepareReviewedUpdatePublication(proposal, review) {
   const proposalErrors = validateLakeUpdateProposal(proposal);
   if (proposalErrors.length > 0) {
     throw new Error(`Update proposal invalid:\n${proposalErrors.map(({ code, path, message }) =>
@@ -99,6 +86,24 @@ export function prepareUpdatePublication({
   if (review.proposalHash !== updateProposalHash(proposal)) {
     throw new Error("Update proposal changed after approval: new human review required");
   }
+  return JSON.parse(canonicalJson({ schemaVersion: 1, proposal, review }));
+}
+
+function eligibilityErrors(result) {
+  return [
+    ...result.blockers.map(({ code, path, message }) => `[${code}] ${path}: ${message}`),
+    ...result.validationErrors.map((error) => `[production-validation] ${error}`),
+  ];
+}
+
+export function prepareUpdatePublication({
+  proposal,
+  review,
+  productionLakes = lakes,
+  productionDepthMapResearch = lakeDepthMapResearch,
+  productionLakePointsByLakeId = lakePointsByLakeId,
+}) {
+  const publication = prepareReviewedUpdatePublication(proposal, review);
 
   const evaluation = evaluateLakeUpdateProposal({
     proposal,
@@ -110,7 +115,7 @@ export function prepareUpdatePublication({
     throw new Error(`Update proposal is not eligible against current production:\n${eligibilityErrors(evaluation).join("\n")}`);
   }
 
-  return JSON.parse(canonicalJson({ schemaVersion: 1, proposal, review }));
+  return publication;
 }
 
 async function regular(path, directory = false) {

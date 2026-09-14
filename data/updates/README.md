@@ -5,7 +5,9 @@ already exist in production. This is separate from the new-lake
 candidate/review/published pipeline. U1.0 provides validation and a read-only dry
 run. U1.1 adds hash-bound human review in `data/update-reviews/` and isolated
 publication in `data/published-updates/`. There is still no production-apply path
-for updates.
+inside the proposal evaluator or publisher. U1.2 adds a separate fingerprint-bound
+preflight and explicit safe apply command documented in
+`docs/UPDATE_APPLY_CONTRACT.md`.
 
 Run `npm run dry-run:lake-updates`. The command reads proposals, evaluates them
 against the current production lake records in memory, validates the complete

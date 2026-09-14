@@ -67,6 +67,7 @@ function verifyProposalIntegrity(preflight) {
     productionFingerprints: preflight.productionFingerprints,
     proposedOutputFingerprints: preflight.proposedOutputFingerprints,
     additionIds: preflight.additions,
+    fingerprintIds: preflight.fingerprintIds ?? preflight.additions,
     publishedInputFingerprint: preflight.publishedInputFingerprint,
   });
   if (expectedProposal !== preflight.proposalFingerprint) {
@@ -146,7 +147,8 @@ async function rollbackProduction({
     const validation = await validateSerializedProductionFiles({
       serializedFiles: restored,
       lakePointsByLakeId,
-      expectedLakeCount: preflight.validationStats.lakeCount - preflight.additions.length,
+      expectedLakeCount: preflight.baselineLakeCount ??
+        preflight.validationStats.lakeCount - preflight.additions.length,
     });
     errors.push(...validation.errors.map((error) => `rollback validation: ${error}`));
   } catch (error) {

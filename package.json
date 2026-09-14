@@ -16,6 +16,8 @@
     "dry-run:lake-updates": "node scripts/evaluateLakeUpdates.mjs",
     "hash:lake-update": "node scripts/publishLakeUpdate.mjs hash",
     "publish:lake-update": "node scripts/publishLakeUpdate.mjs publish",
+    "preflight:lake-updates": "node scripts/preflightLakeUpdates.mjs",
+    "apply:lake-updates": "node scripts/applyLakeUpdates.mjs",
     "build:lake-data": "node scripts/buildLakeDataset.mjs",
     "preflight:lake-data": "node scripts/preflightLakeDataset.mjs",
     "apply:lake-data": "node scripts/applyLakeDataset.mjs",

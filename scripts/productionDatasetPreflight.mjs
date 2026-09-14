@@ -46,6 +46,17 @@ async function importSerializedModule(content) {
   return import(`data:text/javascript;base64,${encoded}#${sha256(content)}`);
 }
 
+export async function parseSerializedProductionFiles(serializedFiles) {
+  const [lakeModule, depthModule] = await Promise.all([
+    importSerializedModule(serializedFiles[productionDatasetFiles.lakes]),
+    importSerializedModule(serializedFiles[productionDatasetFiles.lakeDepthMapResearch]),
+  ]);
+  return {
+    lakes: lakeModule.lakes,
+    lakeDepthMapResearch: depthModule.lakeDepthMapResearch,
+  };
+}
+
 export function fingerprintPublishedDocuments(documents) {
   return sha256(canonicalJson([...documents]
     .sort((left, right) => compareText(left.file, right.file))
@@ -62,13 +73,10 @@ export async function validateSerializedProductionFiles({
   expectedLakeCount,
 }) {
   try {
-    const [lakeModule, depthModule] = await Promise.all([
-      importSerializedModule(serializedFiles[productionDatasetFiles.lakes]),
-      importSerializedModule(serializedFiles[productionDatasetFiles.lakeDepthMapResearch]),
-    ]);
+    const parsed = await parseSerializedProductionFiles(serializedFiles);
     return validateLakeDataState({
-      lakes: lakeModule.lakes,
-      lakeDepthMapResearch: depthModule.lakeDepthMapResearch,
+      lakes: parsed.lakes,
+      lakeDepthMapResearch: parsed.lakeDepthMapResearch,
       lakePointsByLakeId,
       expectedLakeCount,
     });
@@ -84,12 +92,13 @@ export function productionProposalFingerprint({
   productionFingerprints,
   proposedOutputFingerprints,
   additionIds,
+  fingerprintIds = additionIds,
   publishedInputFingerprint = null,
 }) {
   return sha256(canonicalJson({
     productionFingerprints,
     proposedOutputFingerprints,
-    additionIds: [...additionIds].sort(compareText),
+    additionIds: [...fingerprintIds].sort(compareText),
     publishedInputFingerprint,
   }));
 }

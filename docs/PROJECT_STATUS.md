@@ -47,6 +47,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   ändringsförslag och read-only dry-run utan produktionsskrivväg.
 - Existing Lake Update v1 U1.1 ger hashbunden mänsklig review och isolerad
   publicering; Mogölens Spinn-korrigering är godkänd och publicerad men inte live.
+- Existing Lake Update v1 U1.2 ger fingerprint-bunden produktionspreflight och
+  explicit säker apply; Mogölens korrigering är preflight-redo men ännu inte live.
 
 ### Entitlement-arkitektur
 
@@ -322,7 +324,11 @@ förväntat före-värde och utvärderas endast i minnet mot hela produktionsval
 U1.1 binder ett mänskligt beslut till förslagets canonical SHA-256 och publicerar
 godkända, fortsatt aktuella förslag isolerat i `data/published-updates/`.
 Mogölens tillägg av `details.methods.spin` är godkänt och publicerat som
-uppdateringsartefakt. Produktions-apply för uppdateringar finns ännu inte.
+uppdateringsartefakt. U1.2 klassar publicerad historik som pending,
+`alreadyApplied` eller blockerad och återanvänder den verifierade staging-, backup-
+och rollback-motorn via separata `preflight:lake-updates` och
+`apply:lake-updates`. Den verkliga Mogölen-korrigeringen är preflight-redo men har
+inte applicerats.
 
 Arkitektur:
 
