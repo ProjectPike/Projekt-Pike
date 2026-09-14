@@ -48,7 +48,9 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Existing Lake Update v1 U1.1 ger hashbunden mänsklig review och isolerad
   publicering; Mogölens Spinn-korrigering är godkänd och publicerad men inte live.
 - Existing Lake Update v1 U1.2 ger fingerprint-bunden produktionspreflight och
-  explicit säker apply; Mogölens korrigering är preflight-redo men ännu inte live.
+  explicit säker apply. Den första verkliga uppdateringen,
+  `mogolen-hedenstorp-spin`, är applicerad och `alreadyApplied`; verifierad Spinn
+  är nu live för Mogölen.
 - Existing Lake Update v1 U1.2.1 bevarar new-lake-proveniens över senare
   granskade uppdateringar genom exakt rekonstruktion av baseline + `alreadyApplied`-
   historik; oförklarad drift fortsätter blockeras.
@@ -330,11 +332,14 @@ Mogölens tillägg av `details.methods.spin` är godkänt och publicerat som
 uppdateringsartefakt. U1.2 klassar publicerad historik som pending,
 `alreadyApplied` eller blockerad och återanvänder den verifierade staging-, backup-
 och rollback-motorn via separata `preflight:lake-updates` och
-`apply:lake-updates`. Den verkliga Mogölen-korrigeringen är preflight-redo men har
-inte applicerats. U1.2.1 låter den ursprungliga new-lake-publikationen förbli
+`apply:lake-updates`. Den verkliga Mogölen-korrigeringen är nu applicerad:
+`details.methods.spin` är verifierat tillåten och uppdateringen är ett idempotent
+`alreadyApplied`-läge. U1.2.1 låter den ursprungliga new-lake-publikationen förbli
 uppfylld efter senare uppdateringar endast när hela den aktuella sjön kan
 rekonstrueras exakt från dess oföränderliga baseline och giltig `alreadyApplied`-
 historik. Pending eller ogiltiga uppdateringar förklarar aldrig produktionsdrift.
+Det separata existing-lake-flödet har därmed körts end-to-end; nästa större
+dataarbete är Baseline Lake Audit v1.
 
 Arkitektur:
 

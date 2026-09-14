@@ -9,7 +9,10 @@ import { evaluatePublishedLakeUpdates } from "./evaluatePublishedLakeUpdates.mjs
 import { semanticFingerprint } from "./evaluateLakeUpdates.mjs";
 import { canonicalJson } from "./publishCandidateLake.mjs";
 import { updateProposalHash } from "./publishLakeUpdate.mjs";
-import { createLakeUpdatePreflight } from "./preflightLakeUpdates.mjs";
+import {
+  createLakeUpdatePreflight,
+  replaceLakeRecordInModule,
+} from "./preflightLakeUpdates.mjs";
 import {
   createProductionDatasetPreflight,
   fingerprintPublishedDocuments,
@@ -56,8 +59,18 @@ function build(productionLakes, lakeDocuments, lifecycle) {
 
 test("cross-pipeline lifecycle preserves original provenance after reviewed update", async () => {
   const inputs = await repositoryInputs();
-  const beforeLifecycle = updateLifecycle(lakes, inputs.updateDocuments);
-  const beforeBuild = build(lakes, inputs.lakeDocuments, beforeLifecycle);
+  const beforeLakes = structuredClone(lakes);
+  delete beforeLakes[targetId].details.methods.spin;
+  const beforeFiles = {
+    ...inputs.currentFiles,
+    [productionDatasetFiles.lakes]: replaceLakeRecordInModule(
+      inputs.currentFiles[productionDatasetFiles.lakes],
+      targetId,
+      beforeLakes[targetId],
+    ),
+  };
+  const beforeLifecycle = updateLifecycle(beforeLakes, inputs.updateDocuments);
+  const beforeBuild = build(beforeLakes, inputs.lakeDocuments, beforeLifecycle);
 
   assert.deepEqual(beforeBuild.alreadyApplied.map(({ id }) => id), [targetId]);
   assert.equal(beforeBuild.blocked.length, 0);
@@ -65,11 +78,11 @@ test("cross-pipeline lifecycle preserves original provenance after reviewed upda
   assert.equal(beforeLifecycle.blocked.length, 0);
 
   const pendingPreflight = await createLakeUpdatePreflight({
-    productionLakes: lakes,
+    productionLakes: beforeLakes,
     productionDepthMapResearch: lakeDepthMapResearch,
     lakePointsByLakeId,
     publishedDocuments: inputs.updateDocuments,
-    currentFiles: inputs.currentFiles,
+    currentFiles: beforeFiles,
   });
   const appliedLakes = pendingPreflight.proposedDataset.lakes;
   const appliedFiles = pendingPreflight.serializedFiles;

@@ -19,7 +19,7 @@ const otherId = Object.keys(lakes).find((id) => id !== targetId);
 const proposalId = "mogolen-hedenstorp-spin-test";
 
 function productionState() {
-  return {
+  const result = {
     productionLakes: {
       [otherId]: structuredClone(lakes[otherId]),
       [targetId]: structuredClone(lakes[targetId]),
@@ -30,6 +30,8 @@ function productionState() {
     },
     productionLakePointsByLakeId: {},
   };
+  delete result.productionLakes[targetId].details.methods.spin;
+  return result;
 }
 
 function spinFact() {

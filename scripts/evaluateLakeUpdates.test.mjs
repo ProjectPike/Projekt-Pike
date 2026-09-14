@@ -15,7 +15,7 @@ const targetId = "mogolen-hedenstorp";
 const otherId = Object.keys(lakes).find((id) => id !== targetId);
 
 function production() {
-  return {
+  const result = {
     lakes: {
       [otherId]: structuredClone(lakes[otherId]),
       [targetId]: structuredClone(lakes[targetId]),
@@ -25,6 +25,8 @@ function production() {
       [targetId]: structuredClone(lakeDepthMapResearch[targetId]),
     },
   };
+  delete result.lakes[targetId].details.methods.spin;
+  return result;
 }
 
 function spinFact() {
@@ -202,7 +204,7 @@ test("malformed or unsafe update paths and missing parents are blocked", () => {
   assert.deepEqual(result.blockers.map(({ code }) => code), ["missing-update-parent"]);
 });
 
-test("the real Mogölen proposal is an exact read-only absent-to-spin update", async () => {
+test("the applied real Mogölen proposal is stale in the raw proposal dry run", async () => {
   const paths = [
     new URL("../src/data/lakes.js", import.meta.url),
     new URL("../src/data/lakeDepthMapResearch.js", import.meta.url),
@@ -213,29 +215,11 @@ test("the real Mogölen proposal is an exact read-only absent-to-spin update", a
   const [result] = suite.results;
 
   assert.equal(suite.summary.proposalCount, 1);
-  assert.equal(suite.summary.eligibleProposalCount, 1);
+  assert.equal(suite.summary.eligibleProposalCount, 0);
+  assert.equal(suite.summary.blockedProposalCount, 1);
   assert.equal(suite.summary.productionModified, false);
   assert.equal(result.targetLakeId, targetId);
-  assert.deepEqual(result.changes, [{
-    path: "details.methods.spin",
-    before: { state: "absent" },
-    after: {
-      value: "allowed",
-      status: "verified",
-      ruleType: "rule",
-      verifiedAt: "2026-09-14",
-      sources: [{
-        url: "https://www.jsf-fiske.net/sida/80557/mogolen",
-        type: "fvo-club",
-      }],
-      note: "Kastspö är uttryckligen tillåtet enligt Jönköpings SFK.",
-      conditions: null,
-    },
-  }]);
-  assert.equal(result.summary.changedTargetPathCount, 1);
-  assert.equal(result.summary.otherTargetFieldsChanged, 0);
-  assert.equal(result.summary.otherLakesChanged, 0);
-  assert.equal(Object.hasOwn(result.proposedDataset.lakes[targetId].details.methods, "lureFishing"), false);
+  assert.ok(result.blockers.some(({ code }) => code === "stale-target-fingerprint"));
   assert.deepEqual(after, before);
 });
 

@@ -11,7 +11,10 @@ import { run as runUpdateApply } from "./applyLakeUpdates.mjs";
 import { semanticFingerprint } from "./evaluateLakeUpdates.mjs";
 import { canonicalJson } from "./publishCandidateLake.mjs";
 import { updateProposalHash } from "./publishLakeUpdate.mjs";
-import { createLakeUpdatePreflight } from "./preflightLakeUpdates.mjs";
+import {
+  createLakeUpdatePreflight,
+  replaceLakeRecordInModule,
+} from "./preflightLakeUpdates.mjs";
 import { productionDatasetFiles } from "./productionDatasetPreflight.mjs";
 
 const targetId = "mogolen-hedenstorp";
@@ -77,10 +80,15 @@ async function setup(t) {
   const root = await mkdtemp(join(tmpdir(), "pike-update-apply-test-"));
   t.after(() => rm(root, { recursive: true, force: true }));
   await mkdir(join(root, "src", "data"), { recursive: true });
-  for (const path of Object.values(productionDatasetFiles)) {
-    await writeFile(join(root, path), await readFile(new URL(`../${path}`, import.meta.url), "utf8"));
-  }
   const productionLakes = structuredClone(lakes);
+  delete productionLakes[targetId].details.methods.spin;
+  for (const path of Object.values(productionDatasetFiles)) {
+    let source = await readFile(new URL(`../${path}`, import.meta.url), "utf8");
+    if (path === productionDatasetFiles.lakes) {
+      source = replaceLakeRecordInModule(source, targetId, productionLakes[targetId]);
+    }
+    await writeFile(join(root, path), source);
+  }
   const productionDepthMapResearch = structuredClone(lakeDepthMapResearch);
   const publishedDocuments = [{
     file: `${proposalId}.json`,

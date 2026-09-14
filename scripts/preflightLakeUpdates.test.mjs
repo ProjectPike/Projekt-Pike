@@ -17,11 +17,13 @@ const targetId = "mogolen-hedenstorp";
 const otherId = Object.keys(lakes).find((id) => id !== targetId);
 
 function state() {
-  return {
+  const result = {
     productionLakes: structuredClone(lakes),
     productionDepthMapResearch: structuredClone(lakeDepthMapResearch),
     lakePointsByLakeId: {},
   };
+  delete result.productionLakes[targetId].details.methods.spin;
+  return result;
 }
 
 function fact(note = "Reviewed spin rule.") {
@@ -257,18 +259,15 @@ test("preflight serialization and fingerprints are deterministic", async () => {
   assert.deepEqual(first.serializedFiles, second.serializedFiles);
 });
 
-test("real repository preflight is read-only and refuses to invoke apply while pending", async () => {
+test("real repository preflight is an already-applied read-only no-op", async () => {
   const paths = Object.values(productionDatasetFiles).map((path) => new URL(`../${path}`, import.meta.url));
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const result = await createRepositoryLakeUpdatePreflight();
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.pendingUpdates.map(({ id }) => id), ["mogolen-hedenstorp-spin"]);
-  assert.deepEqual(result.filesToChange, [productionDatasetFiles.lakes]);
-  let realApplyInvoked = false;
-  if (result.filesToChange.length === 0) realApplyInvoked = true;
-  assert.equal(realApplyInvoked, false, "pending real updates must never be applied by tests");
+  assert.deepEqual(result.pendingUpdates, []);
+  assert.deepEqual(result.alreadyApplied, ["mogolen-hedenstorp-spin"]);
+  assert.deepEqual(result.filesToChange, []);
   assert.deepEqual(after, before);
-  // The test deliberately does not import or invoke the real apply command.
 });
