@@ -55,7 +55,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   granskade uppdateringar genom exakt rekonstruktion av baseline + `alreadyApplied`-
   historik; oförklarad drift fortsätter blockeras.
 - Baseline Lake Audit v1 Batch A har oreviewade, read-only-utvärderade
-  ändringsförslag för Vättern, Sommen och Stråken; inget är publicerat eller live.
+  ändringsförslag för Vättern, Sommen, Stråken och Nömmen; inget är publicerat
+  eller live.
 
 ### Entitlement-arkitektur
 

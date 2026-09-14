@@ -216,11 +216,12 @@ test("real update proposals reflect applied Mogölen and pending baseline audit 
     proposalId === "mogolen-hedenstorp-spin");
   const pending = suite.results.filter(({ eligible }) => eligible);
 
-  assert.equal(suite.summary.proposalCount, 4);
-  assert.equal(suite.summary.eligibleProposalCount, 3);
+  assert.equal(suite.summary.proposalCount, 5);
+  assert.equal(suite.summary.eligibleProposalCount, 4);
   assert.equal(suite.summary.blockedProposalCount, 1);
   assert.equal(suite.summary.productionModified, false);
   assert.deepEqual(pending.map(({ proposalId }) => proposalId), [
+    "nommen-baseline-audit-1",
     "sommen-baseline-audit-1",
     "straken-baseline-audit-1",
     "vattern-baseline-audit-1",
