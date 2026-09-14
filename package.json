@@ -14,6 +14,8 @@
     "validate:lakes": "node scripts/validateLakeData.mjs",
     "validate:candidates": "node scripts/validateCandidateLakes.mjs",
     "dry-run:lake-updates": "node scripts/evaluateLakeUpdates.mjs",
+    "hash:lake-update": "node scripts/publishLakeUpdate.mjs hash",
+    "publish:lake-update": "node scripts/publishLakeUpdate.mjs publish",
     "build:lake-data": "node scripts/buildLakeDataset.mjs",
     "preflight:lake-data": "node scripts/preflightLakeDataset.mjs",
     "apply:lake-data": "node scripts/applyLakeDataset.mjs",

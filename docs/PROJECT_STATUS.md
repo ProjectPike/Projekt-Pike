@@ -45,6 +45,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   produktionssjö nummer 23 och den kvarvarande publikationen är `alreadyApplied`.
 - Existing Lake Update v1 har startat. U1.0 ger explicit stale-säkra
   ändringsförslag och read-only dry-run utan produktionsskrivväg.
+- Existing Lake Update v1 U1.1 ger hashbunden mänsklig review och isolerad
+  publicering; Mogölens Spinn-korrigering är godkänd och publicerad men inte live.
 
 ### Entitlement-arkitektur
 
@@ -317,8 +319,10 @@ no-op-läge.
 Existing Lake Update v1 U1.0 är en separat grund för befintliga sjöar. Förslagen
 binds till exakt canonical fingerprint av aktuell produktionspost, anger varje
 förväntat före-värde och utvärderas endast i minnet mot hela produktionsvalidatorn.
-Mogölens tillägg av `details.methods.spin` är det första verkliga, ännu ogranskade
-förslaget. Review, publicering och apply för uppdateringar finns ännu inte.
+U1.1 binder ett mänskligt beslut till förslagets canonical SHA-256 och publicerar
+godkända, fortsatt aktuella förslag isolerat i `data/published-updates/`.
+Mogölens tillägg av `details.methods.spin` är godkänt och publicerat som
+uppdateringsartefakt. Produktions-apply för uppdateringar finns ännu inte.
 
 Arkitektur:
 

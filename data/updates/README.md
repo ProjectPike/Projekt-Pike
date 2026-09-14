@@ -3,7 +3,9 @@
 `data/updates/` contains explicit, unreviewed proposals for changing lakes that
 already exist in production. This is separate from the new-lake
 candidate/review/published pipeline. U1.0 provides validation and a read-only dry
-run only: there is no review, publish or production-apply path for updates yet.
+run. U1.1 adds hash-bound human review in `data/update-reviews/` and isolated
+publication in `data/published-updates/`. There is still no production-apply path
+for updates.
 
 Run `npm run dry-run:lake-updates`. The command reads proposals, evaluates them
 against the current production lake records in memory, validates the complete
@@ -55,5 +57,5 @@ change must use exactly one expectation:
 Duplicate paths and ancestor/descendant path overlaps are blocked. SET writes the
 explicit `proposed` JSON value only to an in-memory clone. The complete proposed
 dataset must pass production validation, all other lakes must remain identical,
-and every target change outside the listed paths is blocked. REMOVE, arrays,
-review approval, publication and production apply are deferred.
+and every target change outside the listed paths is blocked. REMOVE, arrays and
+production apply are deferred.

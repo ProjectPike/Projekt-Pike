@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "mogolen-hedenstorp-spin",
+  "targetLakeId": "mogolen-hedenstorp",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-14",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "29f37ec26f5940483e14d8e1a460d1bc180090a24c89925c9cc4bd1559c12149",
+  "note": "Manuellt granskad korrigering för Mogölen. Jönköpings SFK anger att kastspö är tillåtet och Pike behandlar kastspö som användarvalet Spinn. Förslaget lägger endast till details.methods.spin = allowed och skapar inga andra metodalias."
+}
