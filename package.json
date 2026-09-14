@@ -13,6 +13,7 @@
     "validate:bathymetry": "node scripts/validateBathymetryData.mjs",
     "validate:lakes": "node scripts/validateLakeData.mjs",
     "validate:candidates": "node scripts/validateCandidateLakes.mjs",
+    "dry-run:lake-updates": "node scripts/evaluateLakeUpdates.mjs",
     "build:lake-data": "node scripts/buildLakeDataset.mjs",
     "preflight:lake-data": "node scripts/preflightLakeDataset.mjs",
     "apply:lake-data": "node scripts/applyLakeDataset.mjs",

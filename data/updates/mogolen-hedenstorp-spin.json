@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "mogolen-hedenstorp-spin",
+  "targetLakeId": "mogolen-hedenstorp",
+  "targetLakeFingerprint": "9bc75c77e8fddc36bbc9da885e66609ce5ffc8ac8eba11be72be52d4019c7f7c",
+  "reason": "Jönköpings SFK anger uttryckligen att fiske med kastspö är tillåtet. Pike behandlar kastspö som användarvalet Spinn utan att skapa ytterligare metodalias.",
+  "sources": [
+    {
+      "id": "jsf-mogolen",
+      "type": "fvo-club",
+      "title": "Jönköpings SFK — Mogölen",
+      "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+      "checkedAt": "2026-09-14"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.methods.spin",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "allowed",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80557/mogolen",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Kastspö är uttryckligen tillåtet enligt Jönköpings SFK.",
+        "conditions": null
+      },
+      "reason": "Källans kastspö motsvarar Pike-metoden Spinn; inget annat metodalias föreslås.",
+      "sources": [
+        "jsf-mogolen"
+      ],
+      "verifiedAt": "2026-09-14"
+    }
+  ]
+}

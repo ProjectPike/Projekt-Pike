@@ -43,6 +43,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   idempotent no-op-läge; avvikande befintliga ID:n förblir blockerade.
 - Första verkliga ingestflödet är genomfört end-to-end: `mogolen-hedenstorp` är
   produktionssjö nummer 23 och den kvarvarande publikationen är `alreadyApplied`.
+- Existing Lake Update v1 har startat. U1.0 ger explicit stale-säkra
+  ändringsförslag och read-only dry-run utan produktionsskrivväg.
 
 ### Entitlement-arkitektur
 
@@ -311,6 +313,12 @@ Det första verkliga flödet har nu körts hela vägen från kandidat via review
 publish, dry-run och preflight till explicit apply. `mogolen-hedenstorp` är live
 som sjö 23, och efterföljande preflight/apply är ett verifierat `alreadyApplied`
 no-op-läge.
+
+Existing Lake Update v1 U1.0 är en separat grund för befintliga sjöar. Förslagen
+binds till exakt canonical fingerprint av aktuell produktionspost, anger varje
+förväntat före-värde och utvärderas endast i minnet mot hela produktionsvalidatorn.
+Mogölens tillägg av `details.methods.spin` är det första verkliga, ännu ogranskade
+förslaget. Review, publicering och apply för uppdateringar finns ännu inte.
 
 Arkitektur:
 
