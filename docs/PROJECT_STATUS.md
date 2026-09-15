@@ -67,6 +67,9 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   Trolling, medan positiv säsongstillåtelse endast gäller när villkoret är
   aktivt. Ingen produktionsdata ändrades; nästa steg är real-state QA och
   riktade datakorrigeringar före Batch C.
+- Real-state QA har tre ogranskade, riktade korrigeringsförslag för Ryssbysjön,
+  Nömmen och Sandhemssjön. Risbrodammen, Gravsjön, Knipesjön och Svansjön är
+  avsiktligt fortsatt olösta där normativa offentliga metoddata inte räcker.
 
 ### Entitlement-arkitektur
 

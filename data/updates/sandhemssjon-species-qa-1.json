@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "sandhemssjon-species-qa-1",
+  "targetLakeId": "sandhemssjon",
+  "targetLakeFingerprint": "557748ca07fa9f7008f8397fba879ba3bd0c8b232c2438dbdf0b55706247fbab",
+  "reason": "Real-state QA ersätter Sandhemssjöns ofullständiga kända fiskarter med FVOF:s kompletta fisklista utan att inkludera signalkräfta.",
+  "sources": [
+    {
+      "id": "sandhemssjon-sjoinformation-qa",
+      "type": "commercial-aggregator",
+      "title": "Sandhemssjöns FVOF / iFiske — sjöinformation",
+      "url": "https://www.ifiske.se/fiske-sandhemssjon.htm",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": [
+            "abborre",
+            "gädda",
+            "mört",
+            "braxen"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
+            }
+          ],
+          "note": "Arter enligt Mullsjö kommuns aktuella sjöinformation.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "gädda",
+          "mört",
+          "braxen",
+          "lake",
+          "sarv",
+          "sutare",
+          "gärs",
+          "ruda"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-sandhemssjon.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Fiskarter som Sandhemssjöns FVOF redovisar via iFiske; signalkräfta redovisas separat och ingår inte i fisklistan.",
+        "conditions": null
+      },
+      "reason": "Produktionspostens kända fiskarter saknar fem fiskarter som FVOF redovisar via iFiske.",
+      "sources": [
+        "sandhemssjon-sjoinformation-qa"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "ryssbysjon-method-qa-1",
+  "targetLakeId": "ryssbysjon",
+  "targetLakeFingerprint": "1068313348cd553b6187123af7d251dcfee2283a87c099c26b2ae25f37336bcb",
+  "reason": "Real-state QA kompletterar Ryssbysjön med FVO-reglernas uttryckliga säsongsbundna handredskapsregel utan att göra rådgivande metoduppgifter normativa.",
+  "sources": [
+    {
+      "id": "ryssbysjon-fiskeregler-qa",
+      "type": "commercial-aggregator",
+      "title": "Ryssbysjöns FVOF / iFiske — regler",
+      "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.methods.handGearOnly",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Under sommarsäsongen 1 maj–31 oktober är fiske tillåtet med handredskap.",
+        "conditions": {
+          "dateFrom": "05-01",
+          "dateTo": "10-31",
+          "timeFrom": null,
+          "timeTo": null
+        }
+      },
+      "reason": "Produktionsposten saknar den normativa handredskapsregel som gäller under sommarsäsongen 1 maj–31 oktober.",
+      "sources": [
+        "ryssbysjon-fiskeregler-qa"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}

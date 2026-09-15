@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "nommen-method-qa-1",
+  "targetLakeId": "nommen",
+  "targetLakeFingerprint": "32a5e2d6b648bc4f395a5263307194b8945d4c9151edc4e5d8fecf5fb5a088c0",
+  "reason": "Real-state QA rättar Nömmens dokumenterade Spinn- och Meteuppgifter från normativa regler till verifierad rådgivande metodinformation.",
+  "sources": [
+    {
+      "id": "nommen-fiskeregler-qa",
+      "type": "commercial-aggregator",
+      "title": "Nömmens FVO / iFiske — regler",
+      "url": "https://www.ifiske.se/fiskekort-nommen.htm?rules=238",
+      "checkedAt": "2026-09-15"
+    },
+    {
+      "id": "nommen-sjoinformation-qa",
+      "type": "commercial-aggregator",
+      "title": "Nömmens FVO / iFiske — sjöinformation",
+      "url": "https://www.ifiske.se/fiske-nommen.htm",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.methods.spin",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiske-nommen.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Spinnfiske är en dokumenterad fiskemetod i sjön.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": "allowed",
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-nommen.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Spinnfiske är en dokumenterad fiskemetod i sjön; uppgiften beskriver metodförekomst och är inte en separat normativ tillåtelseregel.",
+        "conditions": null
+      },
+      "reason": "Sjöinformationen dokumenterar Spinn som metodförekomst, medan den normativa regelsidan inte ger en separat Spinn-tillåtelse.",
+      "sources": [
+        "nommen-fiskeregler-qa",
+        "nommen-sjoinformation-qa"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.bait",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiske-nommen.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Mete är en dokumenterad fiskemetod i sjön.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": "allowed",
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-nommen.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Mete är en dokumenterad fiskemetod i sjön; uppgiften beskriver metodförekomst och är inte en separat normativ tillåtelseregel.",
+        "conditions": null
+      },
+      "reason": "Sjöinformationen dokumenterar Mete som metodförekomst, medan den normativa regelsidan inte ger en separat Mete-tillåtelse.",
+      "sources": [
+        "nommen-fiskeregler-qa",
+        "nommen-sjoinformation-qa"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}
