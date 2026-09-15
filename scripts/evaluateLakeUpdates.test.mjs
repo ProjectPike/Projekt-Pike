@@ -204,7 +204,7 @@ test("malformed or unsafe update paths and missing parents are blocked", () => {
   assert.deepEqual(result.blockers.map(({ code }) => code), ["missing-update-parent"]);
 });
 
-test("real raw evaluator separates stale history from eligible Batch B proposals", async () => {
+test("real raw proposals are stale after their reviewed updates are applied", async () => {
   const paths = [
     new URL("../src/data/lakes.js", import.meta.url),
     new URL("../src/data/lakeDepthMapResearch.js", import.meta.url),
@@ -214,19 +214,10 @@ test("real raw evaluator separates stale history from eligible Batch B proposals
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(suite.summary.proposalCount, 9);
-  assert.equal(suite.summary.eligibleProposalCount, 4);
-  assert.equal(suite.summary.blockedProposalCount, 5);
+  assert.equal(suite.summary.eligibleProposalCount, 0);
+  assert.equal(suite.summary.blockedProposalCount, 9);
   assert.equal(suite.summary.productionModified, false);
-  assert.deepEqual(
-    suite.results.filter(({ eligible }) => eligible).map(({ proposalId }) => proposalId),
-    [
-      "landsjon-baseline-audit-1",
-      "munksjon-baseline-audit-1",
-      "ryssbysjon-baseline-audit-1",
-      "spexhultasjon-baseline-audit-1",
-    ],
-  );
-  assert.ok(suite.results.filter(({ eligible }) => !eligible).every(({ blockers }) =>
+  assert.ok(suite.results.every(({ blockers }) =>
     blockers.some(({ code }) => code === "stale-target-fingerprint")));
   assert.deepEqual(after, before);
 });
