@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "landsjon-baseline-audit-1",
+  "targetLakeId": "landsjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "6efa157d9d65ab7f2f4dcf9a8e594955b59e8614cf2c0ab902c81b3cbe3e8b45",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch B. Förslaget lägger endast till Landsjöns verifierade åtta fiskarter och det begränsade ungdomsundantaget."
+}

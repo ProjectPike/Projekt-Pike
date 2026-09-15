@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "ryssbysjon-baseline-audit-1",
+  "targetLakeId": "ryssbysjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "9012b424b6b2dd6e75c342704dc10c70c40f9c03f31ed8b213d561c35eb11b65",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch B. Förslaget omfattar endast de sex uttryckliga storleks-, fångst-, fart-, spö-, isfiske- och veckodagsändringarna."
+}

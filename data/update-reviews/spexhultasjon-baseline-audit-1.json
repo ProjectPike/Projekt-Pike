@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "spexhultasjon-baseline-audit-1",
+  "targetLakeId": "spexhultasjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "2c5fc8cbee1a3fcd8c40550792e0f1443f2df6938dced0efb6da34cebf50d743",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch B. Förslaget ersätter endast Spexhultasjöns inkonsekventa artfaktum och lägger till handredskapsbegränsningen."
+}

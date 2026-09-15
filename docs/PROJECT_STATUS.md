@@ -58,9 +58,10 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   Sommen, Stråken och Nömmen är live och samtliga fyra publikationer är
   `alreadyApplied`. Tenhultasjön krävde ingen korrigering, produktionen är kvar
   på 23 sjöar och nästa steg är Batch B.
-- Baseline Lake Audit v1 Batch B har fyra ogranskade, stale-bundna förslag för
-  Munksjön, Landsjön, Spexhultasjön och Ryssbysjön. Rocksjön är granskad utan
-  säkert korrigeringsbehov; inget i Batch B är publicerat eller live.
+- Baseline Lake Audit v1 Batch B har fyra godkända och isolerat publicerade
+  uppdateringar för Munksjön, Landsjön, Spexhultasjön och Ryssbysjön. Rocksjön
+  krävde ingen korrigering; produktions-apply är inte genomförd och inget i
+  Batch B är live.
 
 ### Entitlement-arkitektur
 

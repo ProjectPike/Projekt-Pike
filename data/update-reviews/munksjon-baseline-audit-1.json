@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "munksjon-baseline-audit-1",
+  "targetLakeId": "munksjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "bed0b365551f313a857390fb0f0f52d90477765ca826edface9a7f8be5aaee51",
+  "note": "Manuellt granskad som del av Baseline Lake Audit v1 Batch B. Förslaget ersätter endast Munksjöns ofullständiga artfaktum med den verifierade 13-fisklistan."
+}
