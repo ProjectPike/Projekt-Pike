@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "hokesjon-baseline-audit-c1",
+  "targetLakeId": "hokesjon",
+  "targetLakeFingerprint": "d23c9d15332cb78190cedbbc069539f38d969063a19860bc19a6b31ca33d5cf5",
+  "reason": "Baseline Lake Audit v1 Batch C ersätter Hökesjöns ofullständiga kända fiskarter med FVOF:s verifierade fisklista utan signalkräfta.",
+  "sources": [
+    {
+      "id": "hokesjon-ifiske-information",
+      "type": "commercial-aggregator",
+      "title": "Hökesjöns FVOF / iFiske — sjöinformation",
+      "url": "https://www.ifiske.se/fiske-hokesjons-fvof-habo-kommun.htm",
+      "checkedAt": "2026-09-15"
+    },
+    {
+      "id": "hokesjon-ifiske-rules",
+      "type": "commercial-aggregator",
+      "title": "Hökesjöns FVOF / iFiske — regler",
+      "url": "https://www.ifiske.se/fiskekort-hokesjons-fvof-habo-kommun.htm?rules=1917",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": [
+            "gädda",
+            "abborre",
+            "mört",
+            "öring",
+            "braxen"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://hokesjon.se/",
+              "type": "fvo-club"
+            },
+            {
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
+            }
+          ],
+          "note": "Verifierad förekomst av gädda, abborre, mört, öring och braxen.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "gädda",
+          "mört",
+          "braxen",
+          "ruda",
+          "id",
+          "öring",
+          "röding",
+          "bäckröding"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-hokesjons-fvof-habo-kommun.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Fiskarter som Hökesjöns FVOF redovisar via iFiske. Signalkräfta redovisas separat och ingår inte i fisklistan.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar ruda, id, röding och bäckröding; signalkräfta hålls separat från fiskarter.",
+      "sources": [
+        "hokesjon-ifiske-information",
+        "hokesjon-ifiske-rules"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}

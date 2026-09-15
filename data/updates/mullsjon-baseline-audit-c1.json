@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "mullsjon-baseline-audit-c1",
+  "targetLakeId": "mullsjon",
+  "targetLakeFingerprint": "1722f33d1be4adea2e6f8c69d088a83a972525d8a815ac39fa6ea4510033cea7",
+  "reason": "Baseline Lake Audit v1 Batch C ersätter Mullsjöns ofullständiga kända fiskarter med den verifierade fisklistan för just Mullsjön.",
+  "sources": [
+    {
+      "id": "mullsjon-ifiske-information",
+      "type": "commercial-aggregator",
+      "title": "Mullsjöns SFK / iFiske — Mullsjön",
+      "url": "https://www.ifiske.se/fiske-mullsjon.htm",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": [
+            "gädda",
+            "abborre",
+            "mört",
+            "sutare"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
+            }
+          ],
+          "note": "Verifierad förekomst av gädda, abborre, mört och sutare.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": [
+          "gädda",
+          "abborre",
+          "mört",
+          "benlöja",
+          "sutare",
+          "braxen"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-mullsjon.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Verifierade fiskarter i Mullsjön. Regnbåge och öring på samma iFiske-område anges endast för Trollsjön och ingår därför inte här; signalkräfta hanteras separat från fisklistan.",
+        "conditions": null
+      },
+      "reason": "Produktionspostens kända fiskarter saknar benlöja och braxen; Trollsjöns laxfiskar och signalkräfta exkluderas uttryckligen.",
+      "sources": [
+        "mullsjon-ifiske-information"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}

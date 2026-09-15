@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "ulvstorpasjon-baseline-audit-c1",
+  "targetLakeId": "ulvstorpasjon",
+  "targetLakeFingerprint": "f9a408ba9d3d3f6d297f992654793c5e6b6bf786ae6a350cf41f36f5153a3047",
+  "reason": "Baseline Lake Audit v1 Batch C ersätter inaktuella eller för breda metod- och flytringsfakta med 2026 års regler och kompletterar saknade, exakt representerbara fakta.",
+  "sources": [
+    {
+      "id": "ulvstorpasjon-jsf-2026",
+      "type": "fvo-club",
+      "title": "Jönköpings SFK — Ulvstorpssjön Regnbåge 2026",
+      "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+      "checkedAt": "2026-09-15"
+    },
+    {
+      "id": "ulvstorpasjon-ifiske-information",
+      "type": "commercial-aggregator",
+      "title": "Jönköpings Sportfiskeklubb / iFiske — Ulvstorpasjön",
+      "url": "https://www.ifiske.se/fiske-ulvstorpasjon.htm",
+      "checkedAt": "2026-09-15"
+    },
+    {
+      "id": "ulvstorpasjon-jsf-2021-history",
+      "type": "fvo-club",
+      "title": "Jönköpings SFK — Ulvstorpssjön 2021",
+      "url": "https://www.jsf-fiske.net/sida/80553/ulfstorpssjon",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.methods.spin",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Kastspö är tillåtet, men på sjöns västra sida är endast flugfiske med flugspö tillåtet.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": "allowed",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Jönköpings SFK:s aktuella regler för 2026 anger uttryckligen att kastspö får användas. Den äldre 2021-regeln om endast flugfiske på västra sidan finns inte i det aktuella regelverket.",
+        "conditions": null
+      },
+      "reason": "Den nuvarande Spinn-restriktionen kommer från det äldre 2021-regelverket och återfinns inte i 2026 års uttryckliga regler.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026",
+        "ulvstorpasjon-jsf-2021-history"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.bait",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Metspö är tillåtet.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Metspö är tillåtet. Vid mete får en agnad krok användas och fisk som fångats vid mete får inte återutsättas.",
+        "conditions": null
+      },
+      "reason": "2026 års regler innehåller uttryckliga krok- och återutsättningsvillkor för mete som den nuvarande rena tillåtelsen saknar.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.watercraft.floatTube",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-ulvstorpasjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Flytring tillåten.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Flytring är endast tillåten vid flugfiske med flugspö.",
+        "conditions": null
+      },
+      "reason": "Den aktuella regeln tillåter flytring endast för flugfiske med flugspö, vilket inte är en ren generell tillåtelse.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.maxRodsPerPerson",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": 1,
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Fiske får endast ske med ett spö per person.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar den uttryckliga begränsningen till ett spö per person.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.chumming",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "prohibited",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Mäskning är inte tillåten.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar 2026 års uttryckliga mäskningsförbud.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.crayfishFishing",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "prohibited",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Kräftfiske är förbjudet.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar 2026 års uttryckliga förbud mot kräftfiske.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": [
+          "regnbåge",
+          "mört",
+          "abborre",
+          "öring"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-ulvstorpasjon.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Fiskarter som Jönköpings Sportfiskeklubb redovisar via iFiske. Signalkräfta redovisas separat och ingår inte i fisklistan.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar en verifierad fisklista; signalkräfta hålls separat från fiskarter.",
+      "sources": [
+        "ulvstorpasjon-ifiske-information"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.species.bagLimits",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": [
+        {
+          "speciesGroup": "laxartad",
+          "value": {
+            "maxPerFishingCardPerDay": 2
+          },
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-15",
+          "sources": [
+            {
+              "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Högst två laxartade fiskar får fångas per kalenderdag och fiskekort.",
+          "conditions": null
+        }
+      ],
+      "reason": "Produktionsposten saknar den gemensamma fångstbegränsningen för laxartad fisk.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.access.youthRules",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.jsf-fiske.net/sida/80561/ulfstorpssjon-regnbage",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Barn under 10 år fiskar gratis endast tillsammans med årskortsinnehavare.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar det uttryckliga och villkorade ungdomsundantaget.",
+      "sources": [
+        "ulvstorpasjon-jsf-2026"
+      ],
+      "verifiedAt": "2026-09-15"
+    },
+    {
+      "operation": "set",
+      "path": "details.geography.fishingProhibitionAreas",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": [
+        {
+          "name": "Södra delen vid Ulvstorpsgård",
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-15",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiske-ulvstorpasjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Vid sjöns södra del vid Ulvstorpsgård råder fiskeförbud för allmänheten.",
+          "conditions": null,
+          "geometry": null
+        }
+      ],
+      "reason": "Produktionsposten saknar det lokala fiskeförbudsområde som sjöinformationen anger; ingen geometri fabriceras.",
+      "sources": [
+        "ulvstorpasjon-ifiske-information"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}

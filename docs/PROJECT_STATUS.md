@@ -80,6 +80,10 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   direkta artspecifika restriktioner kan fortsatt ge stöd. Därmed försvinner
   Sommens felaktiga stöd för Lax och Regnbåge utan ändring av produktionsdata,
   och Batch C är nästa steg efter matcher-verifieringen.
+- Baseline Lake Audit v1 Batch C:s förslagssteg är klart med ogranskade,
+  opublicerade och oapplicerade korrigeringar för Ulvstorpasjön, Mullsjön och
+  Hökesjön. Risbrodammen och Attarpsdammen krävde ingen korrigering;
+  produktionen är kvar på 23 sjöar.
 
 ### Entitlement-arkitektur
 
