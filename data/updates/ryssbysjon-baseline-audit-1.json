@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "ryssbysjon-baseline-audit-1",
+  "targetLakeId": "ryssbysjon",
+  "targetLakeFingerprint": "2f0da1ee5b82a1302f491486949eca5c1d1c913d9e0f1693548ea42914d85f20",
+  "reason": "Baseline Lake Audit v1 kompletterar Ryssbysjön med exakt representerbara storleks-, fångst-, spö-, isfiske- och fartregler samt rättar den för breda veckodagsregeln.",
+  "sources": [
+    {
+      "id": "ryssbysjon-fiskeregler",
+      "type": "commercial-aggregator",
+      "title": "Ryssbysjöns FVOF / iFiske — regler",
+      "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+      "checkedAt": "2026-09-14"
+    },
+    {
+      "id": "ryssbysjon-fartforeskrift",
+      "type": "authority",
+      "title": "Länsstyrelsen i Jönköpings län — sjötrafikföreskrift för Ryssbysjön",
+      "url": "https://www.lansstyrelsen.se/download/18.6ae610001636c9c68e543dfe/1530268495308/%C3%A4ndring%20sj%C3%B6trafiken%20J%C3%B6nk%C3%B6ping%20l%C3%A4n%2006FS19908.pdf",
+      "checkedAt": "2026-09-14"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.sizeLimits",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": [
+        {
+          "species": "gös",
+          "value": {
+            "minSizeCm": 45
+          },
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-14",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": null,
+          "conditions": null
+        },
+        {
+          "species": "gädda",
+          "value": {
+            "minSizeCm": 50
+          },
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-14",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": null,
+          "conditions": null
+        }
+      ],
+      "reason": "Produktionsposten saknar FVO:s minimimått för gös och gädda.",
+      "sources": [
+        "ryssbysjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.species.bagLimits",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": [
+        {
+          "species": "gös+gädda",
+          "value": {
+            "maxRetainedPerPermitPerDay": 4
+          },
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-14",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Högst fyra gösar och gäddor sammanlagt får behållas per fiskekort och dag.",
+          "conditions": null
+        }
+      ],
+      "reason": "Produktionsposten saknar den kombinerade fångstbegränsningen för gös och gädda.",
+      "sources": [
+        "ryssbysjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.boat.speedLimits",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": 5,
+        "unit": "knots",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.lansstyrelsen.se/download/18.6ae610001636c9c68e543dfe/1530268495308/%C3%A4ndring%20sj%C3%B6trafiken%20J%C3%B6nk%C3%B6ping%20l%C3%A4n%2006FS19908.pdf",
+            "type": "authority"
+          }
+        ],
+        "note": "Högsta tillåtna fart är 5 knop.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar den officiella fartbegränsningen i Ryssbysjön.",
+      "sources": [
+        "ryssbysjon-fartforeskrift"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.maxRodsPerPermit",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": 2,
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Under sommarsäsongen 1 maj–31 oktober gäller högst två spön per fiskekort.",
+        "conditions": {
+          "dateFrom": "05-01",
+          "dateTo": "10-31",
+          "timeFrom": null,
+          "timeTo": null
+        }
+      },
+      "reason": "Produktionsposten saknar den säsongsbundna gränsen på två spön per fiskekort.",
+      "sources": [
+        "ryssbysjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.ice",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "allowed",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "När is har bildats är pimpel och isfiske tillåtet alla dagar.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar FVO:s uttryckliga tillåtelse för pimpel och isfiske när is har bildats.",
+      "sources": [
+        "ryssbysjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.weekdayClosures",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://nassjo.se/uppleva-och-gora/aktivitet/fiske-ryssbysjon.html",
+              "type": "municipality"
+            }
+          ],
+          "note": "Fiske är förbjudet varje måndag och tisdag. Veckodagsvillkor lagras som notering eftersom veckodagsfälten inte finns i nuvarande villkorsmodell.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Under sommarsäsongen är fiske tillåtet onsdag–söndag samt helgdagar som infaller på måndag eller tisdag.",
+        "conditions": {
+          "dateFrom": "05-01",
+          "dateTo": "10-31",
+          "timeFrom": null,
+          "timeTo": null
+        }
+      },
+      "reason": "Den befintliga globala förbudsformuleringen för måndag och tisdag saknar både sommarsäsongens avgränsning och undantaget för helgdagar.",
+      "sources": [
+        "ryssbysjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    }
+  ]
+}

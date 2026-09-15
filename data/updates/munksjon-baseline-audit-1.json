@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "munksjon-baseline-audit-1",
+  "targetLakeId": "munksjon",
+  "targetLakeFingerprint": "6bb78608622d172f31ffa54a75344a3aad9a38bfd75251d337cbeabd7c78b026",
+  "reason": "Baseline Lake Audit v1 ersätter Munksjöns ofullständiga artfaktum med de fiskarter som kommunen uttryckligen redovisar.",
+  "sources": [
+    {
+      "id": "jonkoping-munksjon-planunderlag",
+      "type": "municipality",
+      "title": "Jönköpings kommun — planunderlag för Munksjön",
+      "url": "https://karta.jonkoping.se/dp/p2022-6.pdf",
+      "checkedAt": "2026-09-14"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": [
+            "gädda",
+            "abborre",
+            "öring",
+            "lax",
+            "gös",
+            "harr",
+            "lake",
+            "ål"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Verifierad regeldata finns för gädda, abborre och öring.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "björkna",
+          "braxen",
+          "gers",
+          "gädda",
+          "gös",
+          "lake",
+          "mört",
+          "ruda",
+          "benlöja",
+          "sutare",
+          "ål",
+          "öring"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://karta.jonkoping.se/dp/p2022-6.pdf",
+            "type": "municipality"
+          }
+        ],
+        "note": "Fiskarter som Jönköpings kommun uttryckligen redovisar för Munksjön; signalkräfta redovisas separat och ingår inte i fisklistan.",
+        "conditions": null
+      },
+      "reason": "Det befintliga artfaktumet är ofullständigt jämfört med kommunens uttryckliga redovisning av fiskarter i Munksjön.",
+      "sources": [
+        "jonkoping-munksjon-planunderlag"
+      ],
+      "verifiedAt": "2026-09-14"
+    }
+  ]
+}

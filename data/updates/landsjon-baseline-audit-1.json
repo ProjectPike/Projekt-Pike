@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "landsjon-baseline-audit-1",
+  "targetLakeId": "landsjon",
+  "targetLakeFingerprint": "cc211d506769dcd78046065fd13ca8eb6c8e0b2b53c6665a9279398ce0163895",
+  "reason": "Baseline Lake Audit v1 kompletterar Landsjön med redovisade fiskarter och det uttryckligt begränsade undantaget från fiskekort för barn och ungdomar.",
+  "sources": [
+    {
+      "id": "landsjon-artinformation",
+      "type": "commercial-aggregator",
+      "title": "Landsjöns FVOF / iFiske — vatten och artinformation",
+      "url": "https://www.ifiske.se/fiske-landsjon.htm",
+      "checkedAt": "2026-09-14"
+    },
+    {
+      "id": "landsjon-fiskeregler",
+      "type": "commercial-aggregator",
+      "title": "Landsjöns FVOF / iFiske — regler",
+      "url": "https://www.ifiske.se/fiskekort-landsjon.htm?rules=264",
+      "checkedAt": "2026-09-14"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "gädda",
+          "mört",
+          "gärs",
+          "gös",
+          "lake",
+          "ål"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-landsjon.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Fiskarter som Landsjöns FVOF redovisar via iFiske; signalkräfta och flodkräfta redovisas separat och ingår inte i fisklistan.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar den redovisade listan över fiskarter i Landsjön.",
+      "sources": [
+        "landsjon-artinformation"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.access.youthRules",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-landsjon.htm?rules=264",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Barn och ungdomar till och med 13 år fiskar utan fiskekort med handredskap från land eller brygga under tillåten fisketid.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar det uttryckligt begränsade ungdomsundantaget från fiskekort.",
+      "sources": [
+        "landsjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "spexhultasjon-baseline-audit-1",
+  "targetLakeId": "spexhultasjon",
+  "targetLakeFingerprint": "a14c0d9543c59410ea257f09dc7b88e631577977c2b7440d8138dadb9a695151",
+  "reason": "Baseline Lake Audit v1 ersätter Spexhultasjöns inkonsekventa artfaktum med en källstödd union och lägger till den uttryckliga handredskapsbegränsningen.",
+  "sources": [
+    {
+      "id": "spexhultasjon-artinformation",
+      "type": "commercial-aggregator",
+      "title": "Spexhultasjöns FVOF / iFiske — vatten och artinformation",
+      "url": "https://www.ifiske.se/fiske-spexhultasjon.htm",
+      "checkedAt": "2026-09-14"
+    },
+    {
+      "id": "spexhultasjon-fiskeregler",
+      "type": "commercial-aggregator",
+      "title": "Spexhultasjöns FVOF / iFiske — regler",
+      "url": "https://www.ifiske.se/fiskekort-spexhultasjon.htm?rules=128",
+      "checkedAt": "2026-09-14"
+    },
+    {
+      "id": "spexhultasjon-provfiske-2023",
+      "type": "fvo-club",
+      "title": "Spexhultasjöns FVOF — provfiske 2023",
+      "url": "https://www.spexhultasjon.se/onewebmedia/F%C3%A4ltrapport%20provfiske%20Spexhultasj%C3%B6n%202023.pdf",
+      "checkedAt": "2026-09-14"
+    },
+    {
+      "id": "nassjo-spexhultasjon",
+      "type": "municipality",
+      "title": "Nässjö kommun — Fiske i Spexhultasjön",
+      "url": "https://nassjo.se/uppleva-och-gora/aktivitet/fiske-spexhultasjon.html",
+      "checkedAt": "2026-09-14"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": [
+            "abborre",
+            "gädda",
+            "mört",
+            "siklöja",
+            "sutare",
+            "gadda",
+            "sik"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://spexhultasjon.se/",
+              "type": "fvo-club"
+            },
+            {
+              "url": "https://nassjo.se/uppleva-och-gora/aktivitet/fiske-spexhultasjon.html",
+              "type": "municipality"
+            }
+          ],
+          "note": "Verifierad förekomst enligt FVO:s artinformation.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "gädda",
+          "mört",
+          "lake",
+          "siklöja",
+          "sutare",
+          "simpa",
+          "sik"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiske-spexhultasjon.htm",
+            "type": "commercial-aggregator"
+          },
+          {
+            "url": "https://www.spexhultasjon.se/onewebmedia/F%C3%A4ltrapport%20provfiske%20Spexhultasj%C3%B6n%202023.pdf",
+            "type": "fvo-club"
+          },
+          {
+            "url": "https://nassjo.se/uppleva-och-gora/aktivitet/fiske-spexhultasjon.html",
+            "type": "municipality"
+          }
+        ],
+        "note": "Källstödd union av redovisade fiskarter; den felstavade dubbletten gadda tas bort och signalkräfta ingår inte i fisklistan.",
+        "conditions": null
+      },
+      "reason": "Det befintliga artfaktumet innehåller både gädda och den felstavade dubbletten gadda, saknar lake och saknar den provfiskade simpan.",
+      "sources": [
+        "spexhultasjon-artinformation",
+        "spexhultasjon-provfiske-2023",
+        "nassjo-spexhultasjon"
+      ],
+      "verifiedAt": "2026-09-14"
+    },
+    {
+      "operation": "set",
+      "path": "details.methods.handGearOnly",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-14",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-spexhultasjon.htm?rules=128",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Ordinarie fiskekort medger endast fiske med handredskap.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar FVO-regelns uttryckliga begränsning till handredskap.",
+      "sources": [
+        "spexhultasjon-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-14"
+    }
+  ]
+}
