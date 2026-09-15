@@ -91,6 +91,10 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   representation inte säkert kan uttrycka vinterkortets begränsning till endast
   pimpelfiske. Produktionen är oförändrad med 23 sjöar och publicerad
   update-historik är fortsatt 15 `alreadyApplied` och noll väntande.
+- Batch D1-förslaget för Sandhemssjön är granskat, hashbundet och publicerat som
+  existing-lake update men ännu inte applicerat. Produktionen är fortsatt
+  oförändrad med 23 sjöar; livscykeln visar 15 `alreadyApplied` och exakt en
+  väntande uppdatering, `sandhemssjon-baseline-audit-d1`.
 
 ### Entitlement-arkitektur
 

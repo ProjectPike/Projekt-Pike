@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "sandhemssjon-baseline-audit-d1",
+  "targetLakeId": "sandhemssjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "332e24e05ebf8230adc1dcd9a1cc4273b3b77dfb44336ee18f69e8785759985a",
+  "note": "Manuellt granskad Baseline Lake Audit v1 Batch D1-korrigering. Förslaget verifierar Sandhemssjöns grundregler och registrerar att kräftfiske inte ingår i det ordinarie fiskekortet utan att ange ett absolut förbud eller ändra övriga fiske-, art- eller gäddregler."
+}
