@@ -219,6 +219,39 @@ function getMethodChoiceForKey(key) {
   return undefined;
 }
 
+function isNormativeMethodFact(fact) {
+  return isVerifiedFact(fact) && fact.ruleType === "rule";
+}
+
+function hasBoundedCondition(fact) {
+  const conditions = fact?.conditions;
+
+  return (
+    isPlainObject(conditions) &&
+    Boolean(
+      conditions.dateFrom ||
+        conditions.dateTo ||
+        conditions.timeFrom ||
+        conditions.timeTo,
+    )
+  );
+}
+
+function isActiveAllowedMethodFact(fact, now) {
+  return (
+    isNormativeMethodFact(fact) &&
+    fact.value === "allowed" &&
+    isConditionActive(fact, now)
+  );
+}
+
+function isMethodRestrictionFact(fact) {
+  return (
+    isNormativeMethodFact(fact) &&
+    (fact.value === "restricted" || fact.value === "prohibited")
+  );
+}
+
 function getPlaceMatch(details, place, now) {
   if (place === "Land") {
     return { supported: true, warning: false };
@@ -287,39 +320,79 @@ function getPlaceMatch(details, place, now) {
 
 function getMethodMatch(details, method, now) {
   const keys = METHOD_FACT_KEYS[method] ?? [];
-  const facts = keys
+  const explicitFacts = keys
     .flatMap((key) => [details?.methods?.[key], details?.boat?.[key]])
-    .filter(isVerifiedFact);
+    .filter(isNormativeMethodFact);
+  const activeExplicitAllowed = explicitFacts.some((fact) =>
+    isActiveAllowedMethodFact(fact, now),
+  );
+  const explicitRestrictionFacts = explicitFacts.filter(isMethodRestrictionFact);
+  const activeExplicitRestriction = explicitRestrictionFacts.some((fact) =>
+    isConditionActive(fact, now),
+  );
+  const inactiveBoundedRestriction = explicitRestrictionFacts.some(
+    (fact) => hasBoundedCondition(fact) && !isConditionActive(fact, now),
+  );
 
   const handGearOnly = details?.methods?.handGearOnly;
   const isCoveredByHandGearRule =
     ["Spinn", "Mete", "Flugfiske"].includes(method) &&
-    isVerifiedFact(handGearOnly) &&
-    handGearOnly.value !== "prohibited";
+    isNormativeMethodFact(handGearOnly) &&
+    handGearOnly.value !== "prohibited" &&
+    isConditionActive(handGearOnly, now);
 
-  if (facts.length === 0 && !isCoveredByHandGearRule) {
+  const activeSpinPermission = [
+    details?.methods?.spin,
+    details?.boat?.spin,
+    details?.methods?.lureFishing,
+    details?.boat?.lureFishing,
+  ].some((fact) => isActiveAllowedMethodFact(fact, now));
+  const isCoveredBySpinPermission =
+    ["Mete", "Flugfiske"].includes(method) && activeSpinPermission;
+
+  const activeTrollingPermission = [
+    details?.methods?.trolling,
+    details?.boat?.trolling,
+  ].some((fact) => isActiveAllowedMethodFact(fact, now));
+  const isCoveredByTrollingPermission =
+    ["Spinn", "Mete", "Flugfiske"].includes(method) && activeTrollingPermission;
+
+  const inferredSupport =
+    isCoveredByHandGearRule ||
+    isCoveredBySpinPermission ||
+    isCoveredByTrollingPermission ||
+    inactiveBoundedRestriction;
+  const explicitlySupported =
+    activeExplicitAllowed ||
+    activeExplicitRestriction ||
+    inactiveBoundedRestriction;
+
+  if (!explicitlySupported && !inferredSupport) {
     return { supported: false, warning: false };
   }
 
   const generalMethodRules = Object.entries(details?.methods ?? {})
-    .filter(([, fact]) => isVerifiedFact(fact))
+    .filter(([, fact]) => isNormativeMethodFact(fact))
     .filter(([key]) => getMethodChoiceForKey(key) === undefined);
   const selectedBoatMethodRules = Object.entries(details?.boat ?? {})
-    .filter(([, fact]) => isVerifiedFact(fact))
+    .filter(([, fact]) => isNormativeMethodFact(fact))
     .filter(([key]) => getMethodChoiceForKey(key) === method);
   const hasSelectedBoatRestriction = selectedBoatMethodRules.some(
     ([key, fact]) =>
       isConditionActive(fact, now) && (!keys.includes(key) || isRestriction(fact, now)),
   );
+  const isInferred =
+    !activeExplicitAllowed && !activeExplicitRestriction && inferredSupport;
 
   return {
-    supported: isCoveredByHandGearRule || facts.length > 0,
+    supported: true,
     warning:
-      facts.some((fact) => isRestriction(fact, now)) ||
+      activeExplicitRestriction ||
       generalMethodRules.some(
         ([, fact]) => isRestriction(fact, now) || isLimitedHoursRuleActive(fact, now),
       ) ||
       hasSelectedBoatRestriction,
+    ...(isInferred ? { inferred: true } : {}),
   };
 }
 

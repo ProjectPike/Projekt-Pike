@@ -61,7 +61,12 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
 - Baseline Lake Audit v1 Batch B är applicerad: korrigeringarna för Munksjön,
   Landsjön, Spexhultasjön och Ryssbysjön är live och samtliga fyra publikationer
   är `alreadyApplied`. Rocksjön krävde ingen Batch B-korrigering, produktionen är
-  kvar på 23 sjöar och nästa steg är Batch C.
+  kvar på 23 sjöar.
+- Matching Semantics v2 skiljer normativa metodregler från rådgivande eller
+  vanliga metoder. Kontrollerad inferens gäller för handredskap, Spinn och
+  Trolling, medan positiv säsongstillåtelse endast gäller när villkoret är
+  aktivt. Ingen produktionsdata ändrades; nästa steg är real-state QA och
+  riktade datakorrigeringar före Batch C.
 
 ### Entitlement-arkitektur
 

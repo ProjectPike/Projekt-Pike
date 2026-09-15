@@ -136,7 +136,7 @@ test("keeps selected warnings visible without converting unknown selections", ()
 });
 
 test("returns unknown when every selected alternative lacks support", () => {
-  const result = getLakeFishingSelectionDetails(matchingLake(), {
+  const result = getLakeFishingSelectionDetails(matchingLake({ methods: {} }), {
     method: ["Trolling", "Flugfiske"],
   });
 
@@ -394,6 +394,169 @@ test("treats a verified hand-gear-only rule as support for hand-gear methods", (
   });
 
   assert.equal(getLakeFishingStatus(lake, choices), "warning");
+});
+
+test("does not treat advisory or recommendation facts as method permission", () => {
+  for (const [key, method] of [
+    ["spin", "Spinn"],
+    ["trolling", "Trolling"],
+  ]) {
+    for (const ruleType of ["advisory", "recommendation"]) {
+      const lake = matchingLake({
+        methods: { [key]: fact("allowed", { ruleType }) },
+      });
+
+      assert.equal(
+        getLakeFishingStatus(lake, { ...choices, method }),
+        "unknown",
+      );
+    }
+  }
+});
+
+test("uses an active normative Spinn permission only during its season", () => {
+  const lake = matchingLake({
+    methods: {
+      spin: fact("allowed", {
+        conditions: {
+          dateFrom: "06-01",
+          dateTo: "09-30",
+          timeFrom: null,
+          timeTo: null,
+        },
+      }),
+    },
+  });
+
+  assert.equal(
+    getLakeFishingStatus(lake, choices, new Date("2026-06-15T12:00:00")),
+    "allowed",
+  );
+  assert.equal(
+    getLakeFishingStatus(lake, choices, new Date("2026-11-15T12:00:00")),
+    "unknown",
+  );
+});
+
+test("infers only hand methods from an active hand-gear-only rule", () => {
+  for (const value of ["allowed", "restricted"]) {
+    const lake = matchingLake({ methods: { handGearOnly: fact(value) } });
+    const result = getLakeFishingSelectionDetails(
+      lake,
+      { method: ["Spinn", "Mete", "Flugfiske", "Trolling"] },
+    );
+    const expectedStatus = value === "restricted" ? "warning" : "allowed";
+
+    for (const method of ["Spinn", "Mete", "Flugfiske"]) {
+      assert.deepEqual(
+        result.categories.method.find((choice) => choice.choice === method),
+        { choice: method, status: expectedStatus, missing: [], inferred: true },
+      );
+    }
+    assert.deepEqual(result.categories.method.at(-1), {
+      choice: "Trolling",
+      status: "unknown",
+      missing: ["method"],
+    });
+  }
+});
+
+test("infers hand methods, but not Trolling, from normative Spinn permission", () => {
+  for (const key of ["spin", "lureFishing"]) {
+    const result = getLakeFishingSelectionDetails(
+      matchingLake({ methods: { [key]: fact("allowed") } }),
+      { method: ["Spinn", "Mete", "Flugfiske", "Trolling"] },
+    );
+
+    assert.deepEqual(result.categories.method, [
+      { choice: "Spinn", status: "allowed", missing: [] },
+      { choice: "Mete", status: "allowed", missing: [], inferred: true },
+      { choice: "Flugfiske", status: "allowed", missing: [], inferred: true },
+      { choice: "Trolling", status: "unknown", missing: ["method"] },
+    ]);
+  }
+});
+
+test("infers ordinary hand methods only from normative allowed Trolling", () => {
+  const allowedLake = matchingLake({
+    methods: { trolling: fact("allowed") },
+  });
+  const allowed = getLakeFishingSelectionDetails(allowedLake, {
+    method: ["Trolling", "Spinn", "Mete", "Flugfiske"],
+  });
+
+  assert.deepEqual(allowed.categories.method, [
+    { choice: "Trolling", status: "allowed", missing: [] },
+    { choice: "Spinn", status: "allowed", missing: [], inferred: true },
+    { choice: "Mete", status: "allowed", missing: [], inferred: true },
+    { choice: "Flugfiske", status: "allowed", missing: [], inferred: true },
+  ]);
+
+  for (const overrides of [
+    { value: "allowed", ruleType: "advisory" },
+    { value: "allowed", ruleType: "recommendation" },
+    { value: "restricted", ruleType: "rule" },
+  ]) {
+    const lake = matchingLake({
+      methods: { trolling: fact(overrides.value, overrides) },
+    });
+
+    for (const method of ["Spinn", "Mete", "Flugfiske"]) {
+      assert.equal(
+        getLakeFishingStatus(lake, { ...choices, method }),
+        "unknown",
+      );
+    }
+  }
+});
+
+test("lets an active explicit method restriction override inferred permission", () => {
+  const lake = matchingLake({
+    methods: {
+      handGearOnly: fact("allowed"),
+      fly: fact("prohibited"),
+    },
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    method: ["Spinn", "Flugfiske"],
+  });
+
+  assert.deepEqual(result.categories.method, [
+    { choice: "Spinn", status: "allowed", missing: [], inferred: true },
+    { choice: "Flugfiske", status: "warning", missing: [] },
+  ]);
+});
+
+test("inherits source conditions for controlled method inference", () => {
+  const lake = matchingLake({
+    methods: {
+      trolling: fact("allowed", {
+        conditions: {
+          dateFrom: "06-01",
+          dateTo: "09-30",
+          timeFrom: null,
+          timeTo: null,
+        },
+      }),
+    },
+  });
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      lake,
+      { method: ["Spinn"] },
+      new Date("2026-06-15T12:00:00"),
+    ).categories.method[0],
+    { choice: "Spinn", status: "allowed", missing: [], inferred: true },
+  );
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      lake,
+      { method: ["Spinn"] },
+      new Date("2026-11-15T12:00:00"),
+    ).categories.method[0],
+    { choice: "Spinn", status: "unknown", missing: ["method"] },
+  );
 });
 
 test("applies conditional restrictions only while active", () => {
