@@ -4602,6 +4602,25 @@ export const lakes = {
           "status": "verified",
           "value": "allowed",
           "verifiedAt": "2026-09-14"
+        },
+        "handGearOnly": {
+          "conditions": {
+            "dateFrom": "05-01",
+            "dateTo": "10-31",
+            "timeFrom": null,
+            "timeTo": null
+          },
+          "note": "Under sommarsäsongen 1 maj–31 oktober är fiske tillåtet med handredskap.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-ryssbysjons-fvof-nassjo.htm?rules=1721"
+            }
+          ],
+          "status": "verified",
+          "value": "restricted",
+          "verifiedAt": "2026-09-15"
         }
       },
       "species": {
@@ -4962,32 +4981,32 @@ export const lakes = {
           "conditions": null
         },
         "spin": {
-          "value": "allowed",
-          "status": "verified",
-          "ruleType": "rule",
-          "verifiedAt": "2026-09-07",
+          "conditions": null,
+          "note": "Spinnfiske är en dokumenterad fiskemetod i sjön; uppgiften beskriver metodförekomst och är inte en separat normativ tillåtelseregel.",
+          "ruleType": "advisory",
           "sources": [
             {
-              "url": "https://www.ifiske.se/fiske-nommen.htm",
-              "type": "commercial-aggregator"
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiske-nommen.htm"
             }
           ],
-          "note": "Spinnfiske är en dokumenterad fiskemetod i sjön.",
-          "conditions": null
+          "status": "verified",
+          "value": "allowed",
+          "verifiedAt": "2026-09-15"
         },
         "bait": {
-          "value": "allowed",
-          "status": "verified",
-          "ruleType": "rule",
-          "verifiedAt": "2026-09-07",
+          "conditions": null,
+          "note": "Mete är en dokumenterad fiskemetod i sjön; uppgiften beskriver metodförekomst och är inte en separat normativ tillåtelseregel.",
+          "ruleType": "advisory",
           "sources": [
             {
-              "url": "https://www.ifiske.se/fiske-nommen.htm",
-              "type": "commercial-aggregator"
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiske-nommen.htm"
             }
           ],
-          "note": "Mete är en dokumenterad fiskemetod i sjön.",
-          "conditions": null
+          "status": "verified",
+          "value": "allowed",
+          "verifiedAt": "2026-09-15"
         },
         "ice": {
           "value": "allowed",
@@ -5876,172 +5895,255 @@ export const lakes = {
   },
 
   sandhemssjon: {
-    id: "sandhemssjon",
-    name: "Sandhemssjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [13.7861561, 58.0001589],
-    coordinateSource: "https://www.openstreetmap.org/relation/123702",
-    distance: { kilometers: 46, travelTime: "45 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-08-08",
-      sources: [
+    "id": "sandhemssjon",
+    "name": "Sandhemssjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      13.7861561,
+      58.0001589
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/relation/123702",
+    "distance": {
+      "kilometers": 46,
+      "travelTime": "45 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
         "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
         "https://www.ifiske.se/fiske-sandhemssjon.htm",
-        "https://www.ifiske.se/karta-sandhemssjon.htm",
-      ],
+        "https://www.ifiske.se/karta-sandhemssjon.htm"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "unverified", label: "Kontrollera aktuella regler" },
-      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "rules": {
+        "status": "unverified",
+        "label": "Kontrollera aktuella regler"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
-              type: "commercial-aggregator",
-            },
+              "url": "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Fiskekort krävs.",
-          conditions: null,
+          "note": "Fiskekort krävs.",
+          "conditions": null
         },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
-              type: "commercial-aggregator",
-            },
+              "url": "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Barn och ungdomar till och med 14 år fiskar utan fiskekort.",
-          conditions: null,
-        },permitProducts:{value:["day","week","year","family","angel-ice"],status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/fiskekort-sandhemssjon.htm",type:"commercial-aggregator"}],note:"Dagskort 70 kr, familjevecka 150 kr, \xE5rskort 250 kr och familje\xE5r 350 kr. S\xE4rskilda angel- och m\xF6rtstugekort finns.",conditions:null},
-      },
-      methods: {
-        iceMaxAngeldonPerAngler: {
-          value: 12,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Vid vinterfiske gäller max 12 angeldon/iskrokar per fiskare.",
-          conditions: null,
+          "note": "Barn och ungdomar till och med 14 år fiskar utan fiskekort.",
+          "conditions": null
         },
+        "permitProducts": {
+          "value": [
+            "day",
+            "week",
+            "year",
+            "family",
+            "angel-ice"
+          ],
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Dagskort 70 kr, familjevecka 150 kr, årskort 250 kr och familjeår 350 kr. Särskilda angel- och mörtstugekort finns.",
+          "conditions": null
+        }
       },
-      species: {
-        sizeLimits: [
+      "methods": {
+        "iceMaxAngeldonPerAngler": {
+          "value": 12,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Vid vinterfiske gäller max 12 angeldon/iskrokar per fiskare.",
+          "conditions": null
+        }
+      },
+      "species": {
+        "sizeLimits": [
           {
-            species: "gädda",
-            value: { minSizeCm: 50, maxSizeCm: 90 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
+            "species": "gädda",
+            "value": {
+              "minSizeCm": 50,
+              "maxSizeCm": 90
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
               {
-                url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
-                type: "commercial-aggregator",
-              },
+                "url": "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+                "type": "commercial-aggregator"
+              }
             ],
-            note: null,
-            conditions: null,
-          },
+            "note": null,
+            "conditions": null
+          }
         ],
-        releaseRequirements: [
+        "releaseRequirements": [
           {
-            species: "gädda",
-            value: "required",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
+            "species": "gädda",
+            "value": "required",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
               {
-                url: "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
-                type: "commercial-aggregator",
-              },
+                "url": "https://www.ifiske.se/fiskekort-sandhemssjon.htm",
+                "type": "commercial-aggregator"
+              }
             ],
-            note: "Gädda över 90 cm ska återutsättas.",
-            conditions: null,
-          },
-        ],knownSpecies:{value:["abborre","g\xE4dda","m\xF6rt","braxen"],status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",type:"municipality"}],note:"Arter enligt Mullsj\xF6 kommuns aktuella sj\xF6information.",conditions:null},
-      },
-      watercraft: {boat:{value:"allowed",status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/karta-sandhemssjon.htm",type:"commercial-aggregator"}],note:"B\xE5tramp och b\xE5tuthyrning finns dokumenterade.",conditions:null}},
-      boat: {
-        boatRentalAvailable: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
+            "note": "Gädda över 90 cm ska återutsättas.",
+            "conditions": null
+          }
+        ],
+        "knownSpecies": {
+          "conditions": null,
+          "note": "Fiskarter som Sandhemssjöns FVOF redovisar via iFiske; signalkräfta redovisas separat och ingår inte i fisklistan.",
+          "ruleType": "advisory",
+          "sources": [
             {
-              url: "https://www.ifiske.se/karta-sandhemssjon.htm",
-              type: "commercial-aggregator",
-            },
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiske-sandhemssjon.htm"
+            }
           ],
-          note: "Båtuthyrning finns dokumenterad.",
-          conditions: null,
-        },
-        electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
+          "status": "verified",
+          "value": [
+            "abborre",
+            "gädda",
+            "mört",
+            "braxen",
+            "lake",
+            "sarv",
+            "sutare",
+            "gärs",
+            "ruda"
+          ],
+          "verifiedAt": "2026-09-15"
+        }
       },
-      practical: {
-        ramp: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
+      "watercraft": {
+        "boat": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://www.ifiske.se/karta-sandhemssjon.htm",
-              type: "commercial-aggregator",
-            },
+              "url": "https://www.ifiske.se/karta-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Båtlaunch/båtramp finns dokumenterad vid eller nära Prästaviken.",
-          conditions: null,
-          geometry: null,
-        },
+          "note": "Båtramp och båtuthyrning finns dokumenterade.",
+          "conditions": null
+        }
       },
-      geography: {},
-      safety: {},
+      "boat": {
+        "boatRentalAvailable": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/karta-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Båtuthyrning finns dokumenterad.",
+          "conditions": null
+        },
+        "electricMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "combustionMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "practical": {
+        "ramp": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/karta-sandhemssjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Båtlaunch/båtramp finns dokumenterad vid eller nära Prästaviken.",
+          "conditions": null,
+          "geometry": null
+        }
+      },
+      "geography": {},
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
 
   knipesjon: {

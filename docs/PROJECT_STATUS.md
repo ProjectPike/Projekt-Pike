@@ -68,9 +68,9 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   aktivt. Ingen produktionsdata ändrades; nästa steg är real-state QA och
   riktade datakorrigeringar före Batch C.
 - Real-state QA-korrigeringarna för Ryssbysjön, Nömmen och Sandhemssjön är
-  godkända och isolerat publicerade men ännu inte applicerade. Risbrodammen,
-  Gravsjön, Knipesjön och Svansjön är avsiktligt fortsatt olösta där normativa
-  offentliga metoddata inte räcker.
+  applicerade och alla tre publikationerna är `alreadyApplied`; produktionen är
+  kvar på 23 sjöar och Matching Semantics v2 är verifierad mot verkligt läge.
+  Nästa steg är en slutlig user-output-QA över alla 23 sjöar före Batch C.
 
 ### Entitlement-arkitektur
 
