@@ -75,6 +75,11 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   generell fisketillåtelse. Inferensen kedjas inte vidare till Mete eller
   Flugfiske, explicita metodrestriktioner har fortsatt företräde och ingen
   sjödata ändrades.
+- Matching Semantics v2.2 skiljer artnärvaro från breda artgruppsrestriktioner.
+  `speciesGroup` kan varna för en redan styrkt art men skapar inte artnärvaro;
+  direkta artspecifika restriktioner kan fortsatt ge stöd. Därmed försvinner
+  Sommens felaktiga stöd för Lax och Regnbåge utan ändring av produktionsdata,
+  och Batch C är nästa steg efter matcher-verifieringen.
 
 ### Entitlement-arkitektur
 

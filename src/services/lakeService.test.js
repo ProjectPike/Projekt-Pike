@@ -343,6 +343,129 @@ test("matches comma-separated species restrictions and salmonid groups", () => {
   }
 });
 
+test("species groups warn only for species with independent presence evidence", () => {
+  const lake = matchingLake({
+    species: {
+      knownSpecies: fact(["röding", "öring"]),
+      bagLimits: [fact({ maxPerDay: 2 }, { speciesGroup: "laxartad" })],
+    },
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    species: ["Röding", "Öring", "Lax", "Regnbåge"],
+  });
+
+  assert.deepEqual(result.categories.species, [
+    { choice: "Röding", status: "warning", missing: [] },
+    { choice: "Öring", status: "warning", missing: [] },
+    { choice: "Lax", status: "unknown", missing: ["species"] },
+    { choice: "Regnbåge", status: "unknown", missing: ["species"] },
+  ]);
+});
+
+test("direct species restrictions still establish normalized species support", () => {
+  const lake = matchingLake({
+    species: {
+      sizeLimits: [
+        fact({ minSizeCm: 50 }, { species: "gadda" }),
+        fact({ minSizeCm: 40 }, { species: "gös" }),
+      ],
+    },
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    species: ["Gädda", "Abborre"],
+  });
+
+  assert.deepEqual(result.categories.species, [
+    { choice: "Gädda", status: "warning", missing: [] },
+    { choice: "Abborre", status: "unknown", missing: ["species"] },
+  ]);
+});
+
+test("stocked salmonids receive group warnings without broadening presence", () => {
+  const lake = matchingLake({
+    species: {
+      stockedSportFish: fact(["regnbage"]),
+      bagLimits: [fact({ maxPerDay: 2 }, { speciesGroup: "laxartad" })],
+    },
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    species: ["Regnbåge", "Lax"],
+  });
+
+  assert.deepEqual(result.categories.species, [
+    { choice: "Regnbåge", status: "warning", missing: [] },
+    { choice: "Lax", status: "unknown", missing: ["species"] },
+  ]);
+});
+
+test("inactive group restrictions neither warn nor establish presence", () => {
+  const lake = matchingLake({
+    species: {
+      knownSpecies: fact(["röding"]),
+      bagLimits: [fact({ maxPerDay: 2 }, {
+        speciesGroup: "laxartad",
+        conditions: {
+          dateFrom: "06-01",
+          dateTo: "08-31",
+          timeFrom: null,
+          timeTo: null,
+        },
+      })],
+    },
+  });
+  const result = getLakeFishingSelectionDetails(
+    lake,
+    { species: ["Röding", "Lax"] },
+    new Date("2026-11-15T12:00:00Z"),
+  );
+
+  assert.deepEqual(result.categories.species, [
+    { choice: "Röding", status: "allowed", missing: [] },
+    { choice: "Lax", status: "unknown", missing: ["species"] },
+  ]);
+});
+
+test("array and compound species groups never establish presence", () => {
+  const lake = matchingLake({
+    species: {
+      bagLimits: [
+        fact({ maxPerDay: 2 }, { speciesGroup: ["röding", "öring", "lax"] }),
+        fact({ maxPerDay: 4 }, { speciesGroup: "gädda+gös" }),
+      ],
+    },
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    species: ["Röding", "Öring", "Lax", "Gädda", "Gös"],
+  });
+
+  assert.deepEqual(result.categories.species, [
+    { choice: "Röding", status: "unknown", missing: ["species"] },
+    { choice: "Öring", status: "unknown", missing: ["species"] },
+    { choice: "Lax", status: "unknown", missing: ["species"] },
+    { choice: "Gädda", status: "unknown", missing: ["species"] },
+    { choice: "Gös", status: "unknown", missing: ["species"] },
+  ]);
+});
+
+test("species-group evidence does not affect method or place matching", () => {
+  const lake = matchingLake({
+    species: {
+      bagLimits: [fact({ maxPerDay: 2 }, { speciesGroup: "laxartad" })],
+    },
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    place: ["Båt"],
+    method: ["Spinn"],
+  });
+
+  assert.deepEqual(result.categories.place, [
+    { choice: "Båt", status: "allowed", missing: [] },
+  ]);
+  assert.deepEqual(result.categories.method, [
+    { choice: "Spinn", status: "allowed", missing: [] },
+  ]);
+});
+
 test("keeps unverified choices unknown", () => {
   const unverifiedMethodLake = matchingLake({
     methods: { spin: fact("allowed", { status: "unknown" }) },

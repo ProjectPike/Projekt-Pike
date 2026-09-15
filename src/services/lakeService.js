@@ -475,20 +475,34 @@ function getSpeciesMatch(details, species, now) {
     .filter(isVerifiedFact)
     .filter((fact) => matchesSpecies(fact.value, species));
 
-  const restrictionFacts = Object.values(speciesDetails)
+  const restrictionEntries = Object.values(speciesDetails)
     .filter(Array.isArray)
     .flat()
+    .filter(isVerifiedFact);
+
+  const directSpeciesRestrictionFacts = restrictionEntries
     .filter(
       (entry) =>
-        isVerifiedFact(entry) &&
-        matchesSpecies(entry.species ?? entry.speciesGroup, species),
+        entry.species !== undefined &&
+        matchesSpecies(entry.species, species),
     );
+  const groupRestrictionFacts = restrictionEntries
+    .filter(
+      (entry) =>
+        entry.speciesGroup !== undefined &&
+        matchesSpecies(entry.speciesGroup, species),
+    );
+  const restrictionFacts = [
+    ...directSpeciesRestrictionFacts,
+    ...groupRestrictionFacts,
+  ];
 
-  const facts = [...presenceFacts, ...restrictionFacts];
+  const supported = presenceFacts.length > 0 || directSpeciesRestrictionFacts.length > 0;
 
   return {
-    supported: facts.length > 0,
-    warning: restrictionFacts.some((fact) => isConditionActive(fact, now)),
+    supported,
+    warning:
+      supported && restrictionFacts.some((fact) => isConditionActive(fact, now)),
   };
 }
 
