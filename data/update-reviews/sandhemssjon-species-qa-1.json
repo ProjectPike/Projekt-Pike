@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "sandhemssjon-species-qa-1",
+  "targetLakeId": "sandhemssjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "4c624647f9c52b9129ee06466378d0487dd8c1badc5a374e4f9403ef11092eb5",
+  "note": "Manuellt granskad real-state QA-korrigering. Förslaget ersätter endast Sandhemssjöns kända fiskarter med den verifierade nioartslistan och exkluderar signalkräfta."
+}

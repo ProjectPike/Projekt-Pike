@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "ryssbysjon-method-qa-1",
+  "targetLakeId": "ryssbysjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "58b71681c488dfd8277d466f04aca83fbc0961b36f9d61fadaa9b3b993240ad0",
+  "note": "Manuellt granskad real-state QA-korrigering. Förslaget lägger endast till Ryssbysjöns säsongsbundna normativa handredskapsregel och gör inte rådgivande Trolling eller Mete normativa."
+}

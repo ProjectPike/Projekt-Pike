@@ -259,14 +259,18 @@ test("preflight serialization and fingerprints are deterministic", async () => {
   assert.deepEqual(first.serializedFiles, second.serializedFiles);
 });
 
-test("real repository preflight classifies Batch B as applied history", async () => {
+test("real repository preflight keeps history applied and QA corrections pending", async () => {
   const paths = Object.values(productionDatasetFiles).map((path) => new URL(`../${path}`, import.meta.url));
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const result = await createRepositoryLakeUpdatePreflight();
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.pendingUpdates, []);
+  assert.deepEqual(result.pendingUpdates.map(({ id }) => id), [
+    "nommen-method-qa-1",
+    "ryssbysjon-method-qa-1",
+    "sandhemssjon-species-qa-1",
+  ]);
   assert.deepEqual(result.alreadyApplied, [
     "landsjon-baseline-audit-1",
     "mogolen-hedenstorp-spin",
@@ -278,7 +282,7 @@ test("real repository preflight classifies Batch B as applied history", async ()
     "straken-baseline-audit-1",
     "vattern-baseline-audit-1",
   ]);
-  assert.deepEqual(result.filesToChange, []);
+  assert.deepEqual(result.filesToChange, [productionDatasetFiles.lakes]);
   assert.equal(result.productionLakeCount, 23);
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.validationErrors, []);

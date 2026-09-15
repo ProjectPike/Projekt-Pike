@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "nommen-method-qa-1",
+  "targetLakeId": "nommen",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "1e4cd02695e30d7b6fd02fa519ceaa9da243ab6e7dd6e04e4c62bee1961fe446",
+  "note": "Manuellt granskad real-state QA-korrigering. Förslaget klassificerar endast Nömmens dokumenterade Spinn- och Meteuppgifter som rådgivande metodinformation i stället för normativa tillåtelseregler."
+}
