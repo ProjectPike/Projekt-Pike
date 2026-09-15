@@ -259,48 +259,19 @@ test("preflight serialization and fingerprints are deterministic", async () => {
   assert.deepEqual(first.serializedFiles, second.serializedFiles);
 });
 
-test("real repository preflight classifies Batch C as pending reviewed updates", async () => {
+test("real repository preflight classifies Batch C as applied history", async () => {
   const paths = Object.values(productionDatasetFiles).map((path) => new URL(`../${path}`, import.meta.url));
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const result = await createRepositoryLakeUpdatePreflight();
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.pendingUpdates.map(({ id, targetLakeId, changes }) => ({
-    id,
-    targetLakeId,
-    paths: changes.map(({ path }) => path),
-  })), [
-    {
-      id: "hokesjon-baseline-audit-c1",
-      targetLakeId: "hokesjon",
-      paths: ["details.species.knownSpecies"],
-    },
-    {
-      id: "mullsjon-baseline-audit-c1",
-      targetLakeId: "mullsjon",
-      paths: ["details.species.knownSpecies"],
-    },
-    {
-      id: "ulvstorpasjon-baseline-audit-c1",
-      targetLakeId: "ulvstorpasjon",
-      paths: [
-        "details.methods.spin",
-        "details.methods.bait",
-        "details.watercraft.floatTube",
-        "details.methods.maxRodsPerPerson",
-        "details.methods.chumming",
-        "details.methods.crayfishFishing",
-        "details.species.knownSpecies",
-        "details.species.bagLimits",
-        "details.access.youthRules",
-        "details.geography.fishingProhibitionAreas",
-      ],
-    },
-  ]);
+  assert.deepEqual(result.pendingUpdates, []);
   assert.deepEqual(result.alreadyApplied, [
+    "hokesjon-baseline-audit-c1",
     "landsjon-baseline-audit-1",
     "mogolen-hedenstorp-spin",
+    "mullsjon-baseline-audit-c1",
     "munksjon-baseline-audit-1",
     "nommen-baseline-audit-1",
     "nommen-method-qa-1",
@@ -310,9 +281,10 @@ test("real repository preflight classifies Batch C as pending reviewed updates",
     "sommen-baseline-audit-1",
     "spexhultasjon-baseline-audit-1",
     "straken-baseline-audit-1",
+    "ulvstorpasjon-baseline-audit-c1",
     "vattern-baseline-audit-1",
   ]);
-  assert.deepEqual(result.filesToChange, [productionDatasetFiles.lakes]);
+  assert.deepEqual(result.filesToChange, []);
   assert.equal(result.productionLakeCount, 23);
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.validationErrors, []);
