@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "ulvstorpasjon-baseline-audit-c1",
+  "targetLakeId": "ulvstorpasjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "5d253127cefe3b0412d492524bf6a6ceb4aa4a1d7acfbec519ccc8414f0920b5",
+  "note": "Manuellt granskad Batch C-korrigering. Förslaget ersätter tre inaktuella eller för breda fakta och lägger endast till de sju källbelagda fakta som anges i förslaget, utan att skapa artnärvaro från artgruppsregeln eller fabricera geometri."
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "mullsjon-baseline-audit-c1",
+  "targetLakeId": "mullsjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "bcef22fc443c9b8cdc1425580f19c0a6731c2955f533b9bddc5defc3198b5d61",
+  "note": "Manuellt granskad Batch C-korrigering. Förslaget ersätter endast Mullsjöns kända fiskarter med den källbelagda sexartslistan och exkluderar Trollsjöns laxfiskar samt signalkräfta."
+}

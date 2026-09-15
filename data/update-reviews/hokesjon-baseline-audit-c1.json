@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "hokesjon-baseline-audit-c1",
+  "targetLakeId": "hokesjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-15",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "aa7c358b183d472a87d4aada2b8450e82e379119afca025aad9a13776f1f970d",
+  "note": "Manuellt granskad Batch C-korrigering. Förslaget ersätter endast Hökesjöns kända fiskarter med den källbelagda nioartslistan, exkluderar signalkräfta och lämnar befintliga återutsättningsregler orörda."
+}
