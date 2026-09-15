@@ -1100,13 +1100,11 @@ function getWarningChoiceLabels(categories) {
 }
 
 function getChoiceStatusLabel(choice) {
-  const label = {
-    allowed: "Stöds",
+  return {
+    allowed: "Tillåtet",
     warning: "Villkor finns",
     unknown: "Uppgift saknas",
   }[choice.status];
-
-  return choice.inferred ? "Bedöms okej" : label;
 }
 
 function getChoiceStatusSymbol(status) {
