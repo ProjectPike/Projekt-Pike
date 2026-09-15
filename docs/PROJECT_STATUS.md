@@ -85,6 +85,12 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   krävde inga ändringar; update-livscykeln är 15 `alreadyApplied` och noll
   väntande, produktionen är kvar på 23 sjöar och Matching Semantics v2.2 är
   verifierad mot Batch C. Nästa steg är manuell UI-kontroll och därefter Batch D.
+- Baseline Lake Audit v1 Batch D:s förslagssteg är klart med ett ogranskat,
+  opublicerat och oapplicerat förslag för Sandhemssjön. Gravsjön, Knipesjön och
+  Klappasjön krävde ingen korrigering. Svansjön är uppskjuten eftersom nuvarande
+  representation inte säkert kan uttrycka vinterkortets begränsning till endast
+  pimpelfiske. Produktionen är oförändrad med 23 sjöar och publicerad
+  update-historik är fortsatt 15 `alreadyApplied` och noll väntande.
 
 ### Entitlement-arkitektur
 
