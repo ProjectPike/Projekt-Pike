@@ -71,6 +71,10 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   applicerade och alla tre publikationerna är `alreadyApplied`; produktionen är
   kvar på 23 sjöar och Matching Semantics v2 är verifierad mot verkligt läge.
   Nästa steg är en slutlig user-output-QA över alla 23 sjöar före Batch C.
+- Matching Semantics v2.1 ger baseline-infererad Spinn från verifierad normativ
+  generell fisketillåtelse. Inferensen kedjas inte vidare till Mete eller
+  Flugfiske, explicita metodrestriktioner har fortsatt företräde och ingen
+  sjödata ändrades.
 
 ### Entitlement-arkitektur
 

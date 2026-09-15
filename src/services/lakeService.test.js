@@ -414,6 +414,126 @@ test("does not treat advisory or recommendation facts as method permission", () 
   }
 });
 
+test("infers only baseline Spinn from a normative permit requirement", () => {
+  const lake = matchingLake({
+    access: { permitRequirement: fact("required") },
+    methods: {},
+  });
+  const result = getLakeFishingSelectionDetails(lake, {
+    method: ["Spinn", "Mete", "Flugfiske", "Trolling"],
+  });
+
+  assert.deepEqual(result.categories.method, [
+    { choice: "Spinn", status: "allowed", missing: [], inferred: true },
+    { choice: "Mete", status: "unknown", missing: ["method"] },
+    { choice: "Flugfiske", status: "unknown", missing: ["method"] },
+    { choice: "Trolling", status: "unknown", missing: ["method"] },
+  ]);
+});
+
+test("advisory and unverified access facts do not provide baseline Spinn", () => {
+  for (const permitRequirement of [
+    fact("required", { ruleType: "advisory" }),
+    fact("required", { ruleType: "recommendation" }),
+    fact("required", { status: "unverified" }),
+  ]) {
+    assert.deepEqual(
+      getLakeFishingSelectionDetails(
+        matchingLake({ access: { permitRequirement }, methods: {} }),
+        { method: ["Spinn"] },
+      ).categories.method,
+      [{ choice: "Spinn", status: "unknown", missing: ["method"] }],
+    );
+  }
+});
+
+test("explicit Spinn rules take precedence over generic fishing permission", () => {
+  for (const [value, status] of [["prohibited", "warning"], ["restricted", "warning"]]) {
+    const result = getLakeFishingSelectionDetails(
+      matchingLake({
+        access: { permitRequirement: fact("required") },
+        methods: { spin: fact(value) },
+      }),
+      { method: ["Spinn"] },
+    );
+
+    assert.deepEqual(result.categories.method, [
+      { choice: "Spinn", status, missing: [] },
+    ]);
+  }
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(
+      matchingLake({
+        access: { permitRequirement: fact("required") },
+        methods: { spin: fact("allowed") },
+      }),
+      { method: ["Spinn"] },
+    ).categories.method,
+    [{ choice: "Spinn", status: "allowed", missing: [] }],
+  );
+});
+
+test("seasonal general fishing permission bounds baseline Spinn inference", () => {
+  for (const access of [{}, { permitRequirement: fact("required") }]) {
+    const lake = matchingLake({
+      access,
+      methods: {
+        fishingSeason: fact("allowed", {
+          conditions: {
+            dateFrom: "05-01",
+            dateTo: "09-30",
+            timeFrom: null,
+            timeTo: null,
+          },
+        }),
+      },
+    });
+
+    assert.deepEqual(
+      getLakeFishingSelectionDetails(
+        lake,
+        { method: ["Spinn"] },
+        new Date("2026-06-15T12:00:00"),
+      ).categories.method,
+      [{ choice: "Spinn", status: "allowed", missing: [], inferred: true }],
+    );
+    assert.deepEqual(
+      getLakeFishingSelectionDetails(
+        lake,
+        { method: ["Spinn"] },
+        new Date("2026-11-15T12:00:00"),
+      ).categories.method,
+      [{ choice: "Spinn", status: "unknown", missing: ["method"] }],
+    );
+  }
+});
+
+test("an active general fishing closure overrides permit-based Spinn", () => {
+  const lake = matchingLake({
+    access: { permitRequirement: fact("required") },
+    methods: {
+      publicFishing: fact("prohibited", {
+        conditions: {
+          dateFrom: "08-01",
+          dateTo: "08-31",
+          timeFrom: null,
+          timeTo: null,
+        },
+      }),
+    },
+  });
+
+  assert.equal(
+    getLakeFishingStatus(lake, choices, new Date("2026-08-10T12:00:00")),
+    "warning",
+  );
+  assert.equal(
+    getLakeFishingStatus(lake, choices, new Date("2026-09-01T12:00:00")),
+    "allowed",
+  );
+});
+
 test("uses an active normative Spinn permission only during its season", () => {
   const lake = matchingLake({
     methods: {

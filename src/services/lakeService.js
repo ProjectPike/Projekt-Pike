@@ -60,6 +60,14 @@ const METHOD_FACT_KEYS = {
   Trolling: ["trolling"],
 };
 
+const GENERAL_FISHING_PERMISSION_KEYS = [
+  "fishingSeason",
+  "fishingHoursInSeason",
+  "summerFishing",
+  "winterFishing",
+  "publicFishing",
+];
+
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
@@ -252,6 +260,25 @@ function isMethodRestrictionFact(fact) {
   );
 }
 
+function hasActiveGeneralFishingPermission(details, now) {
+  const explicitGeneralPermissions = GENERAL_FISHING_PERMISSION_KEYS
+    .flatMap((key) => [details?.access?.[key], details?.methods?.[key]])
+    .filter((fact) =>
+      isNormativeMethodFact(fact) && fact.value === "allowed",
+    );
+
+  if (explicitGeneralPermissions.length > 0) {
+    return explicitGeneralPermissions.some((fact) => isConditionActive(fact, now));
+  }
+
+  const permitRequirement = details?.access?.permitRequirement;
+  return (
+    isNormativeMethodFact(permitRequirement) &&
+    permitRequirement.value === "required" &&
+    isConditionActive(permitRequirement, now)
+  );
+}
+
 function getPlaceMatch(details, place, now) {
   if (place === "Land") {
     return { supported: true, warning: false };
@@ -356,11 +383,14 @@ function getMethodMatch(details, method, now) {
   ].some((fact) => isActiveAllowedMethodFact(fact, now));
   const isCoveredByTrollingPermission =
     ["Spinn", "Mete", "Flugfiske"].includes(method) && activeTrollingPermission;
+  const isCoveredByGeneralFishingPermission =
+    method === "Spinn" && hasActiveGeneralFishingPermission(details, now);
 
   const inferredSupport =
     isCoveredByHandGearRule ||
     isCoveredBySpinPermission ||
     isCoveredByTrollingPermission ||
+    isCoveredByGeneralFishingPermission ||
     inactiveBoundedRestriction;
   const explicitlySupported =
     activeExplicitAllowed ||
