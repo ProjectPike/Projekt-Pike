@@ -259,16 +259,14 @@ test("preflight serialization and fingerprints are deterministic", async () => {
   assert.deepEqual(first.serializedFiles, second.serializedFiles);
 });
 
-test("real repository preflight keeps Batch C applied and Batch D1 pending", async () => {
+test("real repository preflight classifies Batch D1 as applied history", async () => {
   const paths = Object.values(productionDatasetFiles).map((path) => new URL(`../${path}`, import.meta.url));
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const result = await createRepositoryLakeUpdatePreflight();
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.pendingUpdates.map(({ id }) => id), [
-    "sandhemssjon-baseline-audit-d1",
-  ]);
+  assert.deepEqual(result.pendingUpdates, []);
   assert.deepEqual(result.alreadyApplied, [
     "hokesjon-baseline-audit-c1",
     "landsjon-baseline-audit-1",
@@ -279,6 +277,7 @@ test("real repository preflight keeps Batch C applied and Batch D1 pending", asy
     "nommen-method-qa-1",
     "ryssbysjon-baseline-audit-1",
     "ryssbysjon-method-qa-1",
+    "sandhemssjon-baseline-audit-d1",
     "sandhemssjon-species-qa-1",
     "sommen-baseline-audit-1",
     "spexhultasjon-baseline-audit-1",
@@ -286,7 +285,7 @@ test("real repository preflight keeps Batch C applied and Batch D1 pending", asy
     "ulvstorpasjon-baseline-audit-c1",
     "vattern-baseline-audit-1",
   ]);
-  assert.deepEqual(result.filesToChange, ["src/data/lakes.js"]);
+  assert.deepEqual(result.filesToChange, []);
   assert.equal(result.productionLakeCount, 23);
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.validationErrors, []);

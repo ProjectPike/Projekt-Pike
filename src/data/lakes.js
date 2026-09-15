@@ -6180,8 +6180,8 @@ export const lakes = {
         "label": "Fiskekort krävs"
       },
       "rules": {
-        "status": "unverified",
-        "label": "Kontrollera aktuella regler"
+        "label": "Verifierade grundregler",
+        "status": "verified"
       },
       "protectedAreas": {
         "status": "unknown",
@@ -6253,6 +6253,20 @@ export const lakes = {
           ],
           "note": "Vid vinterfiske gäller max 12 angeldon/iskrokar per fiskare.",
           "conditions": null
+        },
+        "crayfishFishing": {
+          "conditions": null,
+          "note": "Signalkräfta finns i sjön men kräftfiske ingår inte i det ordinarie fiskekortet.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiske-sandhemssjon.htm"
+            }
+          ],
+          "status": "verified",
+          "value": "restricted",
+          "verifiedAt": "2026-09-15"
         }
       },
       "species": {
