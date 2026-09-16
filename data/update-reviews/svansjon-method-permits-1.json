@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "svansjon-method-permits-1",
+  "targetLakeId": "svansjon",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-16",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "2298e5a9f1023fccef756da0764800c67af7e99cf05c8104485bbd291fe6f089",
+  "note": "Manuellt granskad Svansjön-korrigering. Förslaget binder det ordinarie öppenvattenkortet exakt till Spinn och Flugfiske samt det separata isfiskekortet exakt till Pimpelfiske, utan kalenderantaganden, korsinferens eller stöd för Mete och Trolling."
+}
