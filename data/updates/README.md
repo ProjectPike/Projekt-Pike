@@ -61,3 +61,21 @@ explicit `proposed` JSON value only to an in-memory clone. The complete proposed
 dataset must pass production validation, all other lakes must remain identical,
 and every target change outside the listed paths is blocked. REMOVE, arrays and
 production apply are deferred.
+
+## Method-specific permit support
+
+`details.access.permitMethodSupport` binds a named permit product/type to exact
+method keys without inventing a season. Its fact value is a non-empty array of
+unique bindings such as:
+
+```json
+[
+  { "permitType": "ordinary-open-water", "methods": ["spin", "fly"] },
+  { "permitType": "ice-fishing", "methods": ["ice"] }
+]
+```
+
+Supported method keys are `spin`, `bait`, `fly`, `trolling` and `ice`. A binding
+supports only its listed methods; it does not participate in the broader
+Spinn-to-hand-method inference. When this verified normative fact is present,
+the generic permit-requirement fallback does not add unlisted Spinn support.

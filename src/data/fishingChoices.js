@@ -25,6 +25,6 @@ export const additionalFishingSpecies = [
 
 export const fishingChoices = {
   places: ["Båt", "Land", "Kajak", "Flytring"],
-  methods: ["Spinn", "Mete", "Flugfiske", "Trolling"],
+  methods: ["Spinn", "Mete", "Flugfiske", "Trolling", "Pimpelfiske"],
   species: [...featuredFishingSpecies, ...additionalFishingSpecies],
 };

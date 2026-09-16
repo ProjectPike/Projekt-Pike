@@ -204,7 +204,7 @@ test("malformed or unsafe update paths and missing parents are blocked", () => {
   assert.deepEqual(result.blockers.map(({ code }) => code), ["missing-update-parent"]);
 });
 
-test("real raw evaluator treats Batch D1 as applied history", async () => {
+test("real raw evaluator separates applied history from the Svansjön permit proposal", async () => {
   const paths = [
     new URL("../src/data/lakes.js", import.meta.url),
     new URL("../src/data/lakeDepthMapResearch.js", import.meta.url),
@@ -213,13 +213,13 @@ test("real raw evaluator treats Batch D1 as applied history", async () => {
   const suite = await run([], () => {});
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
-  assert.equal(suite.summary.proposalCount, 16);
-  assert.equal(suite.summary.eligibleProposalCount, 0);
+  assert.equal(suite.summary.proposalCount, 17);
+  assert.equal(suite.summary.eligibleProposalCount, 1);
   assert.equal(suite.summary.blockedProposalCount, 16);
   assert.equal(suite.summary.productionModified, false);
   assert.deepEqual(
     suite.results.filter(({ eligible }) => eligible).map(({ proposalId }) => proposalId),
-    [],
+    ["svansjon-method-permits-1"],
   );
   assert.ok(suite.results.filter(({ eligible }) => !eligible).every(({ blockers }) =>
     blockers.some(({ code }) => code === "stale-target-fingerprint")));

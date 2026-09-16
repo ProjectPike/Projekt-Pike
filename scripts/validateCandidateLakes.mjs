@@ -8,6 +8,7 @@ import {
   lakeDetailRuleTypes,
   lakeDetailVerificationStatuses,
 } from "../src/data/lakes.js";
+import { isPermitMethodSupportValue } from "../src/data/permitMethodSupport.js";
 
 const sections = ["access", "methods", "species", "watercraft", "boat", "practical", "geography", "safety", "depthMap"];
 export const numericMethodFactKeys = Object.freeze([
@@ -190,9 +191,17 @@ export function validateCandidate(candidate) {
       number: Number.isFinite,
       boolean: (v) => typeof v === "boolean",
       "string-list": strings,
+      "permit-method-support": isPermitMethodSupportValue,
     };
     if (typeof fact.valueType !== "string" || !Object.hasOwn(types, fact.valueType)) fail(`${path}.valueType`, "unsupported value type");
     else if (fact.status !== "unknown" && !types[fact.valueType](fact.value)) fail(`${path}.value`, "invalid value for valueType");
+    if ((fact.section === "access" && fact.key === "permitMethodSupport") !==
+      (fact.valueType === "permit-method-support")) {
+      fail(
+        `${path}.valueType`,
+        "access.permitMethodSupport requires permit-method-support and that type is reserved for this fact",
+      );
+    }
     if (fact.status === "unknown") {
       if (fact.value !== "unknown" || fact.verifiedAt !== null || ![null, "unknown"].includes(fact.ruleType)) fail(path, "unknown requires value unknown, verifiedAt null and no asserted rule type");
     } else {

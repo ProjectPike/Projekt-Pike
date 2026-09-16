@@ -554,6 +554,97 @@ test("infers only baseline Spinn from a normative permit requirement", () => {
   ]);
 });
 
+test("scoped permit support binds ordinary and ice permits to exact methods", () => {
+  const permitMethodSupport = fact([
+    { permitType: "ordinary-open-water", methods: ["spin", "fly"] },
+    { permitType: "ice-fishing", methods: ["ice"] },
+  ]);
+  const lake = matchingLake({
+    access: {
+      permitRequirement: fact("required"),
+      permitMethodSupport,
+    },
+    methods: {},
+  });
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(lake, {
+      method: ["Spinn", "Flugfiske", "Pimpelfiske", "Mete", "Trolling"],
+    }).categories.method,
+    [
+      { choice: "Spinn", status: "allowed", missing: [], inferred: true },
+      { choice: "Flugfiske", status: "allowed", missing: [], inferred: true },
+      { choice: "Pimpelfiske", status: "allowed", missing: [], inferred: true },
+      { choice: "Mete", status: "unknown", missing: ["method"] },
+      { choice: "Trolling", status: "unknown", missing: ["method"] },
+    ],
+  );
+  assert.equal(permitMethodSupport.conditions, null);
+});
+
+test("an ice-only permit never becomes ordinary-method evidence", () => {
+  const lake = matchingLake({
+    access: {
+      permitRequirement: fact("required"),
+      permitMethodSupport: fact([
+        { permitType: "ice-fishing", methods: ["ice"] },
+      ]),
+    },
+    methods: {},
+  });
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(lake, {
+      method: ["Pimpelfiske", "Spinn", "Flugfiske", "Mete", "Trolling"],
+    }).categories.method,
+    [
+      { choice: "Pimpelfiske", status: "allowed", missing: [], inferred: true },
+      { choice: "Spinn", status: "unknown", missing: ["method"] },
+      { choice: "Flugfiske", status: "unknown", missing: ["method"] },
+      { choice: "Mete", status: "unknown", missing: ["method"] },
+      { choice: "Trolling", status: "unknown", missing: ["method"] },
+    ],
+  );
+});
+
+test("scoped permit support requires no fabricated calendar season", () => {
+  const lake = matchingLake({
+    access: {
+      permitMethodSupport: fact([
+        { permitType: "ordinary-open-water", methods: ["spin", "fly"] },
+        { permitType: "ice-fishing", methods: ["ice"] },
+      ]),
+    },
+    methods: {},
+  });
+
+  for (const now of [
+    new Date("2026-01-15T12:00:00"),
+    new Date("2026-06-15T12:00:00"),
+    new Date("2026-11-15T12:00:00"),
+  ]) {
+    assert.equal(getLakeFishingStatus(lake, { method: "Spinn" }, now), "allowed");
+    assert.equal(getLakeFishingStatus(lake, { method: "Flugfiske" }, now), "allowed");
+    assert.equal(getLakeFishingStatus(lake, { method: "Pimpelfiske" }, now), "allowed");
+  }
+});
+
+test("explicit method restrictions override scoped permit support", () => {
+  const lake = matchingLake({
+    access: {
+      permitMethodSupport: fact([
+        { permitType: "ordinary-open-water", methods: ["spin"] },
+      ]),
+    },
+    methods: { spin: fact("restricted") },
+  });
+
+  assert.deepEqual(
+    getLakeFishingSelectionDetails(lake, { method: ["Spinn"] }).categories.method,
+    [{ choice: "Spinn", status: "warning", missing: [] }],
+  );
+});
+
 test("advisory and unverified access facts do not provide baseline Spinn", () => {
   for (const permitRequirement of [
     fact("required", { ruleType: "advisory" }),

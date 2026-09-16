@@ -166,6 +166,37 @@ test("membership requirement is a valid explicit access text fact", () => {
   assert.deepEqual(validateCandidate(candidate), []);
 });
 
+test("permit-method support validates exact permit-to-method bindings", () => {
+  const candidate = sourced();
+  Object.assign(candidate.details[0], {
+    section: "access",
+    key: "permitMethodSupport",
+    valueType: "permit-method-support",
+    value: [
+      { permitType: "ordinary-open-water", methods: ["spin", "fly"] },
+      { permitType: "ice-fishing", methods: ["ice"] },
+    ],
+  });
+  assert.deepEqual(validateCandidate(candidate), []);
+
+  for (const invalid of [
+    [],
+    [{ permitType: "ordinary-open-water", methods: [] }],
+    [{ permitType: "ordinary-open-water", methods: ["spin", "spin"] }],
+    [{ permitType: "ordinary-open-water", methods: ["unknown"] }],
+    [{ permitType: "ordinary-open-water", methods: ["spin"], extra: true }],
+  ]) {
+    candidate.details[0].value = invalid;
+    assert.ok(validateCandidate(candidate).some((error) => error.includes("details[0].value")));
+  }
+
+  candidate.details[0].value = [
+    { permitType: "ordinary-open-water", methods: ["spin"] },
+  ];
+  candidate.details[0].key = "otherAccessFact";
+  assert.ok(validateCandidate(candidate).some((error) => error.includes("reserved for this fact")));
+});
+
 test("method fact types use an explicit state or numeric contract", () => {
   for (const key of ["maxRodsPerPerson", "maxRodsPerPermit", "maxLinesPerFishingPermit"]) {
     const candidate = sourced();

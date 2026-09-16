@@ -1,3 +1,5 @@
+import { isPermitMethodSupportValue } from "../src/data/permitMethodSupport.js";
+
 const DETAIL_SECTIONS = [
   "access", "methods", "species", "watercraft", "boat", "practical", "geography", "safety",
 ];
@@ -97,6 +99,14 @@ export function validateLakeDataState({
       }
     }
     validateDetails(lake.details, `${lakeId}.details`);
+    const permitMethodSupport = lake.details?.access?.permitMethodSupport;
+    if (permitMethodSupport && permitMethodSupport.value !== "unknown" &&
+      !isPermitMethodSupportValue(permitMethodSupport.value)) {
+      addError(
+        `${lakeId}.details.access.permitMethodSupport.value`,
+        "ogiltiga korttypsbundna fiskemetoder",
+      );
+    }
 
     const depthMapResearch = lakeDepthMapResearch[lakeId];
     if (!depthMapResearch) {

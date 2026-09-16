@@ -143,6 +143,24 @@ test("maps membership requirement without creating permit semantics", () => {
   );
 });
 
+test("maps permit-method support without inventing method facts", () => {
+  const value = [
+    { permitType: "ordinary-open-water", methods: ["spin", "fly"] },
+    { permitType: "ice-fishing", methods: ["ice"] },
+  ];
+  const input = publication([
+    fact("access", "permitMethodSupport", {
+      valueType: "permit-method-support",
+      value,
+    }),
+  ]);
+
+  assert.equal(assessPublishedLakeCompatibility(input).compatible, true);
+  const mapped = mapPublishedLakeCompatibleFields(input);
+  assert.deepEqual(mapped.details.access.permitMethodSupport.value, value);
+  assert.deepEqual(mapped.details.methods, {});
+});
+
 test("reports app fields that an incomplete candidate must explicitly supply", () => {
   const input = publication([], false);
   delete input.candidate.region;

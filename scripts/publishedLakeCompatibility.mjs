@@ -15,7 +15,7 @@ export const appDetailSections = [
 const singletonFactKeys = {
   access: [
     "familyCoverage", "membershipRequirement", "permitCost", "permitPrice", "permitProducts",
-    "permitRequirement", "purchase", "purchaseChannels", "validity", "youthRules",
+    "permitMethodSupport", "permitRequirement", "purchase", "purchaseChannels", "validity", "youthRules",
   ],
   methods: [
     "angeldonContinuousSupervision", "angeldonOnlyIceCoveredWater",
@@ -79,6 +79,10 @@ const stringListFactKeys = new Set([
   "access.purchaseChannels",
   "species.knownSpecies",
   "species.stockedSportFish",
+]);
+
+const permitMethodSupportFactKeys = new Set([
+  "access.permitMethodSupport",
 ]);
 
 const appOnlyFields = [
@@ -209,6 +213,8 @@ export function assessPublishedLakeCompatibility(publication) {
       }
       const allowedValueTypes = numberFactKeys.has(subject)
         ? ["number"]
+        : permitMethodSupportFactKeys.has(subject)
+          ? ["permit-method-support"]
         : stringListFactKeys.has(subject)
           ? ["string-list"]
           : ["state", "text"];

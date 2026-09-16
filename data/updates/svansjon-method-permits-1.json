@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "svansjon-method-permits-1",
+  "targetLakeId": "svansjon",
+  "targetLakeFingerprint": "4bcb9725bb610e472292d9c3ddab90a97ea0e17f19f9e11a226628ff933ab1c4",
+  "reason": "Svansjöns separata ordinarie och isfiskekort behöver bindas till exakt de fiskemetoder de stödjer utan antagna vinterdatum eller korsinferens mellan korttyper.",
+  "sources": [
+    {
+      "id": "svansjon-ifiske-permits",
+      "type": "commercial-aggregator",
+      "title": "Svansjöns FVOF / iFiske — fiskekort",
+      "url": "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+      "checkedAt": "2026-09-15"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "details.access.permitMethodSupport",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": [
+          {
+            "permitType": "ordinary-open-water",
+            "methods": [
+              "spin",
+              "fly"
+            ]
+          },
+          {
+            "permitType": "ice-fishing",
+            "methods": [
+              "ice"
+            ]
+          }
+        ],
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-15",
+        "sources": [
+          {
+            "url": "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+            "type": "commercial-aggregator"
+          }
+        ],
+        "note": "Det ordinarie kortet för öppet vatten omfattar spinn- och flugfiske. Det separata isfiskekortet omfattar pimpelfiske; inga fasta kalenderdatum antas.",
+        "conditions": null
+      },
+      "reason": "Produktionspostens generella kortkrav kan inte skilja ordinarie fiske från det separata isfiskekortet och ger därför inte en säker metodkoppling.",
+      "sources": [
+        "svansjon-ifiske-permits"
+      ],
+      "verifiedAt": "2026-09-15"
+    }
+  ]
+}

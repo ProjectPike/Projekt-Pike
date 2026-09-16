@@ -95,6 +95,12 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   är verifierad och kräftfiske är registrerat som begränsat eftersom det inte
   ingår i det ordinarie fiskekortet. Produktionen är fortsatt 23 sjöar och
   update-livscykeln är 16 `alreadyApplied` med noll väntande.
+- En minimal generell `permitMethodSupport`-modell skiljer metodstöd mellan
+  korttyper utan gissade säsongsdatum eller korsinferens. Ett stale-bundet,
+  ogranskat förslag för Svansjön binder ordinarie öppet-vatten-kort till Spinn
+  och Flugfiske samt isfiskekortet till Pimpelfiske. Förslaget är inte publicerat
+  eller applicerat; produktionen är fortsatt 23 sjöar och publicerad livscykel
+  fortsatt 16 `alreadyApplied` / 0 pending.
 
 ### Entitlement-arkitektur
 

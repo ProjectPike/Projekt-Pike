@@ -1,4 +1,5 @@
 import { lakes } from "../data/lakes.js";
+import { isPermitMethodSupportValue } from "../data/permitMethodSupport.js";
 
 /**
  * Returnerar alla sjöar som en array.
@@ -58,6 +59,15 @@ const METHOD_FACT_KEYS = {
   Mete: ["bait"],
   Flugfiske: ["fly"],
   Trolling: ["trolling"],
+  Pimpelfiske: ["ice"],
+};
+
+const METHOD_CHOICE_TO_PERMIT_KEY = {
+  Spinn: "spin",
+  Mete: "bait",
+  Flugfiske: "fly",
+  Trolling: "trolling",
+  Pimpelfiske: "ice",
 };
 
 const GENERAL_FISHING_PERMISSION_KEYS = [
@@ -213,8 +223,11 @@ function getMethodChoiceForKey(key) {
     return "Flugfiske";
   }
 
+  if (normalizedKey === "ice") {
+    return "Pimpelfiske";
+  }
+
   if (
-    normalizedKey === "ice" ||
     normalizedKey.includes("ice") ||
     normalizedKey.includes("angeldon") ||
     normalizedKey.includes("crayfish") ||
@@ -277,6 +290,19 @@ function hasActiveGeneralFishingPermission(details, now) {
     permitRequirement.value === "required" &&
     isConditionActive(permitRequirement, now)
   );
+}
+
+function getPermitMethodSupport(details, method, now) {
+  const fact = details?.access?.permitMethodSupport;
+  const hasScopedPermitSupport =
+    isNormativeMethodFact(fact) && isPermitMethodSupportValue(fact.value);
+  const methodKey = METHOD_CHOICE_TO_PERMIT_KEY[method];
+  const supported =
+    hasScopedPermitSupport &&
+    isConditionActive(fact, now) &&
+    fact.value.some((binding) => binding.methods.includes(methodKey));
+
+  return { hasScopedPermitSupport, supported };
 }
 
 function getPlaceMatch(details, place, now) {
@@ -383,13 +409,17 @@ function getMethodMatch(details, method, now) {
   ].some((fact) => isActiveAllowedMethodFact(fact, now));
   const isCoveredByTrollingPermission =
     ["Spinn", "Mete", "Flugfiske"].includes(method) && activeTrollingPermission;
+  const permitMethodSupport = getPermitMethodSupport(details, method, now);
   const isCoveredByGeneralFishingPermission =
-    method === "Spinn" && hasActiveGeneralFishingPermission(details, now);
+    method === "Spinn" &&
+    !permitMethodSupport.hasScopedPermitSupport &&
+    hasActiveGeneralFishingPermission(details, now);
 
   const inferredSupport =
     isCoveredByHandGearRule ||
     isCoveredBySpinPermission ||
     isCoveredByTrollingPermission ||
+    permitMethodSupport.supported ||
     isCoveredByGeneralFishingPermission ||
     inactiveBoundedRestriction;
   const explicitlySupported =
