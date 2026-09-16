@@ -7336,150 +7336,245 @@ export const lakes = {
   },
 
   svansjon: {
-    id: "svansjon",
-    name: "Svansjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [13.7839315, 57.8077537],
-    coordinateSource: "https://www.openstreetmap.org/relation/2719114",
-    distance: { kilometers: 36, travelTime: "38 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-08-08",
-      sources: [
+    "id": "svansjon",
+    "name": "Svansjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      13.7839315,
+      57.8077537
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/relation/2719114",
+    "distance": {
+      "kilometers": 36,
+      "travelTime": "38 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
         "https://www.ifiske.se/fiske-svansjon-samt-tillhorande-tokebosjon.htm",
         "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
-        "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
-      ],
+        "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "verified", label: "Verifierade grundregler" },
-      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade grundregler"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
-              type: "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Fiskekort krävs.",
+          "conditions": null
+        },
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Ungdom till och med 18 år fiskar utan fiskekort.",
+          "conditions": null
+        },
+        "permitMethodSupport": {
+          "conditions": null,
+          "note": "Det ordinarie kortet för öppet vatten omfattar spinn- och flugfiske. Det separata isfiskekortet omfattar pimpelfiske; inga fasta kalenderdatum antas.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            {
+              "methods": [
+                "spin",
+                "fly"
+              ],
+              "permitType": "ordinary-open-water"
             },
-          ],
-          note: "Fiskekort krävs.",
-          conditions: null,
-        },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
             {
-              url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
-              type: "commercial-aggregator",
+              "methods": [
+                "ice"
+              ],
+              "permitType": "ice-fishing"
+            }
+          ],
+          "verifiedAt": "2026-09-15"
+        }
+      },
+      "methods": {},
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "abborre",
+            "mört",
+            "braxen",
+            "gädda",
+            "lake",
+            "sutare",
+            "gärs"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiske-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Arter och relativa förekomster redovisas av FVO via iFiske.",
+          "conditions": null
+        }
+      },
+      "watercraft": {
+        "boat": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": null,
+          "conditions": null
+        },
+        "kayak": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "floatTube": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "boat": {
+        "boatRentalAvailable": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
             },
-          ],
-          note: "Ungdom till och med 18 år fiskar utan fiskekort.",
-          conditions: null,
-        },
-      },
-      methods: {},
-      species: {knownSpecies:{value:["abborre","m\xF6rt","braxen","g\xE4dda","lake","sutare","g\xE4rs"],status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/fiske-svansjon-samt-tillhorande-tokebosjon.htm",type:"commercial-aggregator"}],note:"Arter och relativa f\xF6rekomster redovisas av FVO via iFiske.",conditions:null}},
-      watercraft: {
-        boat: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [{url:"https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",type:"commercial-aggregator"}],
-          note: null,
-          conditions: null,
-        },
-        kayak: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        floatTube: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      boat: {
-        boatRentalAvailable: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
             {
-              url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
-              type: "commercial-aggregator",
-            },{url:"https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",type:"commercial-aggregator"},
+              "url": "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Fiskeföreningsbåt finns till uthyrning vid platsen.",
-          conditions: null,
+          "note": "Fiskeföreningsbåt finns till uthyrning vid platsen.",
+          "conditions": null
         },
-        electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
+        "electricMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
         },
-        combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
+        "combustionMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
       },
-      practical: {
-        ramp: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
+      "practical": {
+        "ramp": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
-              type: "commercial-aggregator",
-            },
+              "url": "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Dokumenterad launchplats finns vid vattenområdet.",
-          conditions: null,
-          geometry: null,
-        },parkingAtLaunch:{value:"present",status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",type:"commercial-aggregator"}],note:"Parkering kan ske p\xE5 l\xE4mplig plats p\xE5 ladug\xE5rdsplanen intill il\xE4ggningsplatsen.",conditions:null},
+          "note": "Dokumenterad launchplats finns vid vattenområdet.",
+          "conditions": null,
+          "geometry": null
+        },
+        "parkingAtLaunch": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/karta-svansjon-samt-tillhorande-tokebosjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Parkering kan ske på lämplig plats på ladugårdsplanen intill iläggningsplatsen.",
+          "conditions": null
+        }
       },
-      geography: {},
-      safety: {},
+      "geography": {},
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
   "mogolen-hedenstorp": {
     "id": "mogolen-hedenstorp",

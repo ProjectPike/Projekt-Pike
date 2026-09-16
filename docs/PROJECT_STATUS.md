@@ -96,11 +96,11 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   ingår i det ordinarie fiskekortet. Produktionen är fortsatt 23 sjöar och
   update-livscykeln är 16 `alreadyApplied` med noll väntande.
 - En minimal generell `permitMethodSupport`-modell skiljer metodstöd mellan
-  korttyper utan gissade säsongsdatum eller korsinferens. Svansjöns förslag är
-  godkänt och publicerat: ordinarie öppet-vatten-kort binds till Spinn och
-  Flugfiske samt isfiskekortet till Pimpelfiske. Uppdateringen är pending och
-  nästa livscykelsteg är preflight, inte apply; produktionen är ännu oförändrad
-  med 23 sjöar och livscykeln 16 `alreadyApplied` / 1 pending.
+  korttyper utan gissade säsongsdatum eller korsinferens. Svansjöns uppdatering
+  är applicerad: ordinarie öppet-vatten-kort ger Spinn och Flugfiske, medan det
+  separata isfiskekortet ger Pimpelfiske. Ingen kalenderperiod antas;
+  produktionen är fortsatt 23 sjöar och livscykeln är 17 `alreadyApplied` /
+  0 pending.
 
 ### Entitlement-arkitektur
 

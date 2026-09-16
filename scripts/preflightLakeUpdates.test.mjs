@@ -259,36 +259,14 @@ test("preflight serialization and fingerprints are deterministic", async () => {
   assert.deepEqual(first.serializedFiles, second.serializedFiles);
 });
 
-test("real repository preflight keeps Svansjön pending after publication", async () => {
+test("real repository preflight classifies Svansjön as applied history", async () => {
   const paths = Object.values(productionDatasetFiles).map((path) => new URL(`../${path}`, import.meta.url));
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const result = await createRepositoryLakeUpdatePreflight();
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.pendingUpdates, [{
-    id: "svansjon-method-permits-1",
-    targetLakeId: "svansjon",
-    changes: [{
-      path: "details.access.permitMethodSupport",
-      before: { state: "absent" },
-      after: {
-        value: [
-          { permitType: "ordinary-open-water", methods: ["spin", "fly"] },
-          { permitType: "ice-fishing", methods: ["ice"] },
-        ],
-        status: "verified",
-        ruleType: "rule",
-        verifiedAt: "2026-09-15",
-        sources: [{
-          url: "https://www.ifiske.se/fiskekort-svansjon-samt-tillhorande-tokebosjon.htm",
-          type: "commercial-aggregator",
-        }],
-        note: "Det ordinarie kortet för öppet vatten omfattar spinn- och flugfiske. Det separata isfiskekortet omfattar pimpelfiske; inga fasta kalenderdatum antas.",
-        conditions: null,
-      },
-    }],
-  }]);
+  assert.deepEqual(result.pendingUpdates, []);
   assert.deepEqual(result.alreadyApplied, [
     "hokesjon-baseline-audit-c1",
     "landsjon-baseline-audit-1",
@@ -304,10 +282,11 @@ test("real repository preflight keeps Svansjön pending after publication", asyn
     "sommen-baseline-audit-1",
     "spexhultasjon-baseline-audit-1",
     "straken-baseline-audit-1",
+    "svansjon-method-permits-1",
     "ulvstorpasjon-baseline-audit-c1",
     "vattern-baseline-audit-1",
   ]);
-  assert.deepEqual(result.filesToChange, [productionDatasetFiles.lakes]);
+  assert.deepEqual(result.filesToChange, []);
   assert.equal(result.productionLakeCount, 23);
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.validationErrors, []);
