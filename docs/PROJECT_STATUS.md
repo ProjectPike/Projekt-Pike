@@ -100,7 +100,8 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   är applicerad: ordinarie öppet-vatten-kort ger Spinn och Flugfiske, medan det
   separata isfiskekortet ger Pimpelfiske. Ingen kalenderperiod antas;
   produktionen är fortsatt 23 sjöar och livscykeln är 17 `alreadyApplied` /
-  0 pending.
+  0 pending. Sjödetaljen visar strukturerat kortstöd som läsbara korttyper utan
+  att interna nycklar eller JavaScripts standardsträng för objekt läcker ut.
 
 ### Entitlement-arkitektur
 

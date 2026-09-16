@@ -9,6 +9,11 @@ import {
   FEATURES,
   isFeatureAllowed,
 } from "../services/entitlementService";
+import {
+  formatAccessDetailValue,
+  formatLakeDetailToken as formatToken,
+  formatLakeDetailValue as getStateLabel,
+} from "./lakeDetailFormatting";
 
 const SOURCE_TYPE_LABELS = {
   authority: "Myndighet",
@@ -19,22 +24,9 @@ const SOURCE_TYPE_LABELS = {
   other: "Källa",
 };
 
-const STATE_LABELS = {
-  required: "Krävs",
-  "not-required": "Krävs inte",
-  allowed: "Tillåtet",
-  prohibited: "Förbjudet",
-  restricted: "Särskilda regler",
-  present: "Finns",
-  absent: "Saknas",
-  free: "Gratis",
-  caution: "Var försiktig",
-  "calendar-year": "Kalenderår",
-  unknown: "Ingen verifierad uppgift",
-};
-
 const ACCESS_LABELS = {
   permitRequirement: "Fiskekort",
+  permitMethodSupport: "Fiskekort",
   permitCost: "Kostnad",
   permitPrice: "Kostnad",
   youthRules: "Barn och unga",
@@ -346,121 +338,6 @@ function getToneLabel(ruleType) {
   return null;
 }
 
-function getStateLabel(value) {
-  if (value === null || value === undefined) {
-    return null;
-  }
-
-  if (typeof value === "string") {
-    return STATE_LABELS[value] ?? value;
-  }
-
-  if (typeof value === "number") {
-    return `${value}`;
-  }
-
-  if (Array.isArray(value)) {
-    return value.map((item) => formatToken(String(item))).join(", ");
-  }
-
-  if (isPlainObject(value)) {
-    const min = value.minSizeCm;
-    const max = value.maxSizeCm;
-
-    if (typeof min === "number" && typeof max === "number") {
-      return `${min}–${max} cm`;
-    }
-
-    if (typeof min === "number") {
-      return `min ${min} cm`;
-    }
-
-    if (typeof max === "number") {
-      return `max ${max} cm`;
-    }
-
-    if (typeof value.maxRetainedPerPersonPerDay === "number") {
-      return `max ${value.maxRetainedPerPersonPerDay}/dygn`;
-    }
-
-    if (typeof value.maxRetainedPerPermitPerDay === "number") {
-      return `max ${value.maxRetainedPerPermitPerDay}/dygn`;
-    }
-
-    if (typeof value.maxRetainedOver50cmCombinedPerPersonPerDay === "number") {
-      return `max ${value.maxRetainedOver50cmCombinedPerPersonPerDay}/dygn`;
-    }
-
-    if (typeof value.maxPerFishingCardPerDay === "number") {
-      return `max ${value.maxPerFishingCardPerDay}/dygn`;
-    }
-
-    if (typeof value.maxPerPersonPerDay === "number") {
-      const charLimit = value.maxRodingPerPersonPerDay;
-      return typeof charLimit === "number"
-        ? `max ${value.maxPerPersonPerDay}/dygn · högst ${charLimit} rödingar`
-        : `max ${value.maxPerPersonPerDay}/dygn`;
-    }
-  }
-
-  return null;
-}
-
-function formatToken(value) {
-  const token = String(value);
-  if (/[+,/]/.test(token)) {
-    return token
-      .split(/[+,/]/)
-      .map((part) => formatToken(part))
-      .join(" + ");
-  }
-
-  const mapping = {
-    day: "Dagskort",
-    week: "Veckokort",
-    month: "Månadskort",
-    year: "Årskort",
-    family: "Familjekort",
-    "angel-ice": "Angel/isfiskekort",
-    "adult-day": "Dagskort vuxen",
-    "youth-day-10-17": "Ungdomskort 10-17 år",
-    digital: "Digitalt",
-    "physical-resellers": "Återförsäljare",
-    gadda: "Gädda",
-    gos: "Gös",
-    abborre: "Abborre",
-    al: "Ål",
-    oring: "Öring",
-    "insjööoring": "Insjööring",
-    sik: "Sik",
-    lake: "Lake",
-    sutare: "Sutare",
-    braxen: "Braxen",
-    mort: "Mört",
-    regnbage: "Regnbåge",
-    all: "Alla arter",
-    "bäckröding": "Bäckröding",
-    gers: "Gärs",
-    gädda: "Gädda",
-    gärs: "Gärs",
-    gös: "Gös",
-    harr: "Harr",
-    lax: "Lax",
-    laxartad: "Laxartad fisk",
-    mört: "Mört",
-    nors: "Nors",
-    ruda: "Ruda",
-    röding: "Röding",
-    sarv: "Sarv",
-    signalkräfta: "Signalkräfta",
-    siklöja: "Siklöja",
-    ål: "Ål",
-    öring: "Öring",
-  };
-
-  return mapping[token] ?? token;
-}
-
 function getAccessRows(detailsAccess) {
   if (!isPlainObject(detailsAccess)) {
     return [];
@@ -477,7 +354,7 @@ function getAccessRows(detailsAccess) {
             : `${fact.value} kr`
           : key === "permitRequirement" && fact.value === "required" && detailsAccess.permitCost?.value === 0
             ? "Gratis fiskekort krävs"
-            : getStateLabel(fact.value);
+            : formatAccessDetailValue(key, fact.value);
 
       const conditionText = getConditionText(fact.conditions);
 
