@@ -103,6 +103,14 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   0 pending. Sjödetaljen visar strukturerat kortstöd som läsbara korttyper utan
   att interna nycklar eller JavaScripts standardsträng för objekt läcker ut.
 
+- Entity Replacement v1 är implementerad som separat manifest/review/publish/
+  preflight/apply-livscykel med verifierad staging, rollback och beständig historik
+  för en identitet till minst två ersättare. Första avsedda användning är Bunn;
+  själva delningen är inte implementerad. Produktionen är oförändrad: 23 sjöar,
+  17 `alreadyApplied` updates och 0 pending. Nästa steg är ett komplett Bunn-
+  ersättningsmanifest för separat mänsklig granskning, inte produktionsapply.
+  Kontrakt och v1-gränser finns i `docs/ENTITY_REPLACEMENT_CONTRACT.md`.
+
 ### Entitlement-arkitektur
 
 - Stabila feature identifiers används i stället för spridda medlemsbooleans.
