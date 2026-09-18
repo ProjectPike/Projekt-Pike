@@ -360,14 +360,14 @@ test("the real-repository dry run leaves both production datasets byte-for-byte 
   const after = await Promise.all([readFile(lakePath), readFile(depthPath)]);
 
   assert.deepEqual(result.summary, {
-    productionLakeCount: 23,
+    productionLakeCount: 24,
     publishedLakeCount: 1,
     compatibleAdditionCount: 0,
     alreadyAppliedPublishedLakeCount: 1,
     blockedPublishedLakeCount: 0,
     idConflictCount: 0,
     compatibilityOrTransformationErrorCount: 0,
-    proposedLakeCount: 23,
+    proposedLakeCount: 24,
   });
   assert.deepEqual(result.additions, []);
   assert.deepEqual(result.alreadyApplied.map(({ id }) => id), ["mogolen-hedenstorp"]);

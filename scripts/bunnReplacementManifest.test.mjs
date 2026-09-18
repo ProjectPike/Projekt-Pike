@@ -27,14 +27,19 @@ function methodStatuses(lake) {
   );
 }
 
-test("real Bunn split manifest binds exact production before-state and validates", () => {
+test("real Bunn split manifest preserves its before-state and matches applied production", () => {
   assert.deepEqual(validateReplacementManifest(manifest), []);
   assert.equal(manifest.replacementId, "bunn-split-1");
   assert.equal(manifest.source.lakeFingerprint, "aa8a538e4289716576b55f44a69bd9b728877ed530f807079e661b3ce3edc1ea");
-  assert.equal(manifest.source.lakeFingerprint, replacementHash(lakes.bunn));
-  assert.deepEqual(manifest.source.lake, lakes.bunn);
-  assert.deepEqual(manifest.source.depth, lakeDepthMapResearch.bunn);
-  assert.deepEqual(manifest.source.points, lakePointsByLakeId.bunn);
+  assert.equal(manifest.source.lakeFingerprint, replacementHash(manifest.source.lake));
+  assert.equal(Object.hasOwn(lakes, "bunn"), false);
+  assert.equal(Object.hasOwn(lakeDepthMapResearch, "bunn"), false);
+  assert.equal(Object.hasOwn(lakePointsByLakeId, "bunn"), false);
+  for (const replacement of manifest.replacements) {
+    assert.deepEqual(lakes[replacement.id], replacement.lake);
+    assert.deepEqual(lakeDepthMapResearch[replacement.id], replacement.depth);
+    assert.deepEqual(lakePointsByLakeId[replacement.id], replacement.points);
+  }
   assert.equal(manifest.expectedCountBefore, 23);
   assert.equal(manifest.expectedCountAfter, 24);
 });

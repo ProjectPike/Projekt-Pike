@@ -57,757 +57,502 @@ export const lakeDetailsTemplate = {
 };
 
 export const lakes = {
-  bolmen: {
-    id: "bolmen",
-    name: "Bolmen",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Kronoberg", "Jönköping", "Halland"],
-    coordinates: [13.698374, 56.9209012],
-    coordinateSource: "https://www.openstreetmap.org/relation/7130",
-    distance: { kilometers: 84, travelTime: "1 h 8 min" },
-    verification: { status: "unverified", updatedAt: null, sources: [] },
-    fishing: {
-      permit: { status: "unknown", label: "Uppgift saknas" },
-      rules: { status: "unverified", label: "Ej verifierade" },
-      protectedAreas: { status: "checking", label: "Kontrolleras" },
-      ruleProfile: {
-        prototype: true,
-        note: "Prototyp-data endast, inte juridiskt korrekt.",
-        conditions: [
-          {
-            field: "place",
-            allowedValues: ["Båt"],
-            status: "supported",
-            note: "Prototyp: endast båt är explicit stödjer för detta vatten.",
-          },
-          {
-            field: "method",
-            allowedValues: ["Spinn"],
-            status: "supported",
-            note: "Prototyp: endast spinn är explicit stödjer för detta vatten.",
-          },
-          {
-            field: "species",
-            allowedValues: ["Gädda"],
-            status: "supported",
-            note: "Prototyp: endast gädda är explicit stödjer för detta vatten.",
-          },
-        ],
-      },
+  "bolmen": {
+    "id": "bolmen",
+    "name": "Bolmen",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Kronoberg",
+      "Jönköping",
+      "Halland"
+    ],
+    "coordinates": [
+      13.698374,
+      56.9209012
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/relation/7130",
+    "distance": {
+      "kilometers": 84,
+      "travelTime": "1 h 8 min"
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskekort/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Fiskekort krävs.",
-          conditions: null,
-        },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Ungdomar till och med 18 år fiskar utan fiskekort men ska följa samma regler som kortinnehavare.",
-          conditions: null,
-        },
-        permitProducts: {
-          value: ["day", "week", "month", "year", "family"],
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskekort/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Aktuella korttyper inkluderar dag, vecka, månad, år och familjekort.",
-          conditions: null,
-        },
-        purchaseChannels: {
-          value: ["digital", "physical-resellers"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskekort/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Fiskekort säljs digitalt och via fysiska återförsäljare.",
-          conditions: null,
-        },
-      },
-      methods: {
-        fly: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Flugfiske ingår i handredskapsfisket.",
-          conditions: null,
-        },
-        spin: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Spinnfiske ingår i handredskapsfisket.",
-          conditions: null,
-        },
-        bait: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Mete ingår i handredskapsfisket.",
-          conditions: null,
-        },
-        ice: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Pimpel och övrigt isfiske med handredskap ingår.",
-          conditions: null,
-        },
-        lureFishing: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Dragfiske ingår i handredskapsfisket.",
-          conditions: null,
-        },
-        trolling: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Trolling ingår i fiskekortet.",
-          conditions: null,
-        },
-        maxLinesPerFishingPermit: {
-          value: 2,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Max 2 linor/beten per fiskekort.",
-          conditions: null,
-        },
-        familyPermitMaxLinesPerAngler: {
-          value: 2,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Vid familjekort gäller max 2 linor/beten per fiskande person.",
-          conditions: null,
-        },
-        angeldonOnlyIceCoveredWater: {
-          value: "restricted",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Angeldon är endast tillåtna på isbelagt vatten.",
-          conditions: null,
-        },
-        iceMaxAngeldonPerPermit: {
-          value: 10,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Max 10 angeldon per fiskekort.",
-          conditions: null,
-        },
-        angeldonContinuousSupervision: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Fiskaren ska ha kontinuerlig uppsikt över angeldon.",
-          conditions: null,
-        },
-        maxFishingDepthMeters: {
-          value: 10,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Handredskapsfiske får inte bedrivas i vatten djupare än 10 meter.",
-          conditions: null,
-        },
-      },
-      species: {
-        knownSpecies: {
-          value: ["gädda", "gös", "abborre", "lake", "ål", "sutare", "braxen"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://bolmensweden.com/fiskeregler/",
-              type: "fvo-club",
-            },
-          ],
-          note: "Kända arter enligt FVO:s aktuella information.",
-          conditions: null,
-        },
-        sizeLimits: [
-          {
-            species: "öring",
-            value: { minSizeCm: 50 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: null,
-            conditions: null,
-          },
-          {
-            species: "gös",
-            value: { maxSizeCm: 75 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: "Gös över 75 cm ska återutsättas.",
-            conditions: null,
-          },
-        ],
-        releaseRequirements: [
-          {
-            species: "gös",
-            value: "required",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: "Gös över 75 cm ska återutsättas.",
-            conditions: null,
-          },
-        ],
-        releaseRestrictions: [
-          {
-            species: "gös",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: "Catch-and-release av gös under 75 cm är inte tillåtet enligt gällande FVO-regeltext.",
-            conditions: null,
-          },
-        ],
-        bagLimits: [
-          {
-            species: "gös",
-            value: { maxRetainedPerPermitPerDay: 10 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: null,
-            conditions: null,
-          },
-        ],
-      },
-      watercraft: {},
-      boat: {
-        electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      practical: {},
-      geography: {
-        fishingProhibitionAreas: [
-          {
-            name: "Önne å",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: "Fiske förbjudet året runt.",
-            conditions: null,
-            geometry: null,
-          },
-          {
-            name: "Storån",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bolmensweden.com/fiskeregler/",
-                type: "fvo-club",
-              },
-            ],
-            note: "Fiske förbjudet under angiven period.",
-            conditions: {
-              dateFrom: "04-15",
-              dateTo: "06-15",
-              timeFrom: null,
-              timeTo: null,
-            },
-            geometry: null,
-          },
-        ],
-      },
-      safety: {},
+    "verification": {
+      "status": "unverified",
+      "updatedAt": null,
+      "sources": []
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
+    "fishing": {
+      "permit": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      },
+      "rules": {
+        "status": "unverified",
+        "label": "Ej verifierade"
+      },
+      "protectedAreas": {
+        "status": "checking",
+        "label": "Kontrolleras"
+      },
+      "ruleProfile": {
+        "prototype": true,
+        "note": "Prototyp-data endast, inte juridiskt korrekt.",
+        "conditions": [
+          {
+            "field": "place",
+            "allowedValues": [
+              "Båt"
+            ],
+            "status": "supported",
+            "note": "Prototyp: endast båt är explicit stödjer för detta vatten."
+          },
+          {
+            "field": "method",
+            "allowedValues": [
+              "Spinn"
+            ],
+            "status": "supported",
+            "note": "Prototyp: endast spinn är explicit stödjer för detta vatten."
+          },
+          {
+            "field": "species",
+            "allowedValues": [
+              "Gädda"
+            ],
+            "status": "supported",
+            "note": "Prototyp: endast gädda är explicit stödjer för detta vatten."
+          }
+        ]
+      }
     },
-  },
-
-  bunn: {
-    id: "bunn",
-    name: "Bunn",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [14.512562, 57.9761304],
-    coordinateSource: "https://www.openstreetmap.org/relation/9560",
-    distance: { kilometers: 18, travelTime: "21 min" },
-    verification: { status: "unverified", updatedAt: null, sources: [] },
-    fishing: {
-      permit: { status: "unknown", label: "Uppgift saknas" },
-      rules: { status: "unverified", label: "Ej verifierade" },
-      protectedAreas: { status: "checking", label: "Kontrolleras" },
-      ruleProfile: {
-        prototype: true,
-        note: "Prototyp-data endast, inte juridiskt korrekt.",
-        conditions: [
-          {
-            field: "place",
-            allowedValues: ["Land", "Båt"],
-            status: "supported",
-            note: "Prototyp: detta vatten har ett villkor för landfiske och ett prototype-exempel för båt.",
-          },
-          {
-            field: "method",
-            allowedValues: ["Mete", "Flugfiske", "Spinn"],
-            status: "supported",
-            note: "Prototyp: endast mete, flugfiske eller spinn är explicit stödjer för detta vatten.",
-          },
-          {
-            field: "species",
-            allowedValues: ["Gädda"],
-            status: "warning",
-            note: "Prototyp: endast ett varnings-exempel för gädda; inte juridiskt korrekt.",
-          },
-        ],
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskekort/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Fiskekort krävs.",
+          "conditions": null
+        },
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Ungdomar till och med 18 år fiskar utan fiskekort men ska följa samma regler som kortinnehavare.",
+          "conditions": null
+        },
+        "permitProducts": {
+          "value": [
+            "day",
+            "week",
+            "month",
+            "year",
+            "family"
+          ],
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskekort/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Aktuella korttyper inkluderar dag, vecka, månad, år och familjekort.",
+          "conditions": null
+        },
+        "purchaseChannels": {
+          "value": [
+            "digital",
+            "physical-resellers"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskekort/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Fiskekort säljs digitalt och via fysiska återförsäljare.",
+          "conditions": null
+        }
       },
-    },    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+      "methods": {
+        "fly": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://bunnfiske.se/item/fiskekort.html",
-              type: "fvo-club",
-            },
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Separata fiskekort gäller för Norra Bunn och Södra Bunn. Gräns vid Förnäsbron.",
-          conditions: null,
+          "note": "Flugfiske ingår i handredskapsfisket.",
+          "conditions": null
         },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "spin": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://bunnfiske.se/item/fiskekort.html",
-              type: "fvo-club",
-            },
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Personer under 18 år behöver inte fiskekort.",
-          conditions: null,
+          "note": "Spinnfiske ingår i handredskapsfisket.",
+          "conditions": null
         },
-        purchase: {
-          value: "restricted",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "bait": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://bunnfiske.se/item/fiskekort.html",
-              type: "fvo-club",
-            },
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Köp- och produktinformation finns i källan, inklusive priser för Norra Bunn, Södra Bunn och gemensamt veckokort.",
-          conditions: null,
+          "note": "Mete ingår i handredskapsfisket.",
+          "conditions": null
         },
+        "ice": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Pimpel och övrigt isfiske med handredskap ingår.",
+          "conditions": null
+        },
+        "lureFishing": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Dragfiske ingår i handredskapsfisket.",
+          "conditions": null
+        },
+        "trolling": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Trolling ingår i fiskekortet.",
+          "conditions": null
+        },
+        "maxLinesPerFishingPermit": {
+          "value": 2,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Max 2 linor/beten per fiskekort.",
+          "conditions": null
+        },
+        "familyPermitMaxLinesPerAngler": {
+          "value": 2,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Vid familjekort gäller max 2 linor/beten per fiskande person.",
+          "conditions": null
+        },
+        "angeldonOnlyIceCoveredWater": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Angeldon är endast tillåtna på isbelagt vatten.",
+          "conditions": null
+        },
+        "iceMaxAngeldonPerPermit": {
+          "value": 10,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Max 10 angeldon per fiskekort.",
+          "conditions": null
+        },
+        "angeldonContinuousSupervision": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Fiskaren ska ha kontinuerlig uppsikt över angeldon.",
+          "conditions": null
+        },
+        "maxFishingDepthMeters": {
+          "value": 10,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Handredskapsfiske får inte bedrivas i vatten djupare än 10 meter.",
+          "conditions": null
+        }
       },
-      methods: {
-        spin: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
-              type: "fvo-club",
-            },
-            {
-              url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Spinnfiske är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
-          conditions: null,
-        },
-        bait: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
-              type: "fvo-club",
-            },
-            {
-              url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Mete är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
-          conditions: null,
-        },
-        ice: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
-              type: "fvo-club",
-            },
-            {
-              url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Pimpelfiske är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
-          conditions: null,
-        },
-      },
-      species: {
-        knownSpecies: {
-          value: [
-            "abborre",
+      "species": {
+        "knownSpecies": {
+          "value": [
             "gädda",
             "gös",
+            "abborre",
             "lake",
-            "braxen",
-            "mört",
-            "gers",
-            "nors",
-            "sarv",
-            "signalkräfta",
+            "ål",
+            "sutare",
+            "braxen"
           ],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://bunnfiske.se/item/fisk-i-bunn.html",
-              type: "fvo-club",
-            },
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Arterna gäller för både Norra och Södra Bunn.",
-          conditions: null,
+          "note": "Kända arter enligt FVO:s aktuella information.",
+          "conditions": null
         },
-        sizeLimits: [
+        "sizeLimits": [
           {
-            species: "gädda",
-            value: { minSizeCm: 50, maxSizeCm: 80 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-07",
-            sources: [
-              {
-                url: "https://bunnfiske.se/item/fiskekort.html",
-                type: "fvo-club",
-              },
-              {
-                url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
-                type: "commercial-aggregator",
-              },
-            ],
-            note: null,
-            conditions: null,
-          },
-          {
-            species: "abborre",
-            value: { maxSizeCm: 38 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-07",
-            sources: [
-              {
-                url: "https://bunnfiske.se/item/fiskekort.html",
-                type: "fvo-club",
-              },
-              {
-                url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
-                type: "commercial-aggregator",
-              },
-            ],
-            note: null,
-            conditions: null,
-          },
-          {
-            species: "gös",
-            value: { maxSizeCm: 70,minSizeCm:50},
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-07",
-            sources: [
-              {
-                url: "https://bunnfiske.se/item/fiskekort.html",
-                type: "fvo-club",
-              },
-              {
-                url: "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
-                type: "commercial-aggregator",
-              },
-            ],
-            note: "Minimimått skiljer mellan regelområdena och är därför inte angivet här.",
-            conditions: null,
-          },
-        ],bagLimits:[{speciesGroup:"g\xE4dda+g\xF6s",value:{maxRetainedPerPermitPerDay:2},status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://bunnfiske.se/item/fiskekort.html",type:"fvo-club"}],note:"Gemensam dygnsgr\xE4ns f\xF6r g\xE4dda och g\xF6s.",conditions:null}],
-      },
-      watercraft: {
-        boat: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [{url:"https://bunnfiske.se/item/hitta-hit.html",type:"fvo-club"}],
-          note: null,
-          conditions: null,
-        },
-        kayak: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        floatTube: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      boat: {
-        electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      practical: {
-        ramps: [
-          {
-            name: "Roten",
-            value: "restricted",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://bunnfiske.se/item/fiskekort.html",
-                type: "fvo-club",
-              },
-            ],
-            note: "Sjösättningsplatsen vid Roten/Rotabron för Norra/Mellersta Bunn är stängd under perioden.",
-            conditions: {
-              dateFrom: "06-15",
-              dateTo: "08-15",
-              timeFrom: null,
-              timeTo: null,
+            "species": "öring",
+            "value": {
+              "minSizeCm": 50
             },
-            geometry: null,
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": null,
+            "conditions": null
           },
+          {
+            "species": "gös",
+            "value": {
+              "maxSizeCm": 75
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Gös över 75 cm ska återutsättas.",
+            "conditions": null
+          }
         ],
+        "releaseRequirements": [
+          {
+            "species": "gös",
+            "value": "required",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Gös över 75 cm ska återutsättas.",
+            "conditions": null
+          }
+        ],
+        "releaseRestrictions": [
+          {
+            "species": "gös",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Catch-and-release av gös under 75 cm är inte tillåtet enligt gällande FVO-regeltext.",
+            "conditions": null
+          }
+        ],
+        "bagLimits": [
+          {
+            "species": "gös",
+            "value": {
+              "maxRetainedPerPermitPerDay": 10
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          }
+        ]
       },
-      geography: {fishingProhibitionAreas:[{name:"Avst\xE5nd till tomt eller brygga",value:"prohibited",status:"verified",ruleType:"rule",verifiedAt:"2026-08-09",sources:[{url:"https://bunnfiske.se/item/fiskekort.html",type:"fvo-club"}],note:"Fiske f\xE5r inte bedrivas n\xE4rmare \xE4n 75 meter fr\xE5n tomt eller brygga.",conditions:null,geometry:null}]},
-      safety: {},
+      "watercraft": {},
+      "boat": {
+        "electricMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "combustionMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "practical": {},
+      "geography": {
+        "fishingProhibitionAreas": [
+          {
+            "name": "Önne å",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Fiske förbjudet året runt.",
+            "conditions": null,
+            "geometry": null
+          },
+          {
+            "name": "Storån",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bolmensweden.com/fiskeregler/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Fiske förbjudet under angiven period.",
+            "conditions": {
+              "dateFrom": "04-15",
+              "dateTo": "06-15",
+              "timeFrom": null,
+              "timeTo": null
+            },
+            "geometry": null
+          }
+        ]
+      },
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  sommen: {
+  "sommen": {
     "id": "sommen",
     "name": "Sommen",
     "type": "sjö",
@@ -1452,8 +1197,7 @@ export const lakes = {
       "trails": []
     }
   },
-
-  vattern: {
+  "vattern": {
     "id": "vattern",
     "name": "Vättern",
     "type": "sjö",
@@ -1976,8 +1720,7 @@ export const lakes = {
       "trails": []
     }
   },
-
-  munksjon: {
+  "munksjon": {
     "id": "munksjon",
     "name": "Munksjön",
     "type": "sjö",
@@ -2580,176 +2323,566 @@ export const lakes = {
       "trails": []
     }
   },
-
-  rocksjon: {
-    id: "rocksjon",
-    name: "Rocksjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [14.1891229, 57.77376],
-    coordinateSource: "https://www.openstreetmap.org/relation/9893021",
-    distance: { kilometers: 2, travelTime: "6 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-08-08",
-      sources: [
-        "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
-      ],
+  "rocksjon": {
+    "id": "rocksjon",
+    "name": "Rocksjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      14.1891229,
+      57.77376
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/relation/9893021",
+    "distance": {
+      "kilometers": 2,
+      "travelTime": "6 min"
     },
-    fishing: {
-      permit: { status: "verified", label: "Gratis Sportfiskekort krävs" },
-      rules: { status: "verified", label: "Verifierade" },
-      protectedAreas: { status: "verified", label: "Lokala fiskeförbud finns" },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
+        "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler"
+      ]
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Gratis Sportfiskekort krävs"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade"
+      },
+      "protectedAreas": {
+        "status": "verified",
+        "label": "Lokala fiskeförbud finns"
+      }
+    },
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
-              type: "municipality",
-            },
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
           ],
-          note: "Sportfiskekort krävs för fiske.",
-          conditions: null,
+          "note": "Sportfiskekort krävs för fiske.",
+          "conditions": null
         },
-        permitPrice: {
-          value: "free",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
+        "permitPrice": {
+          "value": "free",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
-              type: "municipality",
-            },
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
           ],
-          note: "Sportfiskekortet är kostnadsfritt.",
-          conditions: null,
+          "note": "Sportfiskekortet är kostnadsfritt.",
+          "conditions": null
         },
-        validity: {
-          value: "calendar-year",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
+        "validity": {
+          "value": "calendar-year",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
-              type: "municipality",
-            },
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
           ],
-          note: "Gäller 1 januari-31 december.",
-          conditions: null,
+          "note": "Gäller 1 januari-31 december.",
+          "conditions": null
         },
-        youthRules: { value: "not-required", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Barn under 16 år behöver inte Sportfiskekort.", conditions: null },
-        purchaseChannels: { value: ["digital", "physical-resellers"], status: "verified", ruleType: "advisory", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Sportfiskekortet finns digitalt och på papper.", conditions: null },
-      },
-      methods: {
-        spin: { value: "allowed", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Spinnfiske är tillåtet som handredskapsfiske enligt fiskelagen.", conditions: null },
-        bait: { value: "allowed", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Mete är tillåtet som handredskapsfiske enligt fiskelagen.", conditions: null },
-        fly: { value: "allowed", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Flugfiske är tillåtet som handredskapsfiske enligt fiskelagen.", conditions: null },
-        ice: { value: "allowed", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Isfiske är tillåtet med högst fem beten per person.", conditions: null },
-        iceMaxBaitsPerAngler: { value: 5, status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Vid isfiske gäller högst fem beten per person.", conditions: null },
-        trolling: { value: "restricted", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Trolling är uttryckligen reglerat. Paravan är tillåten med maximalt 5 meters utsläpp från båten. Utterfiske är förbjudet.", conditions: null },crayfishFishing:{value:"prohibited",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"Kr\xE4ftfiske ing\xE5r inte i Sportfiskekortet utan kr\xE4ver ett separat kr\xE4ftfiskekort.",conditions:null},handGearOnly:{value:"restricted",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"Endast handredskapsfiske \xE4r till\xE5tet.",conditions:null},openWaterMaxLuresPerPerson:{value:2,status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"P\xE5 \xF6ppet vatten g\xE4ller h\xF6gst tv\xE5 beten per person.",conditions:null},iceMaxLuresPerPerson:{value:5,status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"Vid isfiske g\xE4ller h\xF6gst fem beten per person.",conditions:null},
-      },
-      species: {
-        knownSpecies: { value: ["gädda", "abborre", "öring","lax","g\xF6s","harr","lake","\xE5l"],status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"Verifierad regeldata finns för gädda, abborre och öring.",conditions:null},
-        sizeLimits: [{ species: "gädda", value: { minSizeCm: 50, maxSizeCm: 80 }, status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: null, conditions: null }, { species: "abborre", value: { maxSizeCm: 30 }, status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: null, conditions: null }, { species: "öring", value: { minSizeCm: 50 }, status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: null, conditions: null }, { species: "lax", value: { minSizeCm: 60 }, status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: null, conditions: null }],
-        bagLimits: [{ species: "gädda", value: { maxRetainedPerPersonPerDay: 1 }, status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: null, conditions: null }],
-        closedSeasons: [{ species: "öring", value: "prohibited", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Riktat fiske efter öring är förbjudet under fredningstiden.", conditions: { dateFrom: "09-15", dateTo: "12-31", timeFrom: null, timeTo: null } }, { species: "lax", value: "prohibited", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Riktat fiske efter lax är förbjudet under fredningstiden.", conditions: { dateFrom: "09-15", dateTo: "12-31", timeFrom: null, timeTo: null } }],directedFishingProhibitions:[{species:"g\xF6s+harr+lake+\xE5l",value:"prohibited",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"Riktat fiske efter g\xF6s, harr, lake och \xE5l \xE4r f\xF6rbjudet.",conditions:null}],
-      },
-      watercraft: {
-        boat: {
-          value: "restricted",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }],
-          note: "Vid vanligt fiske i Rocksjön får endast roddbåt användas. Anmälan till FVO och märkning med namn och kontaktuppgifter krävs.",
-          conditions: null,
-        },
-        kayak: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        floatTube: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      boat: {
-        electricMotor: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }],
-          note: "Motordriven båt är inte tillåten för vanligt fiske i Rocksjön.",
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
-              type: "municipality",
-            },
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
           ],
-          note: "Motordriven båt är inte tillåten för vanligt fiske i Rocksjön.",
-          conditions: null,
+          "note": "Barn under 16 år behöver inte Sportfiskekort.",
+          "conditions": null
         },
+        "purchaseChannels": {
+          "value": [
+            "digital",
+            "physical-resellers"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Sportfiskekortet finns digitalt och på papper.",
+          "conditions": null
+        }
       },
-      practical: {maxRodsPerPersonFromBoat:{value:2,status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",type:"municipality"}],note:"Vid fiske fr\xE5n b\xE5t g\xE4ller h\xF6gst tv\xE5 sp\xF6n per person.",conditions:null}},
-      geography: {
-        protectedAreas: [
+      "methods": {
+        "spin": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Spinnfiske är tillåtet som handredskapsfiske enligt fiskelagen.",
+          "conditions": null
+        },
+        "bait": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Mete är tillåtet som handredskapsfiske enligt fiskelagen.",
+          "conditions": null
+        },
+        "fly": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Flugfiske är tillåtet som handredskapsfiske enligt fiskelagen.",
+          "conditions": null
+        },
+        "ice": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Isfiske är tillåtet med högst fem beten per person.",
+          "conditions": null
+        },
+        "iceMaxBaitsPerAngler": {
+          "value": 5,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Vid isfiske gäller högst fem beten per person.",
+          "conditions": null
+        },
+        "trolling": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Trolling är uttryckligen reglerat. Paravan är tillåten med maximalt 5 meters utsläpp från båten. Utterfiske är förbjudet.",
+          "conditions": null
+        },
+        "crayfishFishing": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Kräftfiske ingår inte i Sportfiskekortet utan kräver ett separat kräftfiskekort.",
+          "conditions": null
+        },
+        "handGearOnly": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Endast handredskapsfiske är tillåtet.",
+          "conditions": null
+        },
+        "openWaterMaxLuresPerPerson": {
+          "value": 2,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "På öppet vatten gäller högst två beten per person.",
+          "conditions": null
+        },
+        "iceMaxLuresPerPerson": {
+          "value": 5,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Vid isfiske gäller högst fem beten per person.",
+          "conditions": null
+        }
+      },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "gädda",
+            "abborre",
+            "öring",
+            "lax",
+            "gös",
+            "harr",
+            "lake",
+            "ål"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Verifierad regeldata finns för gädda, abborre och öring.",
+          "conditions": null
+        },
+        "sizeLimits": [
           {
-            name: "Naturreservatsregler",
-            value: "restricted",
-            status: "verified",
-            ruleType: "advisory",
-            verifiedAt: "2026-09-07",
-            sources: [
+            "species": "gädda",
+            "value": {
+              "minSizeCm": 50,
+              "maxSizeCm": 80
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
               {
-                url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
-                type: "municipality",
-              },
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
             ],
-            note: "Rocksjön omfattas av naturreservatsregler.",
-            conditions: null,
-            geometry: null,
+            "note": null,
+            "conditions": null
           },
-          { name: "Badplatsen", value: "prohibited", status: "verified", ruleType: "rule", verifiedAt: "2026-09-07", sources: [{ url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler", type: "municipality" }], note: "Fiske är inte tillåtet vid badplatsen i Rocksjön.", conditions: null, geometry: null },
+          {
+            "species": "abborre",
+            "value": {
+              "maxSizeCm": 30
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          },
+          {
+            "species": "öring",
+            "value": {
+              "minSizeCm": 50
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          },
+          {
+            "species": "lax",
+            "value": {
+              "minSizeCm": 60
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          }
         ],
+        "bagLimits": [
+          {
+            "species": "gädda",
+            "value": {
+              "maxRetainedPerPersonPerDay": 1
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          }
+        ],
+        "closedSeasons": [
+          {
+            "species": "öring",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": "Riktat fiske efter öring är förbjudet under fredningstiden.",
+            "conditions": {
+              "dateFrom": "09-15",
+              "dateTo": "12-31",
+              "timeFrom": null,
+              "timeTo": null
+            }
+          },
+          {
+            "species": "lax",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": "Riktat fiske efter lax är förbjudet under fredningstiden.",
+            "conditions": {
+              "dateFrom": "09-15",
+              "dateTo": "12-31",
+              "timeFrom": null,
+              "timeTo": null
+            }
+          }
+        ],
+        "directedFishingProhibitions": [
+          {
+            "species": "gös+harr+lake+ål",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": "Riktat fiske efter gös, harr, lake och ål är förbjudet.",
+            "conditions": null
+          }
+        ]
       },
-      safety: {},
+      "watercraft": {
+        "boat": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Vid vanligt fiske i Rocksjön får endast roddbåt användas. Anmälan till FVO och märkning med namn och kontaktuppgifter krävs.",
+          "conditions": null
+        },
+        "kayak": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "floatTube": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "boat": {
+        "electricMotor": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Motordriven båt är inte tillåten för vanligt fiske i Rocksjön.",
+          "conditions": null
+        },
+        "combustionMotor": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Motordriven båt är inte tillåten för vanligt fiske i Rocksjön.",
+          "conditions": null
+        }
+      },
+      "practical": {
+        "maxRodsPerPersonFromBoat": {
+          "value": 2,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+              "type": "municipality"
+            }
+          ],
+          "note": "Vid fiske från båt gäller högst två spön per person.",
+          "conditions": null
+        }
+      },
+      "geography": {
+        "protectedAreas": [
+          {
+            "name": "Naturreservatsregler",
+            "value": "restricted",
+            "status": "verified",
+            "ruleType": "advisory",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": "Rocksjön omfattas av naturreservatsregler.",
+            "conditions": null,
+            "geometry": null
+          },
+          {
+            "name": "Badplatsen",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiske-i-munksjon-och-rocksjon-sportfiskekortet-och-regler",
+                "type": "municipality"
+              }
+            ],
+            "note": "Fiske är inte tillåtet vid badplatsen i Rocksjön.",
+            "conditions": null,
+            "geometry": null
+          }
+        ]
+      },
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  landsjon: {
+  "landsjon": {
     "id": "landsjon",
     "name": "Landsjön",
     "type": "sjö",
@@ -3149,8 +3282,7 @@ export const lakes = {
       "trails": []
     }
   },
-
-  ulvstorpasjon: {
+  "ulvstorpasjon": {
     "id": "ulvstorpasjon",
     "name": "Ulvstorpasjön",
     "type": "sjö",
@@ -3531,267 +3663,309 @@ export const lakes = {
       "trails": []
     }
   },
-
-  tenhultasjon: {
-    id: "tenhultasjon",
-    name: "Tenhultasjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [14.3426768, 57.6924286],
-    coordinateSource: "https://www.openstreetmap.org/way/23212660",
-    distance: { kilometers: 18, travelTime: "20 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-08-08",
-      sources: [
+  "tenhultasjon": {
+    "id": "tenhultasjon",
+    "name": "Tenhultasjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      14.3426768,
+      57.6924286
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/way/23212660",
+    "distance": {
+      "kilometers": 18,
+      "travelTime": "20 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
         "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten",
         "https://www.ifiske.se/fiske-tenhultasjon.htm",
-        "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
-      ],
+        "https://www.ifiske.se/fiskekort-tenhultasjon.htm"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "unverified", label: "Kontrollera aktuella regler" },
-      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
-    },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Fiskekort krävs.",
-          conditions: null,
-        },
-        permitProducts: {
-          value: ["day", "year"],
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Aktuella korttyper inkluderar dagkort och årskort.",
-          conditions: null,
-        },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Fritt fiske för barn och ungdomar till och med 15 års ålder.",
-          conditions: null,
-        },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
       },
-      methods: {
-        fly: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Flugspö ingår i fiskekortet.",
-          conditions: null,
-        },
-        spin: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Haspelspö och spinningspö ingår i fiskekortet.",
-          conditions: null,
-        },
-        bait: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Metspö ingår i fiskekortet.",
-          conditions: null,
-        },
-        ice: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Pimpelspö ingår i fiskekortet.",
-          conditions: null,
-        },
-        maxRodsPerPermit: {
-          value: 2,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Max 2 handredskap per fiskekort.",
-          conditions: null,
-        },
-        iceMaxAngeldonPerPermit: {
-          value: 10,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Max 10 angeldon eller ismetespön per fiskekort.",
-          conditions: null,
-        },
-        publicFishing: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-              type: "commercial-aggregator",
-            },
-          ],
-          note: "Allmänt fiske förbjudet under hela augusti.",
-          conditions: {
-            dateFrom: "08-01",
-            dateTo: "08-31",
-            timeFrom: null,
-            timeTo: null,
-          },
-        },
+      "rules": {
+        "status": "unverified",
+        "label": "Kontrollera aktuella regler"
       },
-      species: {
-        knownSpecies: {
-          value: ["gädda","abborre","m\xF6rt","g\xF6s","braxen","lake","ruda","sarv","sutare","sikl\xF6ja"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
+    },
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://viss.lansstyrelsen.se/Waters.aspx?1=1&generatePDF=true&managementCycleName=Cykel_1&timeStamp=&userProfileID=3&waterMSCD=WA55273393",
-              type: "authority",
-            },{url:"https://www.ifiske.se/fiske-tenhultasjon.htm",type:"commercial-aggregator"},
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Verifierad förekomst av gädda; uppgiften är inte avsedd som komplett artlista.",
-          conditions: null,
+          "note": "Fiskekort krävs.",
+          "conditions": null
         },
-        closedSeasons: [
-          {
-            species: "gos",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-07",
-            sources: [
-              {
-                url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-                type: "commercial-aggregator",
-              },
-            ],
-            note: "Riktat fiske efter gös förbjudet under hela maj.",
-            conditions: {
-              dateFrom: "05-01",
-              dateTo: "05-31",
-              timeFrom: null,
-              timeTo: null,
-            },
-          },
-        ],
-        sizeLimits: [
-          {
-            species: "gos",
-            value: { minSizeCm: 45, maxSizeCm: 70 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-07",
-            sources: [
-              {
-                url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-                type: "commercial-aggregator",
-              },
-            ],
-            note: null,
-            conditions: null,
-          },
-        ],
-        bagLimits: [
-          {
-            species: "gos",
-            value: { maxRetainedPerPermitPerDay: 2 },
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-07",
-            sources: [
-              {
-                url: "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
-                type: "commercial-aggregator",
-              },
-            ],
-            note: null,
-            conditions: null,
-          },
-        ],
+        "permitProducts": {
+          "value": [
+            "day",
+            "year"
+          ],
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Aktuella korttyper inkluderar dagkort och årskort.",
+          "conditions": null
+        },
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Fritt fiske för barn och ungdomar till och med 15 års ålder.",
+          "conditions": null
+        }
       },
-      watercraft: {},
-      boat: {},
-      practical: {},
-      geography: {},
-      safety: {},
+      "methods": {
+        "fly": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Flugspö ingår i fiskekortet.",
+          "conditions": null
+        },
+        "spin": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Haspelspö och spinningspö ingår i fiskekortet.",
+          "conditions": null
+        },
+        "bait": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Metspö ingår i fiskekortet.",
+          "conditions": null
+        },
+        "ice": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Pimpelspö ingår i fiskekortet.",
+          "conditions": null
+        },
+        "maxRodsPerPermit": {
+          "value": 2,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Max 2 handredskap per fiskekort.",
+          "conditions": null
+        },
+        "iceMaxAngeldonPerPermit": {
+          "value": 10,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Max 10 angeldon eller ismetespön per fiskekort.",
+          "conditions": null
+        },
+        "publicFishing": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Allmänt fiske förbjudet under hela augusti.",
+          "conditions": {
+            "dateFrom": "08-01",
+            "dateTo": "08-31",
+            "timeFrom": null,
+            "timeTo": null
+          }
+        }
+      },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "gädda",
+            "abborre",
+            "mört",
+            "gös",
+            "braxen",
+            "lake",
+            "ruda",
+            "sarv",
+            "sutare",
+            "siklöja"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://viss.lansstyrelsen.se/Waters.aspx?1=1&generatePDF=true&managementCycleName=Cykel_1&timeStamp=&userProfileID=3&waterMSCD=WA55273393",
+              "type": "authority"
+            },
+            {
+              "url": "https://www.ifiske.se/fiske-tenhultasjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Verifierad förekomst av gädda; uppgiften är inte avsedd som komplett artlista.",
+          "conditions": null
+        },
+        "closedSeasons": [
+          {
+            "species": "gos",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+                "type": "commercial-aggregator"
+              }
+            ],
+            "note": "Riktat fiske efter gös förbjudet under hela maj.",
+            "conditions": {
+              "dateFrom": "05-01",
+              "dateTo": "05-31",
+              "timeFrom": null,
+              "timeTo": null
+            }
+          }
+        ],
+        "sizeLimits": [
+          {
+            "species": "gos",
+            "value": {
+              "minSizeCm": 45,
+              "maxSizeCm": 70
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+                "type": "commercial-aggregator"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          }
+        ],
+        "bagLimits": [
+          {
+            "species": "gos",
+            "value": {
+              "maxRetainedPerPermitPerDay": 2
+            },
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://www.ifiske.se/fiskekort-tenhultasjon.htm?rules=261",
+                "type": "commercial-aggregator"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          }
+        ]
+      },
+      "watercraft": {},
+      "boat": {},
+      "practical": {},
+      "geography": {},
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  straken: {
+  "straken": {
     "id": "straken",
     "name": "Stråken",
     "type": "sjö",
@@ -4183,8 +4357,7 @@ export const lakes = {
       "trails": []
     }
   },
-
-  spexhultasjon: {
+  "spexhultasjon": {
     "id": "spexhultasjon",
     "name": "Spexhultasjön",
     "type": "sjö",
@@ -4557,8 +4730,7 @@ export const lakes = {
       "trails": []
     }
   },
-
-  ryssbysjon: {
+  "ryssbysjon": {
     "id": "ryssbysjon",
     "name": "Ryssbysjön",
     "type": "sjö",
@@ -4949,8 +5121,7 @@ export const lakes = {
       "trails": []
     }
   },
-
-  nommen: {
+  "nommen": {
     "id": "nommen",
     "name": "Nömmen",
     "type": "sjö",
@@ -5358,341 +5529,400 @@ export const lakes = {
       "trails": []
     }
   },
-
-  risbrodammen: {
-    id: "risbrodammen",
-    name: "Risbrodammen",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [14.018581, 57.851],
-    coordinateSource: "https://www.openstreetmap.org/relation/10523512",
-    distance: { kilometers: 19, travelTime: "22 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-08-08",
-      sources: [
+  "risbrodammen": {
+    "id": "risbrodammen",
+    "name": "Risbrodammen",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      14.018581,
+      57.851
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/relation/10523512",
+    "distance": {
+      "kilometers": 19,
+      "travelTime": "22 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
         "https://risbrodammen-fiske.se/",
-        "https://risbrodammen-fiske.se/regler.html",
-      ],
+        "https://risbrodammen-fiske.se/regler.html"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "verified", label: "Verifierade specialregler" },
-      protectedAreas: { status: "verified", label: "Fågelskyddsområde finns" },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade specialregler"
+      },
+      "protectedAreas": {
+        "status": "verified",
+        "label": "Fågelskyddsområde finns"
+      }
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/regler.html",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Fiskekort krävs.",
-          conditions: null,
+          "note": "Fiskekort krävs.",
+          "conditions": null
         },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/regler.html",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Barn under 10 år fiskar utan fiskekort.",
-          conditions: null,
-        },
+          "note": "Barn under 10 år fiskar utan fiskekort.",
+          "conditions": null
+        }
       },
-      methods: {
-        spin: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
+      "methods": {
+        "spin": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
           ],
-          note: "FVO:s fiskeguide beskriver och rekommenderar spinn- och jiggmetoder; detta är vägledning, inte en separat juridisk tillåtelsebestämmelse.",
-          conditions: null,
+          "note": "FVO:s fiskeguide beskriver och rekommenderar spinn- och jiggmetoder; detta är vägledning, inte en separat juridisk tillåtelsebestämmelse.",
+          "conditions": null
         },
-        bait: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
+        "bait": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
           ],
-          note: "FVO:s fiskeguide beskriver och rekommenderar metfiske; detta är vägledning, inte en separat juridisk tillåtelsebestämmelse.",
-          conditions: null,
+          "note": "FVO:s fiskeguide beskriver och rekommenderar metfiske; detta är vägledning, inte en separat juridisk tillåtelsebestämmelse.",
+          "conditions": null
         },
-        fishingSeason: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "fishingSeason": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/regler.html",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Fiske tillåtet under ordinarie säsong.",
-          conditions: {
-            dateFrom: "05-01",
-            dateTo: "09-30",
-            timeFrom: null,
-            timeTo: null,
-          },
+          "note": "Fiske tillåtet under ordinarie säsong.",
+          "conditions": {
+            "dateFrom": "05-01",
+            "dateTo": "09-30",
+            "timeFrom": null,
+            "timeTo": null
+          }
         },
-        fishingHoursInSeason: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "fishingHoursInSeason": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/regler.html",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Fiske tillåtet mellan 05:00 och 22:00 under ordinarie säsong.",
-          conditions: {
-            dateFrom: "05-01",
-            dateTo: "09-30",
-            timeFrom: "05:00",
-            timeTo: "22:00",
-          },
+          "note": "Fiske tillåtet mellan 05:00 och 22:00 under ordinarie säsong.",
+          "conditions": {
+            "dateFrom": "05-01",
+            "dateTo": "09-30",
+            "timeFrom": "05:00",
+            "timeTo": "22:00"
+          }
         },
-        outsideSeasonFishing: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "outsideSeasonFishing": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/regler.html",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Fiske är förbjudet utanför säsongen 1 maj-30 september.",
-          conditions: null,
+          "note": "Fiske är förbjudet utanför säsongen 1 maj-30 september.",
+          "conditions": null
         },
-        crayfishFishing: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "crayfishFishing": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/regler.html",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Kräftfiske är förbjudet för ordinarie kortinnehavare. Undantag finns för markägare med eget fiskevatten.",
-          conditions: null,
-        },
+          "note": "Kräftfiske är förbjudet för ordinarie kortinnehavare. Undantag finns för markägare med eget fiskevatten.",
+          "conditions": null
+        }
       },
-      species: {
-        knownSpecies: {
-          value: ["gädda", "abborre", "mört", "sutare"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
-            {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "gädda",
+            "abborre",
+            "mört",
+            "sutare"
           ],
-          note: "Kända arter enligt FVO:s information.",
-          conditions: null,
-        },
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Kända arter enligt FVO:s information.",
+          "conditions": null
+        }
       },
-      watercraft: {boat:{value:"restricted",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://risbrodammen-fiske.se/regler.html",type:"fvo-club"}],note:"FVO:s hyrb\xE5tar kan anv\xE4ndas. Egna b\xE5tar kan inte sj\xF6s\xE4ttas eftersom b\xE5tramp saknas.",conditions:null}},
-      boat: {
-        boatRentalAvailable: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
+      "watercraft": {
+        "boat": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
           ],
-          note: "Båtuthyrning finns med totalt 10 båtar, max 4 personer per båt.",
-          conditions: null,
-        },
-        electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
+          "note": "FVO:s hyrbåtar kan användas. Egna båtar kan inte sjösättas eftersom båtramp saknas.",
+          "conditions": null
+        }
       },
-      practical: {
-        ramp: {
-          value: "absent",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
+      "boat": {
+        "boatRentalAvailable": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Båtramper saknas och FVO anger att egna båtar inte kan sjösättas.",
-          conditions: null,
-          geometry: null,
+          "note": "Båtuthyrning finns med totalt 10 båtar, max 4 personer per båt.",
+          "conditions": null
         },
-        parkingAtBoatStations: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "electricMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "combustionMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "practical": {
+        "ramp": {
+          "value": "absent",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Verifierad parkering finns vid båda båtstationerna.",
-          conditions: null,
+          "note": "Båtramper saknas och FVO anger att egna båtar inte kan sjösättas.",
+          "conditions": null,
+          "geometry": null
         },
-        rentalAgeRule: {
-          value: "restricted",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+        "parkingAtBoatStations": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://risbrodammen-fiske.se/",
-              type: "fvo-club",
-            },
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
           ],
-          note: "Barn under 12 år får inte hyra båt utan vuxet sällskap.",
-          conditions: null,
+          "note": "Verifierad parkering finns vid båda båtstationerna.",
+          "conditions": null
         },
-        rentalStations: [
+        "rentalAgeRule": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://risbrodammen-fiske.se/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Barn under 12 år får inte hyra båt utan vuxet sällskap.",
+          "conditions": null
+        },
+        "rentalStations": [
           {
-            name: "Risbro",
-            value: "present",
-            status: "verified",
-            ruleType: "advisory",
-            verifiedAt: "2026-08-09",
-            sources: [
+            "name": "Risbro",
+            "value": "present",
+            "status": "verified",
+            "ruleType": "advisory",
+            "verifiedAt": "2026-08-09",
+            "sources": [
               {
-                url: "https://risbrodammen-fiske.se/",
-                type: "fvo-club",
-              },
+                "url": "https://risbrodammen-fiske.se/",
+                "type": "fvo-club"
+              }
             ],
-            note: "5 uthyrningsbåtar, parkering finns, camping ej tillåten.",
-            coordinates: [14.016333, 57.852639],
-            originalCoordinate: "57°51'09.5\"N, 14°00'58.8\"E",
-            geometry: null,
+            "note": "5 uthyrningsbåtar, parkering finns, camping ej tillåten.",
+            "coordinates": [
+              14.016333,
+              57.852639
+            ],
+            "originalCoordinate": "57°51'09.5\"N, 14°00'58.8\"E",
+            "geometry": null
           },
           {
-            name: "Midsommarängen",
-            value: "present",
-            status: "verified",
-            ruleType: "advisory",
-            verifiedAt: "2026-08-09",
-            sources: [
+            "name": "Midsommarängen",
+            "value": "present",
+            "status": "verified",
+            "ruleType": "advisory",
+            "verifiedAt": "2026-08-09",
+            "sources": [
               {
-                url: "https://risbrodammen-fiske.se/",
-                type: "fvo-club",
-              },
+                "url": "https://risbrodammen-fiske.se/",
+                "type": "fvo-club"
+              }
             ],
-            note: "5 uthyrningsbåtar, parkering finns, camping ej tillåten.",
-            coordinates: [14.011361, 57.834167],
-            originalCoordinate: "57°50'03.0\"N, 14°00'40.9\"E",
-            geometry: null,
-          },
-        ],boatRamp:{value:"absent",status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://risbrodammen-fiske.se/regler.html",type:"fvo-club"}],note:"Det finns ingen b\xE5tramp och egen b\xE5t kan d\xE4rf\xF6r inte sj\xF6s\xE4ttas.",conditions:null},
-      },
-      geography: {
-        protectedAreas: [
-          {
-            name: "Söder om bron vid Gigeryd/Tunabo",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-08-09",
-            sources: [
-              {
-                url: "https://risbrodammen-fiske.se/regler.html",
-                type: "fvo-club",
-              },
+            "note": "5 uthyrningsbåtar, parkering finns, camping ej tillåten.",
+            "coordinates": [
+              14.011361,
+              57.834167
             ],
-            note: "Området söder om bron är inte del av FVO. Allmän tillgång på vattnet och fiske är förbjudet under säsongen.",
-            conditions: {
-              dateFrom: "05-01",
-              dateTo: "09-30",
-              timeFrom: null,
-              timeTo: null,
-            },
-            geometry: null,
-          },
+            "originalCoordinate": "57°50'03.0\"N, 14°00'40.9\"E",
+            "geometry": null
+          }
         ],
+        "boatRamp": {
+          "value": "absent",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://risbrodammen-fiske.se/regler.html",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Det finns ingen båtramp och egen båt kan därför inte sjösättas.",
+          "conditions": null
+        }
       },
-      safety: {
-        navigationNotes: [
+      "geography": {
+        "protectedAreas": [
           {
-            value: "caution",
-            status: "verified",
-            ruleType: "advisory",
-            verifiedAt: "2026-08-09",
-            sources: [
+            "name": "Söder om bron vid Gigeryd/Tunabo",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
               {
-                url: "https://risbrodammen-fiske.se/",
-                type: "fvo-club",
-              },
+                "url": "https://risbrodammen-fiske.se/regler.html",
+                "type": "fvo-club"
+              }
             ],
-            note: "Flytande vassöar förekommer. Gå inte iland på dem, de kan flytta sig och är instabila. Båttrafik ska vara uppmärksam då de kan hindra framkomlighet.",
-            conditions: null,
-          },
-        ],
+            "note": "Området söder om bron är inte del av FVO. Allmän tillgång på vattnet och fiske är förbjudet under säsongen.",
+            "conditions": {
+              "dateFrom": "05-01",
+              "dateTo": "09-30",
+              "timeFrom": null,
+              "timeTo": null
+            },
+            "geometry": null
+          }
+        ]
       },
+      "safety": {
+        "navigationNotes": [
+          {
+            "value": "caution",
+            "status": "verified",
+            "ruleType": "advisory",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://risbrodammen-fiske.se/",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Flytande vassöar förekommer. Gå inte iland på dem, de kan flytta sig och är instabila. Båttrafik ska vara uppmärksam då de kan hindra framkomlighet.",
+            "conditions": null
+          }
+        ]
+      }
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  mullsjon: {
+  "mullsjon": {
     "id": "mullsjon",
     "name": "Mullsjön",
     "type": "sjö",
@@ -5975,180 +6205,258 @@ export const lakes = {
       "trails": []
     }
   },
-
-  gravsjon: {
-    id: "gravsjon",
-    name: "Gravsjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [13.8875261, 57.9706602],
-    coordinateSource: "https://www.openstreetmap.org/way/43674265",
-    distance: { kilometers: 37, travelTime: "38 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-08-08",
-      sources: [
+  "gravsjon": {
+    "id": "gravsjon",
+    "name": "Gravsjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      13.8875261,
+      57.9706602
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/way/43674265",
+    "distance": {
+      "kilometers": 37,
+      "travelTime": "38 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
         "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
         "https://www.ifiske.se/fiske-gravsjon.htm",
         "https://www.ifiske.se/fiskekort-gravsjon.htm",
-        "https://www.ifiske.se/karta-gravsjon.htm",
-      ],
+        "https://www.ifiske.se/karta-gravsjon.htm"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "verified", label: "Verifierade motorregler" },
-      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade motorregler"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-08-09",
-          sources: [
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-08-09",
+          "sources": [
             {
-              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
-              type: "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Fiskekort krävs.",
+          "conditions": null
+        },
+        "permitProducts": {
+          "value": [
+            "day",
+            "month",
+            "year",
+            "angel-ice"
+          ],
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Dagskort, vinterdagskort, månadskort för öppet vatten och årskort finns. Ismete och angel ingår i särskilda vinterprodukter och årskortet.",
+          "conditions": null
+        },
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiske-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Barn och ungdomar till och med 14 år fiskar fritt.",
+          "conditions": null
+        }
+      },
+      "methods": {
+        "ice": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Pimpel ingår i fiskekortet.",
+          "conditions": null
+        }
+      },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "gädda",
+            "abborre",
+            "mört"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
             },
-          ],
-          note: "Fiskekort krävs.",
-          conditions: null,
-        },
-        permitProducts: {
-          value: ["day", "month", "year", "angel-ice"],
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
             {
-              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
-              type: "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiske-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Verifierad förekomst av gädda, abborre och mört.",
+          "conditions": null
+        }
+      },
+      "watercraft": {
+        "boat": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [
+            {
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
             },
-          ],
-          note: "Dagskort, vinterdagskort, månadskort för öppet vatten och årskort finns. Ismete och angel ingår i särskilda vinterprodukter och årskortet.",
-          conditions: null,
-        },youthRules:{value:"not-required",status:"verified",ruleType:"rule",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"}],note:"Barn och ungdomar till och med 14 \xE5r fiskar fritt.",conditions:null},
-      },
-      methods: {
-        ice: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
             {
-              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
-              type: "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiske-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": null,
+          "conditions": null
+        },
+        "kayak": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "floatTube": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "boat": {
+        "boatRentalAvailable": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
+            }
+          ],
+          "note": "Båtuthyrning finns.",
+          "conditions": null
+        },
+        "electricMotor": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              "type": "commercial-aggregator"
             },
-          ],
-          note: "Pimpel ingår i fiskekortet.",
-          conditions: null,
-        },
-      },
-      species: {
-        knownSpecies: {
-          value: ["gädda", "abborre", "mört"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
             {
-              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
-              type: "municipality",
-            },{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"},
+              "url": "https://www.ifiske.se/fiske-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Verifierad förekomst av gädda, abborre och mört.",
-          conditions: null,
+          "note": "Endast eldrivna båtmotorer får användas.",
+          "conditions": null
         },
-      },
-      watercraft: {
-        boat: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [{url:"https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",type:"municipality"},{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"}],
-          note: null,
-          conditions: null,
-        },
-        kayak: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        floatTube: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      boat: {
-        boatRentalAvailable: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-07",
-          sources: [
+        "combustionMotor": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-07",
+          "sources": [
             {
-              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
-              type: "municipality",
+              "url": "https://www.ifiske.se/fiskekort-gravsjon.htm",
+              "type": "commercial-aggregator"
             },
-          ],
-          note: "Båtuthyrning finns.",
-          conditions: null,
-        },
-        electricMotor: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
             {
-              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
-              type: "commercial-aggregator",
-            },{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"},
+              "url": "https://www.ifiske.se/fiske-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
           ],
-          note: "Endast eldrivna båtmotorer får användas.",
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-07",
-          sources: [
-            {
-              url: "https://www.ifiske.se/fiskekort-gravsjon.htm",
-              type: "commercial-aggregator",
-            },{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"},
-          ],
-          note: "Endast eldrivna båtmotorer får användas.",
-          conditions: null,
-        },
+          "note": "Endast eldrivna båtmotorer får användas.",
+          "conditions": null
+        }
       },
-      practical: {fishingPierAtBathingArea:{value:"present",status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.ifiske.se/fiske-gravsjon.htm",type:"commercial-aggregator"}],note:"Vid badplatsen i sj\xF6ns norra del finns en brygga som kan anv\xE4ndas f\xF6r fiske.",conditions:null}},
-      geography: {},
-      safety: {},
+      "practical": {
+        "fishingPierAtBathingArea": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.ifiske.se/fiske-gravsjon.htm",
+              "type": "commercial-aggregator"
+            }
+          ],
+          "note": "Vid badplatsen i sjöns norra del finns en brygga som kan användas för fiske.",
+          "conditions": null
+        }
+      },
+      "geography": {},
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  sandhemssjon: {
+  "sandhemssjon": {
     "id": "sandhemssjon",
     "name": "Sandhemssjön",
     "type": "sjö",
@@ -6413,139 +6721,168 @@ export const lakes = {
       "trails": []
     }
   },
-
-  knipesjon: {
-    id: "knipesjon",
-    name: "Knipesjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [13.8988537, 57.9374914],
-    coordinateSource: "https://www.openstreetmap.org/relation/8150669",
-    distance: { kilometers: 34, travelTime: "35 min" },
-    verification: {
-      status: "partially-verified",
-      updatedAt: "2026-08-08",
-      sources: [
-        "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
-      ],
+  "knipesjon": {
+    "id": "knipesjon",
+    "name": "Knipesjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      13.8988537,
+      57.9374914
+    ],
+    "coordinateSource": "https://www.openstreetmap.org/relation/8150669",
+    "distance": {
+      "kilometers": 34,
+      "travelTime": "35 min"
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "unverified", label: "Kontrollera aktuella regler" },
-      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    "verification": {
+      "status": "partially-verified",
+      "updatedAt": "2026-08-08",
+      "sources": [
+        "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska"
+      ]
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-03-01",
-          sources: [
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "rules": {
+        "status": "unverified",
+        "label": "Kontrollera aktuella regler"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
+    },
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-03-01",
+          "sources": [
             {
-              url: "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
-              type: "municipality",
-            },
+              "url": "https://www.mullsjo.se/visit-mullsjo/se--gora/friluftsliv/fiska",
+              "type": "municipality"
+            }
           ],
-          note: "Fiskekort krävs. Kommunen hänvisar till kontaktperson för att få fiskekort.",
-          conditions: null,
-        },
+          "note": "Fiskekort krävs. Kommunen hänvisar till kontaktperson för att få fiskekort.",
+          "conditions": null
+        }
       },
-      methods: {},
-      species: {knownSpecies:{value:["abborre","g\xE4dda","m\xF6rt","ruda"],status:"verified",ruleType:"advisory",verifiedAt:"2026-09-07",sources:[{url:"https://www.hittafiske.se/planera-ditt-fiske/knipesjons-fvof/",type:"commercial-aggregator"}],note:"Arter som redovisas f\xF6r Knipesj\xF6ns FVOF.",conditions:null}},
-      watercraft: {
-        boat: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        kayak: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        floatTube: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      boat: {
-        boatRentalAvailable: {
-          value:"unknown",
-          status:"unknown"  ,
-          ruleType:"unknown"  ,
-          verifiedAt:null         ,
-          sources: [
-
-
-
-
+      "methods": {},
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "abborre",
+            "gädda",
+            "mört",
+            "ruda"
           ],
-          note:null                                                                                    ,
-          conditions: null,
-        },
-        electricMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-        combustionMotor: {
-          value: "unknown",
-          status: "unknown",
-          ruleType: "unknown",
-          verifiedAt: null,
-          sources: [],
-          note: null,
-          conditions: null,
-        },
-      },
-      practical: {
-        ramp: {
-          value:"unknown",
-          status:"unknown"  ,
-          ruleType:"unknown"  ,
-          verifiedAt:null         ,
-          sources: [
-
-
-
-
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-07",
+          "sources": [
+            {
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/knipesjons-fvof/",
+              "type": "commercial-aggregator"
+            }
           ],
-          note:null                                               ,
-          conditions: null,
-          geometry: null,
-        },
+          "note": "Arter som redovisas för Knipesjöns FVOF.",
+          "conditions": null
+        }
       },
-      geography: {},
-      safety: {},
+      "watercraft": {
+        "boat": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "kayak": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "floatTube": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "boat": {
+        "boatRentalAvailable": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "electricMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        },
+        "combustionMotor": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null
+        }
+      },
+      "practical": {
+        "ramp": {
+          "value": "unknown",
+          "status": "unknown",
+          "ruleType": "unknown",
+          "verifiedAt": null,
+          "sources": [],
+          "note": null,
+          "conditions": null,
+          "geometry": null
+        }
+      },
+      "geography": {},
+      "safety": {}
     },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  hokesjon: {
+  "hokesjon": {
     "id": "hokesjon",
     "name": "Hökesjön",
     "type": "sjö",
@@ -6920,422 +7257,484 @@ export const lakes = {
       "trails": []
     }
   },
-
-  attarpsdammen: {
-    id: "attarpsdammen",
-    name: "Attarpsdammen",
-    type: "damm",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [14.116029, 57.859201],
-    coordinateSource:
-      "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
-    distance: { kilometers: 10, travelTime: "14 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-09-08",
-      sources: [
+  "attarpsdammen": {
+    "id": "attarpsdammen",
+    "name": "Attarpsdammen",
+    "type": "damm",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      14.116029,
+      57.859201
+    ],
+    "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
+    "distance": {
+      "kilometers": 10,
+      "travelTime": "14 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-09-08",
+      "sources": [
         "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
         "https://jkpg.com/upplevelser/fiske-i-jonkoping",
-        "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten",
-      ],
+        "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Dagskort krävs" },
-      rules: { status: "verified", label: "Verifierade specialregler" },
-      protectedAreas: { status: "verified", label: "Lokalt fiskeförbud finns" },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Dagskort krävs"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Verifierade specialregler"
+      },
+      "protectedAreas": {
+        "status": "verified",
+        "label": "Lokalt fiskeförbud finns"
+      }
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Dagskort krävs för den som inte är medlem i Jönköpings Sportfiskeklubb. Medlemmar fiskar utan separat dagskort.",
-          conditions: null,
+          "note": "Dagskort krävs för den som inte är medlem i Jönköpings Sportfiskeklubb. Medlemmar fiskar utan separat dagskort.",
+          "conditions": null
         },
-        permitCost: {
-          value: 50,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "permitCost": {
+          "value": 50,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
             },
             {
-              url: "https://jkpg.com/upplevelser/fiske-i-jonkoping",
-              type: "other",
-            },
+              "url": "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+              "type": "other"
+            }
           ],
-          note: "Dagskortet kostar 50 kr.",
-          conditions: null,
+          "note": "Dagskortet kostar 50 kr.",
+          "conditions": null
         },
-        permitProducts: {
-          value: ["day"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
-            {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+        "permitProducts": {
+          "value": [
+            "day"
           ],
-          note: "Kortet gäller ett dygn.",
-          conditions: null,
-        },
-        youthRules: {
-          value: "not-required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Barn till och med 12 år får fiska utan medlemskap eller dagskort.",
-          conditions: null,
+          "note": "Kortet gäller ett dygn.",
+          "conditions": null
         },
-        purchaseChannels: {
-          value: ["digital", "physical-resellers"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "youthRules": {
+          "value": "not-required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://jkpg.com/upplevelser/fiske-i-jonkoping",
-              type: "other",
-            },
-            {
-              url: "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten",
-              type: "municipality",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Betala med Swish till 123-604 67 75. Kommunen anger även Fortuna Spelbutik i Bankeryds centrum och Oljeshejkerna Jonsson i Bankeryd som återförsäljare.",
-          conditions: null,
+          "note": "Barn till och med 12 år får fiska utan medlemskap eller dagskort.",
+          "conditions": null
         },
+        "purchaseChannels": {
+          "value": [
+            "digital",
+            "physical-resellers"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
+            {
+              "url": "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+              "type": "other"
+            },
+            {
+              "url": "https://www.jonkoping.se/fritid-kultur--natur/friluftsliv-natur-och-parker/friluftsliv/fiska/fiskekort-och-fiskevatten",
+              "type": "municipality"
+            }
+          ],
+          "note": "Betala med Swish till 123-604 67 75. Kommunen anger även Fortuna Spelbutik i Bankeryds centrum och Oljeshejkerna Jonsson i Bankeryd som återförsäljare.",
+          "conditions": null
+        }
       },
-      methods: {
-        handGearOnly: {
-          value: "restricted",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+      "methods": {
+        "handGearOnly": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Fiske är tillåtet från land med fiskespö.",
-          conditions: null,
+          "note": "Fiske är tillåtet från land med fiskespö.",
+          "conditions": null
         },
-        ice: {
-          value: "allowed",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "ice": {
+          "value": "allowed",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Vinterfiske med pimpelspö får bedrivas i hela dammen på egen risk.",
-          conditions: null,
-        },
+          "note": "Vinterfiske med pimpelspö får bedrivas i hela dammen på egen risk.",
+          "conditions": null
+        }
       },
-      species: {
-        knownSpecies: {
-          value: ["sutare", "braxen", "mört", "abborre", "gädda", "öring"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
-            {
-              url: "https://jkpg.com/upplevelser/fiske-i-jonkoping",
-              type: "other",
-            },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "sutare",
+            "braxen",
+            "mört",
+            "abborre",
+            "gädda",
+            "öring"
           ],
-          note: "Destination Jönköping anger sutare, braxen, mört, abborre och gädda samt ett mindre bestånd av öring.",
-          conditions: null,
-        },
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
+            {
+              "url": "https://jkpg.com/upplevelser/fiske-i-jonkoping",
+              "type": "other"
+            }
+          ],
+          "note": "Destination Jönköping anger sutare, braxen, mört, abborre och gädda samt ett mindre bestånd av öring.",
+          "conditions": null
+        }
       },
-      watercraft: {
-        boat: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+      "watercraft": {
+        "boat": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Båtar och andra flytetyg är förbjudna.",
-          conditions: null,
+          "note": "Båtar och andra flytetyg är förbjudna.",
+          "conditions": null
         },
-        kayak: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "kayak": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Kajak omfattas av förbudet mot båtar och andra flytetyg.",
-          conditions: null,
+          "note": "Kajak omfattas av förbudet mot båtar och andra flytetyg.",
+          "conditions": null
         },
-        floatTube: {
-          value: "prohibited",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "floatTube": {
+          "value": "prohibited",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Flytring omfattas av förbudet mot båtar och andra flytetyg.",
-          conditions: null,
-        },
+          "note": "Flytring omfattas av förbudet mot båtar och andra flytetyg.",
+          "conditions": null
+        }
       },
-      boat: {},
-      practical: {
-        visitorFacilities: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+      "boat": {},
+      "practical": {
+        "visitorFacilities": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
-              type: "municipality",
-            },
+              "url": "https://www.naturkartan.se/sv/jonkopings-lan/attarpsdammen-grillplats",
+              "type": "municipality"
+            }
           ],
-          note: "Kommunens Naturkartan visar en grillplats vid dammen.",
-          conditions: null,
-        },
+          "note": "Kommunens Naturkartan visar en grillplats vid dammen.",
+          "conditions": null
+        }
       },
-      geography: {
-        fishingProhibitionAreas: [
+      "geography": {
+        "fishingProhibitionAreas": [
           {
-            name: "Västra stranden mot dammfästet",
-            value: "prohibited",
-            status: "verified",
-            ruleType: "rule",
-            verifiedAt: "2026-09-08",
-            sources: [
+            "name": "Västra stranden mot dammfästet",
+            "value": "prohibited",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-08",
+            "sources": [
               {
-                url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-                type: "fvo-club",
-              },
+                "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+                "type": "fvo-club"
+              }
             ],
-            note: "På västra sidan är fiske förbjudet från den skyltade gränspunkten fram till dammfästet. Följ skyltningen på plats; området skyddar fågellivet och den orörda stranden.",
-            conditions: null,
-            geometry: null,
-          },
-        ],
+            "note": "På västra sidan är fiske förbjudet från den skyltade gränspunkten fram till dammfästet. Följ skyltningen på plats; området skyddar fågellivet och den orörda stranden.",
+            "conditions": null,
+            "geometry": null
+          }
+        ]
       },
-      safety: {
-        winterFishingRisk: {
-          value: "caution",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+      "safety": {
+        "winterFishingRisk": {
+          "value": "caution",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
-              type: "fvo-club",
-            },
+              "url": "https://www.jsf-fiske.net/sida/80555/attarpsdammen",
+              "type": "fvo-club"
+            }
           ],
-          note: "Pimpelfiske sker på egen risk. Kontrollera alltid isens bärighet lokalt.",
-          conditions: null,
-        },
+          "note": "Pimpelfiske sker på egen risk. Kontrollera alltid isens bärighet lokalt.",
+          "conditions": null
+        }
+      }
+    },
+    "practical": {
+      "parking": {
+        "status": "unknown",
+        "label": "Uppgift saknas",
+        "locations": []
       },
-    },
-    practical: {
-      parking: { status: "unknown", label: "Uppgift saknas", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  klappasjon: {
-    id: "klappasjon",
-    name: "Klappasjön",
-    type: "sjö",
-    region: "Småland",
-    counties: ["Jönköping"],
-    coordinates: [14.51712, 57.55435],
-    coordinateSource:
-      "https://vattenwebb.smhi.se/svarwebb/",
-    distance: { kilometers: 38, travelTime: "34 min" },
-    verification: {
-      status: "verified",
-      updatedAt: "2026-09-08",
-      sources: [
+  "klappasjon": {
+    "id": "klappasjon",
+    "name": "Klappasjön",
+    "type": "sjö",
+    "region": "Småland",
+    "counties": [
+      "Jönköping"
+    ],
+    "coordinates": [
+      14.51712,
+      57.55435
+    ],
+    "coordinateSource": "https://vattenwebb.smhi.se/svarwebb/",
+    "distance": {
+      "kilometers": 38,
+      "travelTime": "34 min"
+    },
+    "verification": {
+      "status": "verified",
+      "updatedAt": "2026-09-08",
+      "sources": [
         "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-        "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
-      ],
+        "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html"
+      ]
     },
-    fishing: {
-      permit: { status: "verified", label: "Fiskekort krävs" },
-      rules: { status: "verified", label: "Handredskap ingår" },
-      protectedAreas: { status: "unknown", label: "Uppgift saknas" },
+    "fishing": {
+      "permit": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "rules": {
+        "status": "verified",
+        "label": "Handredskap ingår"
+      },
+      "protectedAreas": {
+        "status": "unknown",
+        "label": "Uppgift saknas"
+      }
     },
-    details: {
-      access: {
-        permitRequirement: {
-          value: "required",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+    "details": {
+      "access": {
+        "permitRequirement": {
+          "value": "required",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-              type: "other",
-            },
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              "type": "other"
+            }
           ],
-          note: "Fiskekort krävs och gäller fiske med handredskap.",
-          conditions: null,
+          "note": "Fiskekort krävs och gäller fiske med handredskap.",
+          "conditions": null
         },
-        permitCost: {
-          value: 20,
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "permitCost": {
+          "value": 20,
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-              type: "other",
-            },
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              "type": "other"
+            }
           ],
-          note: "Dagskort 20 kr, veckokort 100 kr, årskort 200 kr och familjeårskort 250 kr.",
-          conditions: null,
+          "note": "Dagskort 20 kr, veckokort 100 kr, årskort 200 kr och familjeårskort 250 kr.",
+          "conditions": null
         },
-        permitProducts: {
-          value: ["day", "week", "year", "family"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "permitProducts": {
+          "value": [
+            "day",
+            "week",
+            "year",
+            "family"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-              type: "other",
-            },
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              "type": "other"
+            }
           ],
-          note: "Dagskort, veckokort, årskort och familjeårskort finns.",
-          conditions: null,
+          "note": "Dagskort, veckokort, årskort och familjeårskort finns.",
+          "conditions": null
         },
-        purchaseChannels: {
-          value: ["digital"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "purchaseChannels": {
+          "value": [
+            "digital"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-              type: "other",
-            },
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              "type": "other"
+            }
           ],
-          note: "Swisha till 070-688 31 68 och skriv fiskekort som meddelande.",
-          conditions: null,
-        },
+          "note": "Swisha till 070-688 31 68 och skriv fiskekort som meddelande.",
+          "conditions": null
+        }
       },
-      methods: {
-        handGearOnly: {
-          value: "restricted",
-          status: "verified",
-          ruleType: "rule",
-          verifiedAt: "2026-09-08",
-          sources: [
+      "methods": {
+        "handGearOnly": {
+          "value": "restricted",
+          "status": "verified",
+          "ruleType": "rule",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-              type: "other",
-            },
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              "type": "other"
+            }
           ],
-          note: "Det publicerade fiskekortet gäller fiske med handredskap. Övriga redskap omfattas inte av den verifierade kortinformationen.",
-          conditions: null,
-        },
+          "note": "Det publicerade fiskekortet gäller fiske med handredskap. Övriga redskap omfattas inte av den verifierade kortinformationen.",
+          "conditions": null
+        }
       },
-      species: {
-        knownSpecies: {
-          value: ["abborre", "gädda", "lake", "mört", "sutare"],
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
-            {
-              url: "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
-              type: "other",
-            },
+      "species": {
+        "knownSpecies": {
+          "value": [
+            "abborre",
+            "gädda",
+            "lake",
+            "mört",
+            "sutare"
           ],
-          note: "Klappasjöns FVOF anger abborre, gädda, lake, mört och sutare.",
-          conditions: null,
-        },
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
+            {
+              "url": "https://www.hittafiske.se/planera-ditt-fiske/klappasjons-fvof/",
+              "type": "other"
+            }
+          ],
+          "note": "Klappasjöns FVOF anger abborre, gädda, lake, mört och sutare.",
+          "conditions": null
+        }
       },
-      watercraft: {},
-      boat: {},
-      practical: {
-        visitorFacilities: {
-          value: "present",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+      "watercraft": {},
+      "boat": {},
+      "practical": {
+        "visitorFacilities": {
+          "value": "present",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
-              type: "municipality",
-            },
+              "url": "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
+              "type": "municipality"
+            }
           ],
-          note: "Klappabadet har grillplats, brygga, toalett, omklädningsrum, gungställning och cirka 20 parkeringsplatser.",
-          conditions: null,
+          "note": "Klappabadet har grillplats, brygga, toalett, omklädningsrum, gungställning och cirka 20 parkeringsplatser.",
+          "conditions": null
         },
-        accessibility: {
-          value: "absent",
-          status: "verified",
-          ruleType: "advisory",
-          verifiedAt: "2026-09-08",
-          sources: [
+        "accessibility": {
+          "value": "absent",
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-09-08",
+          "sources": [
             {
-              url: "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
-              type: "municipality",
-            },
+              "url": "https://nassjo.se/uppleva-och-gora/aktivitet/klappabadet-badplats.html",
+              "type": "municipality"
+            }
           ],
-          note: "Klappabadet anges inte vara tillgänglighetsanpassat.",
-          conditions: null,
-        },
+          "note": "Klappabadet anges inte vara tillgänglighetsanpassat.",
+          "conditions": null
+        }
       },
-      geography: {},
-      safety: {},
+      "geography": {},
+      "safety": {}
     },
-    practical: {
-      parking: { status: "verified", label: "Cirka 20 platser", locations: [] },
-      ramps: [],
-      piers: [],
-      trails: [],
-    },
+    "practical": {
+      "parking": {
+        "status": "verified",
+        "label": "Cirka 20 platser",
+        "locations": []
+      },
+      "ramps": [],
+      "piers": [],
+      "trails": []
+    }
   },
-
-  svansjon: {
+  "svansjon": {
     "id": "svansjon",
     "name": "Svansjön",
     "type": "sjö",
@@ -7760,4 +8159,750 @@ export const lakes = {
       "safety": {}
     }
   },
+  "bunn-norra-mellersta": {
+    "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/norra-bunns-fvof",
+    "coordinates": [
+      14.5255853220231,
+      58.0128658993479
+    ],
+    "counties": [
+      "Jönköping"
+    ],
+    "details": {
+      "access": {
+        "permitMethodSupport": {
+          "conditions": null,
+          "note": "Det ordinarie fiskekortet omfattar spinn, mete och flugfiske. Källan anger även högst två spön samtidigt utan att ange en säker per-person- eller per-kort-basis; begränsningen behålls därför i noten och inte i ett överprecist numeriskt fält.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            {
+              "methods": [
+                "spin",
+                "bait",
+                "fly"
+              ],
+              "permitType": "ordinary-open-water"
+            }
+          ],
+          "verifiedAt": "2026-09-18"
+        },
+        "permitProducts": {
+          "conditions": null,
+          "note": "Listan omfattar endast områdesspecifika produkter. Det gemensamma veckokortet för Norra Bunn, Södra Bunn och Kvarnsjöarna finns, men kan inte uttryckas sanningsenligt i den nuvarande enskilda sjöns produktlista.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm"
+            },
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            "day",
+            "week",
+            "year"
+          ],
+          "verifiedAt": "2026-09-18"
+        },
+        "permitRequirement": {
+          "conditions": null,
+          "note": "Fiskekort krävs. Norra/Mellersta Bunn har ett eget fiskekort; gränsen mellan Norra/Mellersta och Södra Bunn går vid Förnäsbron.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            }
+          ],
+          "status": "verified",
+          "value": "required",
+          "verifiedAt": "2026-09-18"
+        },
+        "purchase": {
+          "conditions": null,
+          "note": "Separat fiskekort gäller för Norra/Mellersta Bunn. Ett gemensamt veckokort med bredare täckning finns och redovisas endast i denna not, inte som en områdesspecifik produkt.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            },
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm"
+            }
+          ],
+          "status": "verified",
+          "value": "restricted",
+          "verifiedAt": "2026-09-18"
+        },
+        "youthRules": {
+          "conditions": null,
+          "note": "Personer under 18 år behöver inte fiskekort.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            }
+          ],
+          "status": "verified",
+          "value": "not-required",
+          "verifiedAt": "2026-09-18"
+        }
+      },
+      "boat": {
+        "combustionMotor": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        },
+        "electricMotor": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        }
+      },
+      "geography": {
+        "fishingProhibitionAreas": [
+          {
+            "conditions": null,
+            "geometry": null,
+            "name": "Avstånd till tomt eller brygga",
+            "note": "Fiske får inte bedrivas närmare än 75 meter från tomt eller brygga.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "status": "verified",
+            "value": "prohibited",
+            "verifiedAt": "2026-09-18"
+          }
+        ]
+      },
+      "methods": {
+        "ice": {
+          "conditions": null,
+          "note": "Pimpelfiske omfattas av fiskekortet. Ingen separat isfiskekortstyp eller kalenderperiod antas.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf"
+            }
+          ],
+          "status": "verified",
+          "value": "allowed",
+          "verifiedAt": "2026-09-18"
+        }
+      },
+      "practical": {
+        "ramps": [
+          {
+            "conditions": null,
+            "geometry": null,
+            "name": "Roten/Rotabron",
+            "note": "Betongramp med parkering för bil och trailer i närheten. Giltigt fiskekort för Norra Bunn krävs. Rampen är stängd under delar av vissa sommarperioder; aktuella datum ska kontrolleras med FVO.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/hitta-hit.html"
+              },
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "status": "verified",
+            "value": "restricted",
+            "verifiedAt": "2026-09-18"
+          }
+        ]
+      },
+      "safety": {},
+      "species": {
+        "bagLimits": [
+          {
+            "conditions": null,
+            "note": "Gemensam dygnsgräns: högst två behållna gäddor och gösar sammanlagt per fiskekort och dag. FVO rekommenderar catch and release; rekommendationen är inte ett obligatoriskt återutsättningskrav.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "speciesGroup": "gädda+gös",
+            "status": "verified",
+            "value": {
+              "maxRetainedPerPermitPerDay": 2
+            },
+            "verifiedAt": "2026-09-18"
+          }
+        ],
+        "knownSpecies": {
+          "conditions": null,
+          "note": "Verifierade fiskarter för området. Signalkräfta redovisas av källan men ingår inte i Pikes fisk-only knownSpecies.",
+          "ruleType": "advisory",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fisk-i-bunn.html"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            "abborre",
+            "lake",
+            "braxen",
+            "mört",
+            "gers",
+            "nors",
+            "gädda",
+            "sarv",
+            "gös"
+          ],
+          "verifiedAt": "2026-09-18"
+        },
+        "sizeLimits": [
+          {
+            "conditions": null,
+            "note": "Gädda får behållas endast inom intervallet 50–80 cm.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "species": "gädda",
+            "status": "verified",
+            "value": {
+              "maxSizeCm": 80,
+              "minSizeCm": 50
+            },
+            "verifiedAt": "2026-09-18"
+          },
+          {
+            "conditions": null,
+            "note": "Gös får behållas endast inom intervallet 50–70 cm.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "species": "gös",
+            "status": "verified",
+            "value": {
+              "maxSizeCm": 70,
+              "minSizeCm": 50
+            },
+            "verifiedAt": "2026-09-18"
+          },
+          {
+            "conditions": null,
+            "note": "Abborre över 38 cm får inte behållas.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "species": "abborre",
+            "status": "verified",
+            "value": {
+              "maxSizeCm": 38
+            },
+            "verifiedAt": "2026-09-18"
+          }
+        ]
+      },
+      "watercraft": {
+        "boat": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        },
+        "floatTube": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        },
+        "kayak": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        }
+      }
+    },
+    "fishing": {
+      "permit": {
+        "label": "Fiskekort krävs",
+        "status": "verified"
+      },
+      "protectedAreas": {
+        "label": "Uppgift saknas",
+        "status": "unknown"
+      },
+      "rules": {
+        "label": "Verifierade grundregler",
+        "status": "verified"
+      }
+    },
+    "id": "bunn-norra-mellersta",
+    "name": "Bunn – Norra/Mellersta",
+    "practical": {
+      "parking": {
+        "label": "Uppgift saknas",
+        "locations": [],
+        "status": "unknown"
+      },
+      "piers": [],
+      "ramps": [],
+      "trails": []
+    },
+    "region": "Småland",
+    "type": "sjö",
+    "verification": {
+      "sources": [
+        "https://bunnfiske.se/item/fiskekort.html",
+        "https://bunnfiske.se/item/fisk-i-bunn.html",
+        "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+        "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm",
+        "https://www.naturkartan.se/sv/jonkopings-lan/norra-bunns-fvof",
+        "https://www.bunnfiske.se/item/kallelse-till-extra-arsmote-sodra-bunn-fvof-copy.html",
+        "https://bunnfiske.se/item/hitta-hit.html",
+        "https://www.naturkartan.se/sv/jonkopings-lan/batramp-bunn"
+      ],
+      "status": "partially-verified",
+      "updatedAt": "2026-09-18"
+    }
+  },
+  "bunn-sodra": {
+    "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/sodra-bunns-fvof",
+    "coordinates": [
+      14.5151225407906,
+      57.949419193117
+    ],
+    "counties": [
+      "Jönköping"
+    ],
+    "details": {
+      "access": {
+        "permitMethodSupport": {
+          "conditions": null,
+          "note": "Det ordinarie öppet-vatten-kortet omfattar spinn och mete. Det separata vinterkortet omfattar pimpel/ismete. Ismete får använda högst tio redskap; källan ger inte en tillräckligt säker per-person- eller per-kort-basis för ett numeriskt strukturfält.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            {
+              "methods": [
+                "spin",
+                "bait"
+              ],
+              "permitType": "ordinary-open-water"
+            },
+            {
+              "methods": [
+                "ice"
+              ],
+              "permitType": "ice-fishing"
+            }
+          ],
+          "verifiedAt": "2026-09-18"
+        },
+        "permitProducts": {
+          "conditions": null,
+          "note": "Listan omfattar endast områdesspecifika produkter. Det gemensamma veckokortet för Norra Bunn, Södra Bunn och Kvarnsjöarna finns, men kan inte uttryckas sanningsenligt i den nuvarande enskilda sjöns produktlista.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm"
+            },
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            "day",
+            "week",
+            "season",
+            "year",
+            "angel-ice"
+          ],
+          "verifiedAt": "2026-09-18"
+        },
+        "permitRequirement": {
+          "conditions": null,
+          "note": "Fiskekort krävs. Södra Bunn har ett eget fiskekort; gränsen mellan Norra/Mellersta och Södra Bunn går vid Förnäsbron.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            }
+          ],
+          "status": "verified",
+          "value": "required",
+          "verifiedAt": "2026-09-18"
+        },
+        "purchase": {
+          "conditions": null,
+          "note": "Separat fiskekort gäller för Södra Bunn. Ett gemensamt veckokort med bredare täckning finns och redovisas endast i denna not, inte som en områdesspecifik produkt.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            },
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm"
+            }
+          ],
+          "status": "verified",
+          "value": "restricted",
+          "verifiedAt": "2026-09-18"
+        },
+        "youthRules": {
+          "conditions": null,
+          "note": "Personer under 18 år behöver inte fiskekort.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fiskekort.html"
+            }
+          ],
+          "status": "verified",
+          "value": "not-required",
+          "verifiedAt": "2026-09-18"
+        }
+      },
+      "boat": {
+        "combustionMotor": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        },
+        "electricMotor": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        }
+      },
+      "geography": {
+        "fishingProhibitionAreas": [
+          {
+            "conditions": null,
+            "geometry": null,
+            "name": "Avstånd till tomt eller brygga",
+            "note": "Den aktuella primära FVO-källans 75 meter från tomt eller brygga används. Den sekundära Södra-källan anger avvikande 100 meter från bebyggd strandtomt; konflikten är dokumenterad utan en konkurrerande normativ regel.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              },
+              {
+                "type": "commercial-aggregator",
+                "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+              }
+            ],
+            "status": "verified",
+            "value": "prohibited",
+            "verifiedAt": "2026-09-18"
+          }
+        ]
+      },
+      "methods": {
+        "crayfishFishing": {
+          "conditions": null,
+          "note": "Kräftfiske är förbjudet enligt de ordinarie reglerna.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+            }
+          ],
+          "status": "verified",
+          "value": "prohibited",
+          "verifiedAt": "2026-09-18"
+        },
+        "fixedGear": {
+          "conditions": null,
+          "note": "Fasta redskap är förbjudna.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+            }
+          ],
+          "status": "verified",
+          "value": "prohibited",
+          "verifiedAt": "2026-09-18"
+        },
+        "maxRodsPerPermit": {
+          "conditions": null,
+          "note": "Högst två spön får användas per fiskekort/person.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+            }
+          ],
+          "status": "verified",
+          "value": 2,
+          "verifiedAt": "2026-09-18"
+        },
+        "nets": {
+          "conditions": null,
+          "note": "Nät anges uttryckligen som förbjudet fast redskap.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "commercial-aggregator",
+              "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+            }
+          ],
+          "status": "verified",
+          "value": "prohibited",
+          "verifiedAt": "2026-09-18"
+        }
+      },
+      "practical": {},
+      "safety": {},
+      "species": {
+        "bagLimits": [
+          {
+            "conditions": null,
+            "note": "Gemensam dygnsgräns: högst två behållna gäddor och gösar sammanlagt per fiskekort och dag. FVO rekommenderar catch and release; rekommendationen är inte ett obligatoriskt återutsättningskrav.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "speciesGroup": "gädda+gös",
+            "status": "verified",
+            "value": {
+              "maxRetainedPerPermitPerDay": 2
+            },
+            "verifiedAt": "2026-09-18"
+          }
+        ],
+        "knownSpecies": {
+          "conditions": null,
+          "note": "Verifierade fiskarter för området. Signalkräfta redovisas av källan men ingår inte i Pikes fisk-only knownSpecies.",
+          "ruleType": "advisory",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bunnfiske.se/item/fisk-i-bunn.html"
+            }
+          ],
+          "status": "verified",
+          "value": [
+            "abborre",
+            "lake",
+            "braxen",
+            "mört",
+            "gers",
+            "nors",
+            "gädda",
+            "sarv",
+            "gös"
+          ],
+          "verifiedAt": "2026-09-18"
+        },
+        "sizeLimits": [
+          {
+            "conditions": null,
+            "note": "Gädda får behållas endast inom intervallet 50–80 cm.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "species": "gädda",
+            "status": "verified",
+            "value": {
+              "maxSizeCm": 80,
+              "minSizeCm": 50
+            },
+            "verifiedAt": "2026-09-18"
+          },
+          {
+            "conditions": null,
+            "note": "Den aktuella primära FVO-källans intervall 50–70 cm används. Den sekundära Södra-källan anger avvikande 55–70 cm; konflikten är dokumenterad utan att skapa en konkurrerande normativ regel.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              },
+              {
+                "type": "commercial-aggregator",
+                "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241"
+              }
+            ],
+            "species": "gös",
+            "status": "verified",
+            "value": {
+              "maxSizeCm": 70,
+              "minSizeCm": 50
+            },
+            "verifiedAt": "2026-09-18"
+          },
+          {
+            "conditions": null,
+            "note": "Abborre över 38 cm får inte behållas.",
+            "ruleType": "rule",
+            "sources": [
+              {
+                "type": "fvo-club",
+                "url": "https://bunnfiske.se/item/fiskekort.html"
+              }
+            ],
+            "species": "abborre",
+            "status": "verified",
+            "value": {
+              "maxSizeCm": 38
+            },
+            "verifiedAt": "2026-09-18"
+          }
+        ]
+      },
+      "watercraft": {
+        "boat": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        },
+        "floatTube": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        },
+        "kayak": {
+          "conditions": null,
+          "note": null,
+          "ruleType": "unknown",
+          "sources": [],
+          "status": "unknown",
+          "value": "unknown",
+          "verifiedAt": null
+        }
+      }
+    },
+    "fishing": {
+      "permit": {
+        "label": "Fiskekort krävs",
+        "status": "verified"
+      },
+      "protectedAreas": {
+        "label": "Uppgift saknas",
+        "status": "unknown"
+      },
+      "rules": {
+        "label": "Verifierade grundregler",
+        "status": "verified"
+      }
+    },
+    "id": "bunn-sodra",
+    "name": "Bunn – Södra",
+    "practical": {
+      "parking": {
+        "label": "Uppgift saknas",
+        "locations": [],
+        "status": "unknown"
+      },
+      "piers": [],
+      "ramps": [],
+      "trails": []
+    },
+    "region": "Småland",
+    "type": "sjö",
+    "verification": {
+      "sources": [
+        "https://bunnfiske.se/item/fiskekort.html",
+        "https://bunnfiske.se/item/fisk-i-bunn.html",
+        "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+        "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm",
+        "https://www.naturkartan.se/sv/jonkopings-lan/sodra-bunns-fvof",
+        "https://www.bunnfiske.se/item/djupkarta-oever-soedra-bunn.html"
+      ],
+      "status": "partially-verified",
+      "updatedAt": "2026-09-18"
+    }
+  }
 };

@@ -118,16 +118,14 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   `smhiLakeId` valideras fortsatt strikt, och tillgängligt källmaterial innebär
   inte publiceringsberedskap. Detta undanröjer schemaspärren för att författa
   Bunns ersättningsmanifest.
-- Entity Replacement-manifestet `bunn-split-1` är mänskligt godkänt och
-  publicerat. Skrivskyddad preflight är berättigad för den enda väntande
-  ersättningen och föreslår 23 → 24 sjöar med fingerprint
-  `48539743f831570c9b0d56f62bfeacb926cbf282cc988ede5152a909b387a6d0`.
-  Runtime är förberedd: favoritmigreringen förblir dormant tills gamla `bunn`
-  saknas och båda efterträdarna finns, båda framtida ID:n har explicit kartzoom
-  och autocomplete-QA hittar dem i stabil ordning. Review/publication är
-  oförändrade, apply är varken godkänd eller utförd och produktionen är fortsatt
-  23 sjöar. Nästa steg är explicit mänsklig apply-auktorisering med färsk
-  preflight.
+- Entity Replacement `bunn-split-1` är applicerad. Gamla `bunn` är pensionerad
+  och `bunn-norra-mellersta` samt `bunn-sodra` är live; produktionen omfattar nu
+  24 sjöar. Den beständiga replacement-receipten finns och livscykeln klassar
+  ersättningen som `alreadyApplied`; en andra apply är verifierad som ett rent
+  no-op. Favoritmigreringen kan nu aktiveras för äldre sparade Bunn-favoriter,
+  metodstödet är fortsatt separat för de två fiskeenheterna och båda
+  djupkällorna är opublicerade med `needs-review`. Nästa särskilda
+  baseline-uppgift är Bolmen.
 
 ### Entitlement-arkitektur
 

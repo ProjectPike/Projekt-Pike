@@ -96,7 +96,7 @@ test("cross-pipeline lifecycle preserves original provenance after reviewed upda
   assert.equal(afterBuild.additions.length, 0);
   assert.equal(afterBuild.blocked.length, 0);
   assert.equal(afterBuild.summary.idConflictCount, 0);
-  assert.equal(afterBuild.summary.proposedLakeCount, 23);
+  assert.equal(afterBuild.summary.proposedLakeCount, 24);
 
   const newLakePreflight = await createProductionDatasetPreflight({
     buildResult: afterBuild,

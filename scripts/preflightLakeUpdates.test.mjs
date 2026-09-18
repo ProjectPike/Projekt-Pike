@@ -287,7 +287,7 @@ test("real repository preflight classifies Svansjön as applied history", async 
     "vattern-baseline-audit-1",
   ]);
   assert.deepEqual(result.filesToChange, []);
-  assert.equal(result.productionLakeCount, 23);
+  assert.equal(result.productionLakeCount, 24);
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.validationErrors, []);
   assert.deepEqual(after, before);
