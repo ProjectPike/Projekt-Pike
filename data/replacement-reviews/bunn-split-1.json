@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "bunn-split-1",
+  "targetLakeId": "bunn",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-19",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "01b6fcfb3bdb5d735aaf5ef31c1e660856840aa3f185c54aefb1a59c9987405b",
+  "note": "Manuellt granskad uppdelning av Bunn i Norra/Mellersta och Södra med separata fiskekorts- och metodsemantiker. Flugfiske i Södra och Trolling i båda förblir unknown; inga avstånd fabriceras. Äldre SMHI-forskning för hela Bunn tilldelas inte ersättarna, vars båda djupunderlag förblir opublicerade och needs-review."
+}

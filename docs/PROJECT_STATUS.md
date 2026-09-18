@@ -111,20 +111,19 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   preflight/apply-livscykel med verifierad staging, rollback och beständig historik
   för en identitet till minst två ersättare. Första avsedda användning är Bunn;
   själva delningen är inte implementerad. Produktionen är oförändrad: 23 sjöar,
-  17 `alreadyApplied` updates och 0 pending. Nästa steg är ett komplett Bunn-
-  ersättningsmanifest för separat mänsklig granskning, inte produktionsapply.
+  17 `alreadyApplied` updates och 0 pending.
   Kontrakt och v1-gränser finns i `docs/ENTITY_REPLACEMENT_CONTRACT.md`.
 - Djupforskningskontraktet är leverantörsneutralt: `available` kräver leverantör,
   HTTP(S)-källa och känd materialpost men inte ett fabricerat SMHI-id. Ett angivet
   `smhiLakeId` valideras fortsatt strikt, och tillgängligt källmaterial innebär
   inte publiceringsberedskap. Detta undanröjer schemaspärren för att författa
   Bunns ersättningsmanifest.
-- Det kompletta Entity Replacement-manifestet `bunn-split-1` är skapat och
-  validerat som ett ogranskat förslag för `bunn` → `bunn-norra-mellersta` och
-  `bunn-sodra`. Det har inte granskats, publicerats, preflightats för apply eller
-  applicerats; produktionen är oförändrad med 23 sjöar, 17 `alreadyApplied`
-  Existing Lake Updates och inga väntande publicerade uppdateringar eller
-  ersättningar.
+- Entity Replacement-manifestet `bunn-split-1` är mänskligt godkänt och
+  publicerat. Skrivskyddad preflight är berättigad för den enda väntande
+  ersättningen och föreslår 23 → 24 sjöar med fingerprint
+  `48539743f831570c9b0d56f62bfeacb926cbf282cc988ede5152a909b387a6d0`.
+  Apply är varken godkänd eller utförd; Bunn-delningen är inte live och
+  produktionen är oförändrad. Nästa steg är separat apply-auktorisering.
 
 ### Entitlement-arkitektur
 
