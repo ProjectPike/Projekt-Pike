@@ -57,6 +57,8 @@ sources: [
 
 Sources follow existing source types and require clean HTTP(S) provenance URLs
 and real YYYY-MM-DD dates. Complete facts retain their own source references.
+Lake-level `distance` is optional in source and replacement lake records; when
+present it is preserved exactly and never inferred or defaulted.
 No missing records are filled in; unknown remains unknown. Replacement records
 pass the production validator, including global point-ID uniqueness and orphan
 checks. IDs cannot collide with source, each other, or any current metadata key.

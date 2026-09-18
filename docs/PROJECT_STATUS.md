@@ -80,6 +80,10 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   direkta artspecifika restriktioner kan fortsatt ge stöd. Därmed försvinner
   Sommens felaktiga stöd för Lax och Regnbåge utan ändring av produktionsdata,
   och Batch C är nästa steg efter matcher-verifieringen.
+- Lake-level `distance` är nu valfritt i app-, kandidat- och
+  Existing Lake/Entity Replacement-kompatibiliteten. Befintliga avstånd
+  bevaras när de finns, men saknade värden blockeras inte och visas inte som
+  platshållare. Produktionsdata är oförändrad; Bunn-splitten är inte genomförd.
 - Baseline Lake Audit v1 Batch C är applicerad: korrigeringarna för
   Ulvstorpasjön, Mullsjön och Hökesjön är live. Risbrodammen och Attarpsdammen
   krävde inga ändringar; update-livscykeln är 15 `alreadyApplied` och noll

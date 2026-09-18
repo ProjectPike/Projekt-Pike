@@ -6,9 +6,11 @@ function LakeHero({ lake }) {
       <div className="lake-hero-content">
         <p>{lake.region}</p>
         <h1>{lake.name}</h1>
-        <span>
-          {lake.distance.kilometers} km · {lake.distance.travelTime}
-        </span>
+        {lake.distance && (
+          <span>
+            {lake.distance.kilometers} km · {lake.distance.travelTime}
+          </span>
+        )}
       </div>
     </section>
   );

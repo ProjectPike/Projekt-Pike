@@ -95,6 +95,8 @@ const appOnlyFields = [
   "lakeDepthMapResearch",
 ];
 
+const requiredAppIntegrationFields = appOnlyFields.filter((field) => field !== "distance");
+
 export const publishedToAppCompatibilityContract = Object.freeze({
   schemaVersion: 1,
   safeCandidateFields: ["id", "name", "region", "counties", "location.coordinates"],
@@ -240,7 +242,7 @@ export function assessPublishedLakeCompatibility(publication) {
     }
   }
 
-  const requiredExplicitFields = appOnlyFields.filter(
+  const requiredExplicitFields = requiredAppIntegrationFields.filter(
     (field) => !Object.hasOwn(candidate?.app ?? {}, field),
   );
   if (!candidate?.region) requiredExplicitFields.push("region");
@@ -307,7 +309,9 @@ export function mapPublishedLakeCompatibleFields(publication) {
     coordinates: [...candidate.location.coordinates],
     type: candidate.app.type,
     coordinateSource: candidate.app.coordinateSource,
-    distance: structuredClone(candidate.app.distance),
+    ...(Object.hasOwn(candidate.app, "distance")
+      ? { distance: structuredClone(candidate.app.distance) }
+      : {}),
     verification: structuredClone(candidate.app.verification),
     fishing: structuredClone(candidate.app.fishing),
     practical: structuredClone(candidate.app.practical),

@@ -5,9 +5,11 @@ function SavedLakeCard({ lake, onOpen, onRemove }) {
         <span>
           <small>{lake.region}</small>
           <strong>{lake.name}</strong>
-          <em>
-            {lake.distance.kilometers} km · {lake.distance.travelTime}
-          </em>
+          {lake.distance && (
+            <em>
+              {lake.distance.kilometers} km · {lake.distance.travelTime}
+            </em>
+          )}
         </span>
         <span className="saved-chevron">›</span>
       </button>

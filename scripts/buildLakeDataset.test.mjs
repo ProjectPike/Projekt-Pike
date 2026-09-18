@@ -144,6 +144,15 @@ test("a compatible reviewed new lake becomes an in-memory addition", () => {
   assert.equal(Object.hasOwn(lake, "lakeDepthMapResearch"), false);
 });
 
+test("a compatible reviewed new lake may omit distance without defaulting it", () => {
+  const input = publication();
+  delete input.candidate.app.distance;
+  input.review.candidateHash = candidateHash(input.candidate);
+  const result = build([document(input)]);
+  assert.equal(result.blocked.length, 0);
+  assert.equal(Object.hasOwn(result.proposedDataset.lakes["new-lake"], "distance"), false);
+});
+
 test("an existing production ID is blocked without update or merge", () => {
   const result = build([document(publication("existing"))]);
 

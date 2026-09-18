@@ -36,6 +36,13 @@ test("research candidates need no app block and app fields are never defaulted",
   assert.deepEqual(candidate.app, {});
 });
 
+test("distance is optional in an otherwise integration-ready candidate", () => {
+  const candidate = integrationReady();
+  delete candidate.app.distance;
+  assert.deepEqual(validateCandidate(candidate), []);
+  assert.equal(Object.hasOwn(candidate.app, "distance"), false);
+});
+
 test("app integration rejects unknown keys and invalid field shapes", () => {
   const unknown = integrationReady();
   unknown.app.extra = true;

@@ -34,9 +34,10 @@ Inga värden fylls i eller härleds av validatorn.
 
 Endast följande nycklar är tillåtna: `type`, `coordinateSource`, `distance`,
 `verification`, `fishing`, `practical` och `lakeDepthMapResearch`. För en
-integrationsredo kandidat kräver compatibility-kontraktet samtliga. Blocket
-bevarar dagens minsta appform: uttrycklig typ och koordinatkälla, avstånd med
-visningstext, verifieringsstatus med URL-källor, tre fishing-sammanfattningar,
+integrationsredo kandidat kräver compatibility-kontraktet alla utom det
+valfria `distance`-fältet. Blocket bevarar dagens minsta appform: uttrycklig
+typ och koordinatkälla, valfritt avstånd med visningstext,
+verifieringsstatus med URL-källor, tre fishing-sammanfattningar,
 parking samt uttryckligen tomma legacy-listor för ramps/piers/trails.
 
 `lakeDepthMapResearch` stöder här endast en explicit, kontrollerad `not-found`-

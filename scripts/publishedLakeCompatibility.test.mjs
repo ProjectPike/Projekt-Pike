@@ -171,13 +171,32 @@ test("reports app fields that an incomplete candidate must explicitly supply", (
   const result = assessPublishedLakeCompatibility(input);
   assert.equal(result.compatible, false);
   assert.deepEqual(result.requiredExplicitFields, [
-    "type", "coordinateSource", "distance", "verification", "fishing",
+    "type", "coordinateSource", "verification", "fishing",
     "practical", "lakeDepthMapResearch", "region", "counties", "coordinates",
   ]);
   assert.equal(
     result.blockers.filter(({ code }) => code === "missing-explicit-field").length,
-    10,
+    9,
   );
+});
+
+test("distance is optional but remains strictly validated and preserved when supplied", () => {
+  const input = publication();
+  delete input.candidate.app.distance;
+  input.review.candidateHash = candidateHash(input.candidate);
+  const missing = assessPublishedLakeCompatibility(input);
+  assert.equal(missing.compatible, true);
+  const mappedMissing = mapPublishedLakeCompatibleFields(input);
+  assert.equal(Object.hasOwn(mappedMissing, "distance"), false);
+
+  const supplied = publication();
+  const mappedSupplied = mapPublishedLakeCompatibleFields(supplied);
+  assert.deepEqual(mappedSupplied.distance, supplied.candidate.app.distance);
+
+  const malformed = publication();
+  malformed.candidate.app.distance = { kilometers: -1, travelTime: "1 min" };
+  malformed.review.candidateHash = candidateHash(malformed.candidate);
+  assert.equal(assessPublishedLakeCompatibility(malformed).compatible, false);
 });
 
 test("reports one missing reviewed integration field exactly", () => {

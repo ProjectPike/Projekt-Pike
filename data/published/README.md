@@ -29,9 +29,10 @@ Säkert mappningsbart idag:
 
 - `candidate.id` och `candidate.name`.
 - `region`, `counties` och `location.coordinates` när de uttryckligen finns.
-- De sju strikt validerade fälten i `candidate.app`, när hela integrationsblocket
-  finns: `type`, `coordinateSource`, `distance`, `verification`, `fishing`,
-  `practical` och `lakeDepthMapResearch`.
+- De strikt validerade fälten i `candidate.app` när de finns. `distance` är
+  valfritt; övriga appfält krävs för integrationsredo kandidater: `type`,
+  `coordinateSource`, `verification`, `fishing`, `practical` och
+  `lakeDepthMapResearch`.
 - Ett enda faktum per uttryckligen känd `details.<section>.<key>` när appen använder
   en singleton-post. Käll-ID:n expanderas deterministiskt till appens inline-format
   `{ url, type }`; `note` och datum-/tidsvillkor bevaras utan tolkning.
