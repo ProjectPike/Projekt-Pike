@@ -118,8 +118,13 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   HTTP(S)-källa och känd materialpost men inte ett fabricerat SMHI-id. Ett angivet
   `smhiLakeId` valideras fortsatt strikt, och tillgängligt källmaterial innebär
   inte publiceringsberedskap. Detta undanröjer schemaspärren för att författa
-  Bunns ersättningsmanifest; manifestet och produktionsdelningen är ännu inte
-  skapade.
+  Bunns ersättningsmanifest.
+- Det kompletta Entity Replacement-manifestet `bunn-split-1` är skapat och
+  validerat som ett ogranskat förslag för `bunn` → `bunn-norra-mellersta` och
+  `bunn-sodra`. Det har inte granskats, publicerats, preflightats för apply eller
+  applicerats; produktionen är oförändrad med 23 sjöar, 17 `alreadyApplied`
+  Existing Lake Updates och inga väntande publicerade uppdateringar eller
+  ersättningar.
 
 ### Entitlement-arkitektur
 

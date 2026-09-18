@@ -1,0 +1,1360 @@
+{
+  "schemaVersion": 1,
+  "replacementId": "bunn-split-1",
+  "migrationType": "one-to-many",
+  "source": {
+    "id": "bunn",
+    "lakeFingerprint": "aa8a538e4289716576b55f44a69bd9b728877ed530f807079e661b3ce3edc1ea",
+    "lake": {
+      "id": "bunn",
+      "name": "Bunn",
+      "type": "sjö",
+      "region": "Småland",
+      "counties": [
+        "Jönköping"
+      ],
+      "coordinates": [
+        14.512562,
+        57.9761304
+      ],
+      "coordinateSource": "https://www.openstreetmap.org/relation/9560",
+      "distance": {
+        "kilometers": 18,
+        "travelTime": "21 min"
+      },
+      "verification": {
+        "status": "unverified",
+        "updatedAt": null,
+        "sources": []
+      },
+      "fishing": {
+        "permit": {
+          "status": "unknown",
+          "label": "Uppgift saknas"
+        },
+        "rules": {
+          "status": "unverified",
+          "label": "Ej verifierade"
+        },
+        "protectedAreas": {
+          "status": "checking",
+          "label": "Kontrolleras"
+        },
+        "ruleProfile": {
+          "prototype": true,
+          "note": "Prototyp-data endast, inte juridiskt korrekt.",
+          "conditions": [
+            {
+              "field": "place",
+              "allowedValues": [
+                "Land",
+                "Båt"
+              ],
+              "status": "supported",
+              "note": "Prototyp: detta vatten har ett villkor för landfiske och ett prototype-exempel för båt."
+            },
+            {
+              "field": "method",
+              "allowedValues": [
+                "Mete",
+                "Flugfiske",
+                "Spinn"
+              ],
+              "status": "supported",
+              "note": "Prototyp: endast mete, flugfiske eller spinn är explicit stödjer för detta vatten."
+            },
+            {
+              "field": "species",
+              "allowedValues": [
+                "Gädda"
+              ],
+              "status": "warning",
+              "note": "Prototyp: endast ett varnings-exempel för gädda; inte juridiskt korrekt."
+            }
+          ]
+        }
+      },
+      "details": {
+        "access": {
+          "permitRequirement": {
+            "value": "required",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/item/fiskekort.html",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Separata fiskekort gäller för Norra Bunn och Södra Bunn. Gräns vid Förnäsbron.",
+            "conditions": null
+          },
+          "youthRules": {
+            "value": "not-required",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/item/fiskekort.html",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Personer under 18 år behöver inte fiskekort.",
+            "conditions": null
+          },
+          "purchase": {
+            "value": "restricted",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-08-09",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/item/fiskekort.html",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Köp- och produktinformation finns i källan, inklusive priser för Norra Bunn, Södra Bunn och gemensamt veckokort.",
+            "conditions": null
+          }
+        },
+        "methods": {
+          "spin": {
+            "value": "allowed",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+                "type": "fvo-club"
+              },
+              {
+                "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                "type": "commercial-aggregator"
+              }
+            ],
+            "note": "Spinnfiske är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
+            "conditions": null
+          },
+          "bait": {
+            "value": "allowed",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+                "type": "fvo-club"
+              },
+              {
+                "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                "type": "commercial-aggregator"
+              }
+            ],
+            "note": "Mete är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
+            "conditions": null
+          },
+          "ice": {
+            "value": "allowed",
+            "status": "verified",
+            "ruleType": "rule",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+                "type": "fvo-club"
+              },
+              {
+                "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                "type": "commercial-aggregator"
+              }
+            ],
+            "note": "Pimpelfiske är bekräftat i både Norra/Mellersta och Södra Bunns regelområden.",
+            "conditions": null
+          }
+        },
+        "species": {
+          "knownSpecies": {
+            "value": [
+              "abborre",
+              "gädda",
+              "gös",
+              "lake",
+              "braxen",
+              "mört",
+              "gers",
+              "nors",
+              "sarv",
+              "signalkräfta"
+            ],
+            "status": "verified",
+            "ruleType": "advisory",
+            "verifiedAt": "2026-09-07",
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/item/fisk-i-bunn.html",
+                "type": "fvo-club"
+              }
+            ],
+            "note": "Arterna gäller för både Norra och Södra Bunn.",
+            "conditions": null
+          },
+          "sizeLimits": [
+            {
+              "species": "gädda",
+              "value": {
+                "minSizeCm": 50,
+                "maxSizeCm": 80
+              },
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-07",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                },
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": null,
+              "conditions": null
+            },
+            {
+              "species": "abborre",
+              "value": {
+                "maxSizeCm": 38
+              },
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-07",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                },
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": null,
+              "conditions": null
+            },
+            {
+              "species": "gös",
+              "value": {
+                "maxSizeCm": 70,
+                "minSizeCm": 50
+              },
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-07",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                },
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Minimimått skiljer mellan regelområdena och är därför inte angivet här.",
+              "conditions": null
+            }
+          ],
+          "bagLimits": [
+            {
+              "speciesGroup": "gädda+gös",
+              "value": {
+                "maxRetainedPerPermitPerDay": 2
+              },
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-07",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Gemensam dygnsgräns för gädda och gös.",
+              "conditions": null
+            }
+          ]
+        },
+        "watercraft": {
+          "boat": {
+            "value": "unknown",
+            "status": "unknown",
+            "ruleType": "unknown",
+            "verifiedAt": null,
+            "sources": [
+              {
+                "url": "https://bunnfiske.se/item/hitta-hit.html",
+                "type": "fvo-club"
+              }
+            ],
+            "note": null,
+            "conditions": null
+          },
+          "kayak": {
+            "value": "unknown",
+            "status": "unknown",
+            "ruleType": "unknown",
+            "verifiedAt": null,
+            "sources": [],
+            "note": null,
+            "conditions": null
+          },
+          "floatTube": {
+            "value": "unknown",
+            "status": "unknown",
+            "ruleType": "unknown",
+            "verifiedAt": null,
+            "sources": [],
+            "note": null,
+            "conditions": null
+          }
+        },
+        "boat": {
+          "electricMotor": {
+            "value": "unknown",
+            "status": "unknown",
+            "ruleType": "unknown",
+            "verifiedAt": null,
+            "sources": [],
+            "note": null,
+            "conditions": null
+          },
+          "combustionMotor": {
+            "value": "unknown",
+            "status": "unknown",
+            "ruleType": "unknown",
+            "verifiedAt": null,
+            "sources": [],
+            "note": null,
+            "conditions": null
+          }
+        },
+        "practical": {
+          "ramps": [
+            {
+              "name": "Roten",
+              "value": "restricted",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-08-09",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Sjösättningsplatsen vid Roten/Rotabron för Norra/Mellersta Bunn är stängd under perioden.",
+              "conditions": {
+                "dateFrom": "06-15",
+                "dateTo": "08-15",
+                "timeFrom": null,
+                "timeTo": null
+              },
+              "geometry": null
+            }
+          ]
+        },
+        "geography": {
+          "fishingProhibitionAreas": [
+            {
+              "name": "Avstånd till tomt eller brygga",
+              "value": "prohibited",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-08-09",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Fiske får inte bedrivas närmare än 75 meter från tomt eller brygga.",
+              "conditions": null,
+              "geometry": null
+            }
+          ]
+        },
+        "safety": {}
+      },
+      "practical": {
+        "parking": {
+          "status": "unknown",
+          "label": "Uppgift saknas",
+          "locations": []
+        },
+        "ramps": [],
+        "piers": [],
+        "trails": []
+      }
+    },
+    "depth": {
+      "status": "available",
+      "checkedAt": "2026-09-08",
+      "importedAt": "2026-09-08",
+      "provider": "SMHI Damm- och sjöregister",
+      "smhiLakeId": "642633-142169",
+      "sourceUrl": "https://vattenwebb.smhi.se/svarwebb/rest/downloadmap/642633-142169",
+      "maps": [
+        {
+          "mapNumber": "1-0286",
+          "formats": [
+            "tiff"
+          ],
+          "source": null
+        }
+      ],
+      "bathymetry": {
+        "sourceType": "historical multi-sheet TIFF scans",
+        "processingState": "needs-review",
+        "georeferencingStatus": "unverified",
+        "qualityStatus": "needs-review",
+        "published": false,
+        "reviewNote": "Flera kartblad med bakgrundskarta, text och lodningar kräver bladvis kontroll."
+      },
+      "surveyYear": 1975,
+      "maxDepthMeters": 20,
+      "meanDepthMeters": 6.4
+    },
+    "points": [
+      {
+        "id": "bunn-boat-ramp-rotabron",
+        "type": "boat-ramp",
+        "types": [
+          "boat-ramp",
+          "parking"
+        ],
+        "name": "Rotabron",
+        "coordinates": [
+          14.516454,
+          57.975362
+        ],
+        "source": "https://bunnfiske.se/item/hitta-hit.html",
+        "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/batramp-bunn",
+        "verifiedAt": "2026-09-07",
+        "note": "Betongramp. Parkering för bil och trailer finns cirka 100 meter bort. Giltigt fiskekort för Norra Bunn krävs och rampen är sommarstängd under angiven period."
+      }
+    ]
+  },
+  "replacements": [
+    {
+      "id": "bunn-norra-mellersta",
+      "lake": {
+        "id": "bunn-norra-mellersta",
+        "name": "Bunn – Norra/Mellersta",
+        "type": "sjö",
+        "region": "Småland",
+        "counties": [
+          "Jönköping"
+        ],
+        "coordinates": [
+          14.5255853220231,
+          58.0128658993479
+        ],
+        "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/norra-bunns-fvof",
+        "verification": {
+          "status": "partially-verified",
+          "updatedAt": "2026-09-18",
+          "sources": [
+            "https://bunnfiske.se/item/fiskekort.html",
+            "https://bunnfiske.se/item/fisk-i-bunn.html",
+            "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+            "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm",
+            "https://www.naturkartan.se/sv/jonkopings-lan/norra-bunns-fvof",
+            "https://www.bunnfiske.se/item/kallelse-till-extra-arsmote-sodra-bunn-fvof-copy.html",
+            "https://bunnfiske.se/item/hitta-hit.html",
+            "https://www.naturkartan.se/sv/jonkopings-lan/batramp-bunn"
+          ]
+        },
+        "fishing": {
+          "permit": {
+            "status": "verified",
+            "label": "Fiskekort krävs"
+          },
+          "rules": {
+            "status": "verified",
+            "label": "Verifierade grundregler"
+          },
+          "protectedAreas": {
+            "status": "unknown",
+            "label": "Uppgift saknas"
+          }
+        },
+        "details": {
+          "access": {
+            "permitRequirement": {
+              "value": "required",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Fiskekort krävs. Norra/Mellersta Bunn har ett eget fiskekort; gränsen mellan Norra/Mellersta och Södra Bunn går vid Förnäsbron.",
+              "conditions": null
+            },
+            "youthRules": {
+              "value": "not-required",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Personer under 18 år behöver inte fiskekort.",
+              "conditions": null
+            },
+            "permitProducts": {
+              "value": [
+                "day",
+                "week",
+                "year"
+              ],
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm",
+                  "type": "commercial-aggregator"
+                },
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Listan omfattar endast områdesspecifika produkter. Det gemensamma veckokortet för Norra Bunn, Södra Bunn och Kvarnsjöarna finns, men kan inte uttryckas sanningsenligt i den nuvarande enskilda sjöns produktlista.",
+              "conditions": null
+            },
+            "permitMethodSupport": {
+              "value": [
+                {
+                  "permitType": "ordinary-open-water",
+                  "methods": [
+                    "spin",
+                    "bait",
+                    "fly"
+                  ]
+                }
+              ],
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Det ordinarie fiskekortet omfattar spinn, mete och flugfiske. Källan anger även högst två spön samtidigt utan att ange en säker per-person- eller per-kort-basis; begränsningen behålls därför i noten och inte i ett överprecist numeriskt fält.",
+              "conditions": null
+            },
+            "purchase": {
+              "value": "restricted",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                },
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Separat fiskekort gäller för Norra/Mellersta Bunn. Ett gemensamt veckokort med bredare täckning finns och redovisas endast i denna not, inte som en områdesspecifik produkt.",
+              "conditions": null
+            }
+          },
+          "methods": {
+            "ice": {
+              "value": "allowed",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Pimpelfiske omfattas av fiskekortet. Ingen separat isfiskekortstyp eller kalenderperiod antas.",
+              "conditions": null
+            }
+          },
+          "species": {
+            "knownSpecies": {
+              "value": [
+                "abborre",
+                "lake",
+                "braxen",
+                "mört",
+                "gers",
+                "nors",
+                "gädda",
+                "sarv",
+                "gös"
+              ],
+              "status": "verified",
+              "ruleType": "advisory",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fisk-i-bunn.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Verifierade fiskarter för området. Signalkräfta redovisas av källan men ingår inte i Pikes fisk-only knownSpecies.",
+              "conditions": null
+            },
+            "sizeLimits": [
+              {
+                "species": "gädda",
+                "value": {
+                  "minSizeCm": 50,
+                  "maxSizeCm": 80
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Gädda får behållas endast inom intervallet 50–80 cm.",
+                "conditions": null
+              },
+              {
+                "species": "gös",
+                "value": {
+                  "minSizeCm": 50,
+                  "maxSizeCm": 70
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Gös får behållas endast inom intervallet 50–70 cm.",
+                "conditions": null
+              },
+              {
+                "species": "abborre",
+                "value": {
+                  "maxSizeCm": 38
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Abborre över 38 cm får inte behållas.",
+                "conditions": null
+              }
+            ],
+            "bagLimits": [
+              {
+                "speciesGroup": "gädda+gös",
+                "value": {
+                  "maxRetainedPerPermitPerDay": 2
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Gemensam dygnsgräns: högst två behållna gäddor och gösar sammanlagt per fiskekort och dag. FVO rekommenderar catch and release; rekommendationen är inte ett obligatoriskt återutsättningskrav.",
+                "conditions": null
+              }
+            ]
+          },
+          "watercraft": {
+            "boat": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            },
+            "kayak": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            },
+            "floatTube": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            }
+          },
+          "boat": {
+            "electricMotor": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            },
+            "combustionMotor": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            }
+          },
+          "practical": {
+            "ramps": [
+              {
+                "name": "Roten/Rotabron",
+                "value": "restricted",
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/hitta-hit.html",
+                    "type": "fvo-club"
+                  },
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Betongramp med parkering för bil och trailer i närheten. Giltigt fiskekort för Norra Bunn krävs. Rampen är stängd under delar av vissa sommarperioder; aktuella datum ska kontrolleras med FVO.",
+                "conditions": null,
+                "geometry": null
+              }
+            ]
+          },
+          "geography": {
+            "fishingProhibitionAreas": [
+              {
+                "name": "Avstånd till tomt eller brygga",
+                "value": "prohibited",
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Fiske får inte bedrivas närmare än 75 meter från tomt eller brygga.",
+                "conditions": null,
+                "geometry": null
+              }
+            ]
+          },
+          "safety": {}
+        },
+        "practical": {
+          "parking": {
+            "status": "unknown",
+            "label": "Uppgift saknas",
+            "locations": []
+          },
+          "ramps": [],
+          "piers": [],
+          "trails": []
+        }
+      },
+      "depth": {
+        "status": "available",
+        "checkedAt": "2026-09-18",
+        "provider": "Norra Bunns FVOF",
+        "smhiLakeId": null,
+        "sourceUrl": "https://www.bunnfiske.se/item/kallelse-till-extra-arsmote-sodra-bunn-fvof-copy.html",
+        "maps": [
+          {
+            "mapNumber": null,
+            "formats": [],
+            "source": "Norra Bunns FVOF"
+          }
+        ],
+        "bathymetry": {
+          "sourceType": "FVO-published depth-map source material",
+          "processingState": "needs-review",
+          "georeferencingStatus": "unverified",
+          "qualityStatus": "needs-review",
+          "published": false,
+          "reviewNote": "Källmaterial för Norra Bunn finns men har inte genomgått Pikes georefererings- eller vektor-QA. Den äldre SMHI-tilldelningen för hela Bunn har inte kunnat partitioneras till denna fiskeenhet och återanvänds inte."
+        }
+      },
+      "points": [
+        {
+          "id": "bunn-boat-ramp-rotabron",
+          "type": "boat-ramp",
+          "types": [
+            "boat-ramp",
+            "parking"
+          ],
+          "name": "Rotabron",
+          "coordinates": [
+            14.516454,
+            57.975362
+          ],
+          "source": "https://bunnfiske.se/item/hitta-hit.html",
+          "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/batramp-bunn",
+          "verifiedAt": "2026-09-07",
+          "note": "Betongramp. Parkering för bil och trailer finns cirka 100 meter bort. Giltigt fiskekort för Norra Bunn krävs. Rampen är stängd under delar av vissa sommarperioder; aktuella datum ska kontrolleras med FVO."
+        }
+      ]
+    },
+    {
+      "id": "bunn-sodra",
+      "lake": {
+        "id": "bunn-sodra",
+        "name": "Bunn – Södra",
+        "type": "sjö",
+        "region": "Småland",
+        "counties": [
+          "Jönköping"
+        ],
+        "coordinates": [
+          14.5151225407906,
+          57.949419193117
+        ],
+        "coordinateSource": "https://www.naturkartan.se/sv/jonkopings-lan/sodra-bunns-fvof",
+        "verification": {
+          "status": "partially-verified",
+          "updatedAt": "2026-09-18",
+          "sources": [
+            "https://bunnfiske.se/item/fiskekort.html",
+            "https://bunnfiske.se/item/fisk-i-bunn.html",
+            "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+            "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm",
+            "https://www.naturkartan.se/sv/jonkopings-lan/sodra-bunns-fvof",
+            "https://www.bunnfiske.se/item/djupkarta-oever-soedra-bunn.html"
+          ]
+        },
+        "fishing": {
+          "permit": {
+            "status": "verified",
+            "label": "Fiskekort krävs"
+          },
+          "rules": {
+            "status": "verified",
+            "label": "Verifierade grundregler"
+          },
+          "protectedAreas": {
+            "status": "unknown",
+            "label": "Uppgift saknas"
+          }
+        },
+        "details": {
+          "access": {
+            "permitRequirement": {
+              "value": "required",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Fiskekort krävs. Södra Bunn har ett eget fiskekort; gränsen mellan Norra/Mellersta och Södra Bunn går vid Förnäsbron.",
+              "conditions": null
+            },
+            "youthRules": {
+              "value": "not-required",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Personer under 18 år behöver inte fiskekort.",
+              "conditions": null
+            },
+            "permitProducts": {
+              "value": [
+                "day",
+                "week",
+                "season",
+                "year",
+                "angel-ice"
+              ],
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm",
+                  "type": "commercial-aggregator"
+                },
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Listan omfattar endast områdesspecifika produkter. Det gemensamma veckokortet för Norra Bunn, Södra Bunn och Kvarnsjöarna finns, men kan inte uttryckas sanningsenligt i den nuvarande enskilda sjöns produktlista.",
+              "conditions": null
+            },
+            "permitMethodSupport": {
+              "value": [
+                {
+                  "permitType": "ordinary-open-water",
+                  "methods": [
+                    "spin",
+                    "bait"
+                  ]
+                },
+                {
+                  "permitType": "ice-fishing",
+                  "methods": [
+                    "ice"
+                  ]
+                }
+              ],
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Det ordinarie öppet-vatten-kortet omfattar spinn och mete. Det separata vinterkortet omfattar pimpel/ismete. Ismete får använda högst tio redskap; källan ger inte en tillräckligt säker per-person- eller per-kort-basis för ett numeriskt strukturfält.",
+              "conditions": null
+            },
+            "purchase": {
+              "value": "restricted",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fiskekort.html",
+                  "type": "fvo-club"
+                },
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Separat fiskekort gäller för Södra Bunn. Ett gemensamt veckokort med bredare täckning finns och redovisas endast i denna not, inte som en områdesspecifik produkt.",
+              "conditions": null
+            }
+          },
+          "methods": {
+            "fixedGear": {
+              "value": "prohibited",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Fasta redskap är förbjudna.",
+              "conditions": null
+            },
+            "nets": {
+              "value": "prohibited",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Nät anges uttryckligen som förbjudet fast redskap.",
+              "conditions": null
+            },
+            "crayfishFishing": {
+              "value": "prohibited",
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Kräftfiske är förbjudet enligt de ordinarie reglerna.",
+              "conditions": null
+            },
+            "maxRodsPerPermit": {
+              "value": 2,
+              "status": "verified",
+              "ruleType": "rule",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                  "type": "commercial-aggregator"
+                }
+              ],
+              "note": "Högst två spön får användas per fiskekort/person.",
+              "conditions": null
+            }
+          },
+          "species": {
+            "knownSpecies": {
+              "value": [
+                "abborre",
+                "lake",
+                "braxen",
+                "mört",
+                "gers",
+                "nors",
+                "gädda",
+                "sarv",
+                "gös"
+              ],
+              "status": "verified",
+              "ruleType": "advisory",
+              "verifiedAt": "2026-09-18",
+              "sources": [
+                {
+                  "url": "https://bunnfiske.se/item/fisk-i-bunn.html",
+                  "type": "fvo-club"
+                }
+              ],
+              "note": "Verifierade fiskarter för området. Signalkräfta redovisas av källan men ingår inte i Pikes fisk-only knownSpecies.",
+              "conditions": null
+            },
+            "sizeLimits": [
+              {
+                "species": "gädda",
+                "value": {
+                  "minSizeCm": 50,
+                  "maxSizeCm": 80
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Gädda får behållas endast inom intervallet 50–80 cm.",
+                "conditions": null
+              },
+              {
+                "species": "gös",
+                "value": {
+                  "minSizeCm": 50,
+                  "maxSizeCm": 70
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  },
+                  {
+                    "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                    "type": "commercial-aggregator"
+                  }
+                ],
+                "note": "Den aktuella primära FVO-källans intervall 50–70 cm används. Den sekundära Södra-källan anger avvikande 55–70 cm; konflikten är dokumenterad utan att skapa en konkurrerande normativ regel.",
+                "conditions": null
+              },
+              {
+                "species": "abborre",
+                "value": {
+                  "maxSizeCm": 38
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Abborre över 38 cm får inte behållas.",
+                "conditions": null
+              }
+            ],
+            "bagLimits": [
+              {
+                "speciesGroup": "gädda+gös",
+                "value": {
+                  "maxRetainedPerPermitPerDay": 2
+                },
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  }
+                ],
+                "note": "Gemensam dygnsgräns: högst två behållna gäddor och gösar sammanlagt per fiskekort och dag. FVO rekommenderar catch and release; rekommendationen är inte ett obligatoriskt återutsättningskrav.",
+                "conditions": null
+              }
+            ]
+          },
+          "watercraft": {
+            "boat": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            },
+            "kayak": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            },
+            "floatTube": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            }
+          },
+          "boat": {
+            "electricMotor": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            },
+            "combustionMotor": {
+              "value": "unknown",
+              "status": "unknown",
+              "ruleType": "unknown",
+              "verifiedAt": null,
+              "sources": [],
+              "note": null,
+              "conditions": null
+            }
+          },
+          "practical": {},
+          "geography": {
+            "fishingProhibitionAreas": [
+              {
+                "name": "Avstånd till tomt eller brygga",
+                "value": "prohibited",
+                "status": "verified",
+                "ruleType": "rule",
+                "verifiedAt": "2026-09-18",
+                "sources": [
+                  {
+                    "url": "https://bunnfiske.se/item/fiskekort.html",
+                    "type": "fvo-club"
+                  },
+                  {
+                    "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+                    "type": "commercial-aggregator"
+                  }
+                ],
+                "note": "Den aktuella primära FVO-källans 75 meter från tomt eller brygga används. Den sekundära Södra-källan anger avvikande 100 meter från bebyggd strandtomt; konflikten är dokumenterad utan en konkurrerande normativ regel.",
+                "conditions": null,
+                "geometry": null
+              }
+            ]
+          },
+          "safety": {}
+        },
+        "practical": {
+          "parking": {
+            "status": "unknown",
+            "label": "Uppgift saknas",
+            "locations": []
+          },
+          "ramps": [],
+          "piers": [],
+          "trails": []
+        }
+      },
+      "depth": {
+        "status": "available",
+        "checkedAt": "2026-09-18",
+        "provider": "Södra Bunns FVOF",
+        "smhiLakeId": null,
+        "sourceUrl": "https://www.bunnfiske.se/item/djupkarta-oever-soedra-bunn.html",
+        "maps": [
+          {
+            "mapNumber": null,
+            "formats": [
+              "pdf"
+            ],
+            "source": "Södra Bunns FVOF"
+          }
+        ],
+        "bathymetry": {
+          "sourceType": "FVO-published downloadable depth-map PDF",
+          "processingState": "needs-review",
+          "georeferencingStatus": "unverified",
+          "qualityStatus": "needs-review",
+          "published": false,
+          "reviewNote": "Källmaterial för Södra Bunn finns som PDF men har inte genomgått Pikes georefererings- eller vektor-QA. Den äldre SMHI-tilldelningen för hela Bunn har inte kunnat partitioneras till denna fiskeenhet och återanvänds inte."
+        }
+      },
+      "points": []
+    }
+  ],
+  "expectedCountBefore": 23,
+  "expectedCountAfter": 24,
+  "reason": "En historisk produktionsidentitet ersätts av två fiskeenheter eftersom Norra/Mellersta och Södra Bunn har separat FVO-förvaltning, separata fiskekort och skilda regel- och metodsemantiker.",
+  "sources": [
+    {
+      "id": "bunn-common-rules",
+      "type": "fvo-club",
+      "title": "Bunns FVO — aktuella fiskekort och gemensamma regler",
+      "url": "https://bunnfiske.se/item/fiskekort.html",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-species",
+      "type": "fvo-club",
+      "title": "Bunns FVO — fiskarter i Bunn",
+      "url": "https://bunnfiske.se/item/fisk-i-bunn.html",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-north-methods",
+      "type": "fvo-club",
+      "title": "Norra Bunns FVOF — information och fiskeregler",
+      "url": "https://bunnfiske.se/images/pdf/Bunninfo.pdf",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-north-products",
+      "type": "commercial-aggregator",
+      "title": "Norra och Mellersta Bunn — aktuella fiskekortsprodukter",
+      "url": "https://www.ifiske.se/fiskekort-bunn-norra-och-mellan.htm",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-south-rules",
+      "type": "commercial-aggregator",
+      "title": "Södra Bunns FVOF — regler och avvikande sekundära värden",
+      "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm?rules=241",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-south-products",
+      "type": "commercial-aggregator",
+      "title": "Södra Bunn — aktuella fiskekortsprodukter",
+      "url": "https://www.ifiske.se/fiskekort-bunn-sodra-bunn.htm",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-north-coordinate",
+      "type": "other",
+      "title": "Naturkartan — Norra Bunns FVOF",
+      "url": "https://www.naturkartan.se/sv/jonkopings-lan/norra-bunns-fvof",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-south-coordinate",
+      "type": "other",
+      "title": "Naturkartan — Södra Bunns FVOF",
+      "url": "https://www.naturkartan.se/sv/jonkopings-lan/sodra-bunns-fvof",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-north-depth",
+      "type": "fvo-club",
+      "title": "Norra Bunns FVOF — djupkartor för Norra Bunn",
+      "url": "https://www.bunnfiske.se/item/kallelse-till-extra-arsmote-sodra-bunn-fvof-copy.html",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-south-depth",
+      "type": "fvo-club",
+      "title": "Södra Bunns FVOF — djupkarta över Södra Bunn",
+      "url": "https://www.bunnfiske.se/item/djupkarta-oever-soedra-bunn.html",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-rotabron-access",
+      "type": "fvo-club",
+      "title": "Bunns FVO — hitta till Rotabron",
+      "url": "https://bunnfiske.se/item/hitta-hit.html",
+      "checkedAt": "2026-09-18"
+    },
+    {
+      "id": "bunn-rotabron-coordinate",
+      "type": "other",
+      "title": "Naturkartan — båtramp Bunn",
+      "url": "https://www.naturkartan.se/sv/jonkopings-lan/batramp-bunn",
+      "checkedAt": "2026-09-18"
+    }
+  ]
+}
