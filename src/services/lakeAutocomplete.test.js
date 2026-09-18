@@ -1,6 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { getLakeAutocompleteSuggestions } from "./lakeAutocomplete.js";
+
+const bunnPublication = JSON.parse(
+  await readFile(
+    new URL("../../data/published-replacements/bunn-split-1.json", import.meta.url),
+    "utf8",
+  ),
+);
 
 function lake(id, name, region = "Småland", counties = ["Jönköpings län"]) {
   return { id, name, region, counties };
@@ -71,4 +79,26 @@ test("Swedish alphabetical ordering is deterministic", () => {
   };
 
   assert.deepEqual(suggestionNames(lakes, "S"), ["Salen", "Sålen", "Sälen"]);
+});
+
+test("approved future Bunn entities remain distinct ordered prefix results", () => {
+  const futureBunnLakes = Object.fromEntries(
+    bunnPublication.manifest.replacements.map(({ id, lake }) => [id, lake]),
+  );
+  const suggestions = getLakeAutocompleteSuggestions(
+    {
+      ...futureBunnLakes,
+      filler: lake("filler", "Lilla Bunnsjön"),
+    },
+    "Bunn",
+  );
+
+  assert.deepEqual(
+    suggestions.map(({ id, name }) => ({ id, name })),
+    [
+      { id: "bunn-norra-mellersta", name: "Bunn – Norra/Mellersta" },
+      { id: "bunn-sodra", name: "Bunn – Södra" },
+    ],
+  );
+  assert.equal(suggestions.some(({ id }) => id === "bunn"), false);
 });

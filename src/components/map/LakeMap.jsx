@@ -42,7 +42,8 @@ const EMPTY_FEATURE_COLLECTION = {
 
 const LAKE_MAP_ZOOM_BY_ID = {
   bolmen: 10,
-  bunn: 11,
+  "bunn-norra-mellersta": 11,
+  "bunn-sodra": 11,
   gravsjon: 13.4,
   hokesjon: 12.8,
   knipesjon: 13.1,

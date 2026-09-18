@@ -122,8 +122,12 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   publicerat. Skrivskyddad preflight är berättigad för den enda väntande
   ersättningen och föreslår 23 → 24 sjöar med fingerprint
   `48539743f831570c9b0d56f62bfeacb926cbf282cc988ede5152a909b387a6d0`.
-  Apply är varken godkänd eller utförd; Bunn-delningen är inte live och
-  produktionen är oförändrad. Nästa steg är separat apply-auktorisering.
+  Runtime är förberedd: favoritmigreringen förblir dormant tills gamla `bunn`
+  saknas och båda efterträdarna finns, båda framtida ID:n har explicit kartzoom
+  och autocomplete-QA hittar dem i stabil ordning. Review/publication är
+  oförändrade, apply är varken godkänd eller utförd och produktionen är fortsatt
+  23 sjöar. Nästa steg är explicit mänsklig apply-auktorisering med färsk
+  preflight.
 
 ### Entitlement-arkitektur
 

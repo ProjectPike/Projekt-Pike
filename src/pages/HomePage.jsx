@@ -11,6 +11,7 @@ import { lakes } from "../data/lakes";
 import { fishingChoices as fishingChoiceOptions } from "../data/fishingChoices";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { getLakeAutocompleteSuggestions } from "../services/lakeAutocomplete";
+import { migrateFavoriteLakeIds } from "../services/favoriteMigration";
 import { getLakeFishingSelectionDetails } from "../services/lakeService";
 import { defaultThemeId, isThemeId } from "../theme/themes";
 const fishingChoiceOptionsByCategory = {
@@ -94,6 +95,10 @@ function HomePage() {
     "project-pike-favorites",
     [],
   );
+  const effectiveFavoriteLakeIds = useMemo(
+    () => migrateFavoriteLakeIds(favoriteLakeIds, lakes),
+    [favoriteLakeIds],
+  );
   const [storedThemeId, setStoredThemeId] = useLocalStorage(
     "project-pike-theme",
     defaultThemeId,
@@ -108,6 +113,12 @@ function HomePage() {
   const hasFishingSelections = Object.values(normalizedFishingSelections).some(
     (choices) => choices.length > 0,
   );
+
+  useEffect(() => {
+    if (effectiveFavoriteLakeIds !== favoriteLakeIds) {
+      setFavoriteLakeIds(effectiveFavoriteLakeIds);
+    }
+  }, [effectiveFavoriteLakeIds, favoriteLakeIds, setFavoriteLakeIds]);
 
   useEffect(() => {
     if (!hasSameFishingSelections(fishingChoices, normalizedFishingSelections)) {
@@ -143,11 +154,13 @@ function HomePage() {
   }
 
   function toggleFavorite(lakeId) {
-    setFavoriteLakeIds((currentFavorites) =>
-      currentFavorites.includes(lakeId)
-        ? currentFavorites.filter((id) => id !== lakeId)
-        : [...currentFavorites, lakeId],
-    );
+    setFavoriteLakeIds((currentFavorites) => {
+      const effectiveCurrentFavorites = migrateFavoriteLakeIds(currentFavorites, lakes);
+
+      return effectiveCurrentFavorites.includes(lakeId)
+        ? effectiveCurrentFavorites.filter((id) => id !== lakeId)
+        : [...effectiveCurrentFavorites, lakeId];
+    });
   }
 
   function openLake(lake) {
@@ -256,7 +269,7 @@ function HomePage() {
         themeId={themeId}
         fishingChoices={normalizedFishingSelections}
         fishingSelectionSummary={fishingSelectionSummary}
-        isFavorite={favoriteLakeIds.includes(selectedLake.id)}
+        isFavorite={effectiveFavoriteLakeIds.includes(selectedLake.id)}
         onToggleFavorite={() => toggleFavorite(selectedLake.id)}
         onBack={() => setSelectedLake(null)}
         onOpenFishing={() => setIsFishingOpen(true)}
@@ -271,7 +284,7 @@ function HomePage() {
   if (activeTab === "saved") {
     pageContent = (
       <SavedPage
-        favoriteLakeIds={favoriteLakeIds}
+        favoriteLakeIds={effectiveFavoriteLakeIds}
         lakes={lakes}
         onOpenLake={openLake}
         onRemoveFavorite={toggleFavorite}
