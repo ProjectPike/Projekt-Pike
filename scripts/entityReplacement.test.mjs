@@ -145,3 +145,17 @@ test('pre-existing stage file is not removed or overwritten',async t=>{
 test('malformed available bathymetry is blocked before publication',()=>{
  const f=fixture();f.manifest.replacements[0].depth={status:'available',checkedAt:'2026-09-17',smhiLakeId:'test',sourceUrl:'https://example.org/map',maps:[{}]};assert.ok(validateReplacementManifest(f.manifest).some(e=>e.includes('processing state')));
 });
+test('provider-neutral unpublished available depth research is replacement-compatible',()=>{
+ const f=fixture();
+ f.manifest.replacements[0].depth={status:'available',checkedAt:'2026-09-18',provider:'Synthetic FVOF',sourceUrl:'https://example.org/depth-map',maps:[{mapNumber:null,formats:[],source:'Synthetic FVOF'}],bathymetry:{sourceType:'FVO-published depth map',processingState:'needs-review',georeferencingStatus:'unverified',qualityStatus:'needs-review',published:false,reviewNote:'Known source material awaits Pike processing.'}};
+ assert.equal(Object.hasOwn(f.manifest.replacements[0].depth,'smhiLakeId'),false);
+ assert.deepEqual(validateReplacementManifest(f.manifest),[]);
+});
+test('replacement validation keeps malformed and published bathymetry blocked',()=>{
+ const malformed=fixture();
+ malformed.manifest.replacements[0].depth={status:'available',checkedAt:'2026-09-18',provider:'Synthetic FVOF',smhiLakeId:'not-smhi',sourceUrl:'https://example.org/depth-map',maps:[{}],bathymetry:{processingState:'needs-review',published:false}};
+ assert.ok(validateReplacementManifest(malformed.manifest).some(error=>error.includes('smhiLakeId')));
+ const published=fixture();
+ published.manifest.replacements[0].depth={status:'available',checkedAt:'2026-09-18',provider:'Synthetic FVOF',sourceUrl:'https://example.org/depth-map',maps:[{}],bathymetry:{processingState:'published',qualityStatus:'verified',published:true}};
+ assert.ok(validateReplacementManifest(published.manifest).some(error=>error.includes('published overlay')));
+});

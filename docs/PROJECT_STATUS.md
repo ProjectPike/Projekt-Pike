@@ -114,6 +114,12 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   17 `alreadyApplied` updates och 0 pending. Nästa steg är ett komplett Bunn-
   ersättningsmanifest för separat mänsklig granskning, inte produktionsapply.
   Kontrakt och v1-gränser finns i `docs/ENTITY_REPLACEMENT_CONTRACT.md`.
+- Djupforskningskontraktet är leverantörsneutralt: `available` kräver leverantör,
+  HTTP(S)-källa och känd materialpost men inte ett fabricerat SMHI-id. Ett angivet
+  `smhiLakeId` valideras fortsatt strikt, och tillgängligt källmaterial innebär
+  inte publiceringsberedskap. Detta undanröjer schemaspärren för att författa
+  Bunns ersättningsmanifest; manifestet och produktionsdelningen är ännu inte
+  skapade.
 
 ### Entitlement-arkitektur
 

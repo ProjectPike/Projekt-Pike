@@ -10,6 +10,15 @@ const FACT_STATUSES = new Set(["verified", "unverified", "unknown"]);
 const RULE_TYPES = new Set(["rule", "recommendation", "advisory", "unknown"]);
 const DATE_PATTERN = /^(\d{2}-\d{2}|\d{4}-\d{2}-\d{2})$/;
 const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
+const SMHI_LAKE_ID_PATTERN = /^\d{6}-\d{6}$/;
+
+function isHttpUrl(value) {
+  try {
+    return ["http:", "https:"].includes(new URL(value).protocol);
+  } catch {
+    return false;
+  }
+}
 
 function isValidCoordinates(coordinates) {
   return (
@@ -119,8 +128,19 @@ export function validateLakeDataState({
         addError(`${lakeId}.depthMapResearch.checkedAt`, "giltigt kontrolldatum saknas");
       }
       if (depthMapResearch.status === "available") {
-        if (!depthMapResearch.smhiLakeId || !URL.canParse(depthMapResearch.sourceUrl ?? "")) {
-          addError(`${lakeId}.depthMapResearch`, "SMHI-id eller käll-URL saknas");
+        if (typeof depthMapResearch.provider !== "string" || !depthMapResearch.provider.trim()) {
+          addError(`${lakeId}.depthMapResearch.provider`, "leverantör saknas");
+        }
+        if (!isHttpUrl(depthMapResearch.sourceUrl)) {
+          addError(`${lakeId}.depthMapResearch.sourceUrl`, "giltig HTTP(S)-käll-URL saknas");
+        }
+        if (
+          Object.hasOwn(depthMapResearch, "smhiLakeId") &&
+          depthMapResearch.smhiLakeId !== null &&
+          (typeof depthMapResearch.smhiLakeId !== "string" ||
+            !SMHI_LAKE_ID_PATTERN.test(depthMapResearch.smhiLakeId))
+        ) {
+          addError(`${lakeId}.depthMapResearch.smhiLakeId`, "ogiltigt SMHI-id");
         }
         if (!Array.isArray(depthMapResearch.maps) || depthMapResearch.maps.length === 0) {
           addError(`${lakeId}.depthMapResearch.maps`, "hittad djupkarta saknar kartpost");

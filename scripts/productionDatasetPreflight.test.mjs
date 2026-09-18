@@ -298,7 +298,8 @@ test("invalid complete proposed depth research is rejected by the production val
   const result = await preflight(input);
 
   assert.equal(result.eligible, false);
-  assert.ok(result.validationErrors.some((error) => error.includes("SMHI-id")));
+  assert.ok(result.validationErrors.some((error) => error.includes("sourceUrl")));
+  assert.ok(result.validationErrors.some((error) => error.includes("maps")));
 });
 
 test("serialization and all fingerprints are byte-deterministic", async () => {

@@ -75,6 +75,14 @@ Available replacement research must have explicit unpublished bathymetry and a
 valid processing state. Research assignment must be reviewed; no georeferencing
 or readiness is invented. These limitations are explicit gates, not bypasses.
 
+Available depth research is provider-neutral: it means that known bathymetry
+source material exists, not that SMHI material exists. Such a record requires a
+named provider, an HTTP(S) source URL and at least one material entry in `maps`.
+`smhiLakeId` is optional provider-specific metadata; when present and non-null it
+must use the established `000000-000000` format. Known non-SMHI material must not
+be marked `not-found` merely because it has no SMHI ID. Availability alone never
+implies georeferencing quality, processing readiness or runtime publication.
+
 ## Preflight and serialization
 
 The production scope is fixed:
