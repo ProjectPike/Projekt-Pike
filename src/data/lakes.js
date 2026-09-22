@@ -83,16 +83,16 @@ export const lakes = {
     },
     "fishing": {
       "permit": {
-        "status": "unknown",
-        "label": "Uppgift saknas"
+        "label": "Fiskekort krävs",
+        "status": "verified"
       },
       "rules": {
-        "status": "unverified",
-        "label": "Ej verifierade"
+        "label": "Verifierade regler",
+        "status": "verified"
       },
       "protectedAreas": {
-        "status": "checking",
-        "label": "Kontrolleras"
+        "label": "Fredningsområden finns",
+        "status": "verified"
       },
       "ruleProfile": {
         "prototype": true,
@@ -191,6 +191,20 @@ export const lakes = {
           ],
           "note": "Fiskekort säljs digitalt och via fysiska återförsäljare.",
           "conditions": null
+        },
+        "familyCoverage": {
+          "conditions": null,
+          "note": "Familjekortet omfattar högst två fiskare. Personerna ska vara registrerade på samma adress som köparen och de berättigades namn ska skrivas på fiskekortet.",
+          "ruleType": "rule",
+          "sources": [
+            {
+              "type": "fvo-club",
+              "url": "https://bolmensweden.com/fiskeregler/"
+            }
+          ],
+          "status": "verified",
+          "value": "restricted",
+          "verifiedAt": "2026-09-22"
         }
       },
       "methods": {
@@ -365,26 +379,38 @@ export const lakes = {
       },
       "species": {
         "knownSpecies": {
-          "value": [
-            "gädda",
-            "gös",
-            "abborre",
-            "lake",
-            "ål",
-            "sutare",
-            "braxen"
-          ],
-          "status": "verified",
+          "conditions": null,
+          "note": "Provfiskerapporten beskriver 14 fiskarter som stadigvarande förekommande. Sutare behålls eftersom FVO:s aktuella fiskeinformation listar arten; svagare uppgifter om endast rapporterade arter ingår inte.",
           "ruleType": "advisory",
-          "verifiedAt": "2026-08-09",
           "sources": [
             {
-              "url": "https://bolmensweden.com/fiskeregler/",
-              "type": "fvo-club"
+              "type": "fvo-club",
+              "url": "https://bolmensweden.com/wp-content/uploads/2023/03/Provfiskerapport-Bolmen-2022.pdf"
+            },
+            {
+              "type": "fvo-club",
+              "url": "https://bolmensweden.com/fiska-i-bolmen/"
             }
           ],
-          "note": "Kända arter enligt FVO:s aktuella information.",
-          "conditions": null
+          "status": "verified",
+          "value": [
+            "abborre",
+            "benlöja",
+            "bergsimpa",
+            "björkna",
+            "braxen",
+            "gers",
+            "gädda",
+            "gös",
+            "lake",
+            "mört",
+            "sik",
+            "siklöja",
+            "sutare",
+            "ål",
+            "öring"
+          ],
+          "verifiedAt": "2026-09-22"
         },
         "sizeLimits": [
           {

@@ -126,13 +126,12 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   metodstödet är fortsatt separat för de två fiskeenheterna och båda
   djupkällorna är opublicerade med `needs-review`. Nästa särskilda
   baseline-uppgift är Bolmen.
-- Bolmens `bolmen-baseline-audit-1` är mänskligt godkänt med hashbunden review,
-  publicerat och berättigat i read-only-preflight. Existing Lake Updates är nu
-  17 `alreadyApplied`, 1 väntande Bolmen-uppdatering och 0 blockers; preflightens
-  fingerprint är `f46b6fb43380d44803ec0d4b60f5ce694eec6e5547f10370f94445aca1d4fb55`.
-  Produktions-apply är inte auktoriserad eller utförd och produktionen är
-  oförändrad med 24 sjöar. Gösens release-array-scope och Bolmens bathymetri/
-  georeferering förblir separata framtida frågor.
+- Bolmens `bolmen-baseline-audit-1` är applicerad och klassas `alreadyApplied`.
+  Existing Lake Updates är nu 18 `alreadyApplied`, 0 pending och 0 blockers;
+  produktionen är fortsatt 24 sjöar. De fem godkända korrigeringarna är live och
+  femmetodsmatchningen är oförändrad. En andra apply är verifierad som ett rent
+  no-op. Gösens release-array-scope, legacy-städning av `fishing.ruleProfile`
+  samt Bolmens bathymetri/georeferering förblir separata framtida frågor.
 
 ### Entitlement-arkitektur
 
