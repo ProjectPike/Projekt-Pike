@@ -1,0 +1,95 @@
+{
+  "affineLocalMetres": {
+    "equation": "[pixelX, pixelY, 1] × matrix = [eastMetres, northMetres]",
+    "linearDeterminant": -0.08598487595,
+    "linearSingularValuesMetresPerPixel": [
+      0.298630327105,
+      0.287930823314
+    ],
+    "matrix": [
+      [
+        0.298367412735,
+        0.006142172337
+      ],
+      [
+        0.003059676838,
+        -0.288121554896
+      ],
+      [
+        -898.367661823338,
+        825.829330011755
+      ]
+    ]
+  },
+  "affineLongitudeLatitude": {
+    "latitudeCoefficients": [
+      5.5565156e-08,
+      -2.60649136e-06,
+      57.56275446421217
+    ],
+    "latitudeEquation": "d*pixelX + e*pixelY + f",
+    "longitudeCoefficients": [
+      4.995973574e-06,
+      5.1232353e-08,
+      14.502710071824831
+    ],
+    "longitudeEquation": "a*pixelX + b*pixelY + c"
+  },
+  "assessment": {
+    "affineSufficient": true,
+    "piecewiseRequired": false,
+    "piecewiseTested": false,
+    "reason": "Independent holdouts, including four island tips and the northern inlet, remain low and show no coherent local drift that would justify a more flexible transform.",
+    "recommendation": "proceed-to-extraction"
+  },
+  "fitResiduals": {
+    "count": 10,
+    "maximumMeters": 31.631,
+    "meanMeters": 16.794,
+    "meanVectorEastMeters": -0.0,
+    "meanVectorNorthMeters": 0.0,
+    "medianMeters": 16.7,
+    "rmseMeters": 17.908
+  },
+  "holdoutResiduals": {
+    "count": 6,
+    "maximumMeters": 16.254,
+    "meanMeters": 11.746,
+    "meanVectorEastMeters": 6.173,
+    "meanVectorNorthMeters": -1.874,
+    "medianMeters": 11.149,
+    "rmseMeters": 12.25
+  },
+  "inputs": {
+    "gcpSha256": "2c0e00288056adae3bbae9e68b27ff8374dc059c6287ac6bfb7c48d3851e087c",
+    "geometrySha256": "80a6be001ca6313686fc98e88988f4159fc1da5be481fd213a7b2f75627de379",
+    "osmBaseTimestamp": "2026-09-22T08:45:51Z",
+    "osmRelationId": 1428762
+  },
+  "lakeId": "klappasjon",
+  "largestResidual": {
+    "id": "F09",
+    "metres": 31.631,
+    "role": "fit"
+  },
+  "model": "affine",
+  "projection": {
+    "description": "Local equirectangular metres for fitting and residuals",
+    "latitudeOrigin": 57.5552836,
+    "longitudeOrigin": 14.51775267,
+    "metresPerLatitudeDegree": 110540.0,
+    "metresPerLongitudeDegree": 59721.57544607759
+  },
+  "runtimePublished": false,
+  "schemaVersion": 1,
+  "source": {
+    "dimensions": [
+      5024,
+      7192
+    ],
+    "mapNumber": "3-3402",
+    "sha256": "9b1fc55d1d9f0fbb1063fc677779494062d8c0024d5e8583d73b15f1b12e30ed",
+    "smhiLakeId": "638147-142329"
+  },
+  "status": "georeferencing-pilot"
+}

@@ -1,0 +1,17 @@
+id,role,featureClass,description,residualEastMeters,residualNorthMeters,residualMeters
+F01,fit,headland,"Northern shoreline, northwest apex",-12.736,-12.975,18.181
+F02,fit,headland,"Northern shoreline, northeast apex",-6.286,-9.421,11.326
+F03,fit,bay-corner,Northeast basin re-entrant before the eastern bay,-19.315,-0.525,19.322
+F04,fit,bay-corner,"Upper eastern bay, eastern apex",10.727,-10.794,15.218
+F05,fit,bay-corner,"Upper eastern bay, southwest re-entrant",19.602,5.844,20.454
+F06,fit,channel-entrance,"East-side channel entrance, northern corner",5.817,7.734,9.678
+F07,fit,headland,"Southeast bay, southern headland",-18.419,0.536,18.427
+F08,fit,headland,Southernmost shoreline tip,0.902,-14.078,14.107
+F09,fit,headland,West shore shoulder beside the upper basin,10.991,29.660,31.631
+F10,fit,shoreline-bend,Northwest shoreline corner,8.717,4.018,9.599
+H01,holdout,channel-entrance,"Northern inlet mouth, southern apex",-0.035,-15.784,15.784
+H02,holdout,island-tip,"Large northern island, north tip",-0.098,-7.172,7.172
+H03,holdout,island-tip,"Small island north of the large northern island, north tip",8.745,-1.985,8.967
+H04,holdout,island-tip,"Middle eastern island, north tip",9.221,-1.435,9.332
+H05,holdout,island-tip,"Lower eastern island, north tip",12.967,0.124,12.967
+H06,holdout,bay-corner,"Southwest side bay, eastern apex",6.240,15.008,16.254
