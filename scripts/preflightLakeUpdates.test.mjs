@@ -259,14 +259,28 @@ test("preflight serialization and fingerprints are deterministic", async () => {
   assert.deepEqual(first.serializedFiles, second.serializedFiles);
 });
 
-test("real repository preflight classifies Svansjön as applied history", async () => {
+test("real repository preflight keeps applied history and Bolmen pending", async () => {
   const paths = Object.values(productionDatasetFiles).map((path) => new URL(`../${path}`, import.meta.url));
   const before = await Promise.all(paths.map((path) => readFile(path)));
   const result = await createRepositoryLakeUpdatePreflight();
   const after = await Promise.all(paths.map((path) => readFile(path)));
 
   assert.equal(result.eligible, true);
-  assert.deepEqual(result.pendingUpdates, []);
+  assert.deepEqual(result.pendingUpdates.map(({ id, targetLakeId, changes }) => ({
+    id,
+    targetLakeId,
+    paths: changes.map(({ path }) => path),
+  })), [{
+    id: "bolmen-baseline-audit-1",
+    targetLakeId: "bolmen",
+    paths: [
+      "fishing.permit",
+      "fishing.rules",
+      "fishing.protectedAreas",
+      "details.access.familyCoverage",
+      "details.species.knownSpecies",
+    ],
+  }]);
   assert.deepEqual(result.alreadyApplied, [
     "hokesjon-baseline-audit-c1",
     "landsjon-baseline-audit-1",
@@ -286,7 +300,7 @@ test("real repository preflight classifies Svansjön as applied history", async 
     "ulvstorpasjon-baseline-audit-c1",
     "vattern-baseline-audit-1",
   ]);
-  assert.deepEqual(result.filesToChange, []);
+  assert.deepEqual(result.filesToChange, ["src/data/lakes.js"]);
   assert.equal(result.productionLakeCount, 24);
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.validationErrors, []);

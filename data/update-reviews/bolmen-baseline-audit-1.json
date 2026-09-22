@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "bolmen-baseline-audit-1",
+  "targetLakeId": "bolmen",
+  "decision": "approved",
+  "reviewer": "Fredrik",
+  "reviewedAt": "2026-09-22",
+  "hashStrategy": "sha256-canonical-json-v1",
+  "proposalHash": "af44557e6fc987bcdc3ecc8eb628ff177c4b3e52920cda1fb57e828ddcff24b6",
+  "note": "Godkännandet är avsiktligt begränsat till legacy-sammanfattningarna för fiskekort, regler och fredningsområden, begränsad familjekortstäckning samt en konservativ verifierad utökning och förbättrad proveniens för knownSpecies. Femmetodsmatchningen ska vara oförändrad; gösens längdscope i release-arrayerna samt Bolmens bathymetri och georeferering ligger utanför uppdateringen."
+}
