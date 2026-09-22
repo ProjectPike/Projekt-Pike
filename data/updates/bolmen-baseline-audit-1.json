@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "bolmen-baseline-audit-1",
+  "targetLakeId": "bolmen",
+  "targetLakeFingerprint": "e578138e9e8e53bb3dc710b7af3ed72a56439543bc467588f82444a1c7bce357",
+  "reason": "Bolmens repository-audit och aktuella FVO-källor stödjer fem avgränsade korrigeringar av legacy-sammanfattningar, familjekortets täckning och den konservativa artlistan utan att andra olösta fält berörs.",
+  "sources": [
+    {
+      "id": "bolmen-fiskeregler",
+      "type": "fvo-club",
+      "title": "Bolmens FVOF — Fiskeregler",
+      "url": "https://bolmensweden.com/fiskeregler/",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "id": "bolmen-fiskekort",
+      "type": "fvo-club",
+      "title": "Bolmens FVOF — Fiskekort",
+      "url": "https://bolmensweden.com/fiskekort/",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "id": "bolmen-provfiske-2022",
+      "type": "fvo-club",
+      "title": "Bolmens FVOF — Provfisken i Bolmen 2004–2022",
+      "url": "https://bolmensweden.com/wp-content/uploads/2023/03/Provfiskerapport-Bolmen-2022.pdf",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "id": "bolmen-fiska-i-bolmen",
+      "type": "fvo-club",
+      "title": "Bolmens FVOF — Fiska i Bolmen",
+      "url": "https://bolmensweden.com/fiska-i-bolmen/",
+      "checkedAt": "2026-09-22"
+    }
+  ],
+  "changes": [
+    {
+      "operation": "set",
+      "path": "fishing.permit",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "status": "unknown",
+          "label": "Uppgift saknas"
+        }
+      },
+      "proposed": {
+        "status": "verified",
+        "label": "Fiskekort krävs"
+      },
+      "reason": "Legacy-sammanfattningen ska återspegla det verifierade fiskekortskrav som redan finns i detaljdatan och bekräftas av aktuella FVO-källor.",
+      "sources": [
+        "bolmen-fiskekort",
+        "bolmen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-22"
+    },
+    {
+      "operation": "set",
+      "path": "fishing.rules",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "status": "unverified",
+          "label": "Ej verifierade"
+        }
+      },
+      "proposed": {
+        "status": "verified",
+        "label": "Verifierade regler"
+      },
+      "reason": "Legacy-sammanfattningen ska återspegla de aktuella verifierade FVO-regler som redan representeras av detaljfakta.",
+      "sources": [
+        "bolmen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-22"
+    },
+    {
+      "operation": "set",
+      "path": "fishing.protectedAreas",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "status": "checking",
+          "label": "Kontrolleras"
+        }
+      },
+      "proposed": {
+        "status": "verified",
+        "label": "Fredningsområden finns"
+      },
+      "reason": "Legacy-sammanfattningen ska återspegla att aktuella FVO-regler uttryckligen anger två fiskeförbudsområden utan att antyda att geometri finns.",
+      "sources": [
+        "bolmen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-22"
+    },
+    {
+      "operation": "set",
+      "path": "details.access.familyCoverage",
+      "expected": {
+        "mode": "absent"
+      },
+      "proposed": {
+        "value": "restricted",
+        "status": "verified",
+        "ruleType": "rule",
+        "verifiedAt": "2026-09-22",
+        "sources": [
+          {
+            "url": "https://bolmensweden.com/fiskeregler/",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Familjekortet omfattar högst två fiskare. Personerna ska vara registrerade på samma adress som köparen och de berättigades namn ska skrivas på fiskekortet.",
+        "conditions": null
+      },
+      "reason": "Produktionsposten saknar FVO-regelns uttryckliga begränsningar för familjekortets personkrets och antal fiskare.",
+      "sources": [
+        "bolmen-fiskeregler"
+      ],
+      "verifiedAt": "2026-09-22"
+    },
+    {
+      "operation": "set",
+      "path": "details.species.knownSpecies",
+      "expected": {
+        "mode": "exact",
+        "value": {
+          "value": [
+            "gädda",
+            "gös",
+            "abborre",
+            "lake",
+            "ål",
+            "sutare",
+            "braxen"
+          ],
+          "status": "verified",
+          "ruleType": "advisory",
+          "verifiedAt": "2026-08-09",
+          "sources": [
+            {
+              "url": "https://bolmensweden.com/fiskeregler/",
+              "type": "fvo-club"
+            }
+          ],
+          "note": "Kända arter enligt FVO:s aktuella information.",
+          "conditions": null
+        }
+      },
+      "proposed": {
+        "value": [
+          "abborre",
+          "benlöja",
+          "bergsimpa",
+          "björkna",
+          "braxen",
+          "gers",
+          "gädda",
+          "gös",
+          "lake",
+          "mört",
+          "sik",
+          "siklöja",
+          "sutare",
+          "ål",
+          "öring"
+        ],
+        "status": "verified",
+        "ruleType": "advisory",
+        "verifiedAt": "2026-09-22",
+        "sources": [
+          {
+            "url": "https://bolmensweden.com/wp-content/uploads/2023/03/Provfiskerapport-Bolmen-2022.pdf",
+            "type": "fvo-club"
+          },
+          {
+            "url": "https://bolmensweden.com/fiska-i-bolmen/",
+            "type": "fvo-club"
+          }
+        ],
+        "note": "Provfiskerapporten beskriver 14 fiskarter som stadigvarande förekommande. Sutare behålls eftersom FVO:s aktuella fiskeinformation listar arten; svagare uppgifter om endast rapporterade arter ingår inte.",
+        "conditions": null
+      },
+      "reason": "Den fullständiga befintliga artfaktan ersätts med FVO:s konservativt styrkta fiskartlista och tydligare direkt proveniens.",
+      "sources": [
+        "bolmen-provfiske-2022",
+        "bolmen-fiska-i-bolmen"
+      ],
+      "verifiedAt": "2026-09-22"
+    }
+  ]
+}

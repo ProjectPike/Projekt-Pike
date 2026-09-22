@@ -126,6 +126,13 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   metodstödet är fortsatt separat för de två fiskeenheterna och båda
   djupkällorna är opublicerade med `needs-review`. Nästa särskilda
   baseline-uppgift är Bolmen.
+- Bolmens repository-audit och CTO-ledda källrefresh är genomförda. Det ogranskade
+  förslaget `bolmen-baseline-audit-1` korrigerar endast sammanfattningarna för
+  fiskekort, regler och fredningsområden samt familjekortets täckning och en
+  konservativ `knownSpecies`-lista med förbättrad proveniens. Matchningen ändras
+  inte. Artreglernas release-scope och djupkartans georeferering förblir separata
+  framtida frågor. Förslaget är inte granskat, publicerat eller applicerat;
+  produktionen är fortsatt 24 sjöar.
 
 ### Entitlement-arkitektur
 
