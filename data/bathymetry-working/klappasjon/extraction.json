@@ -1,0 +1,191 @@
+{
+  "adapter": "reviewed-waypoint-line-art-v1",
+  "inputs": {
+    "acceptedTransformation": "data/bathymetry-working/klappasjon/transformation.json",
+    "referenceGeometry": "data/bathymetry-working/klappasjon/osm-geometry.geojson",
+    "sourceMetadata": "data/bathymetry-working/klappasjon/source.json"
+  },
+  "lakeId": "klappasjon",
+  "lineArt": {
+    "inkThreshold": 128
+  },
+  "outputs": {
+    "candidateBehavior": "temporary",
+    "candidateFilename": "klappasjon-contours-candidate.geojson",
+    "qaBehavior": "temporary",
+    "result": "data/bathymetry-working/klappasjon/extraction-result.json"
+  },
+  "permittedDepths": [
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "qa": {
+    "geographicCloseupBounds": [
+      14.511,
+      57.550,
+      14.524,
+      57.5598
+    ]
+  },
+  "referenceGeometrySha256": "80a6be001ca6313686fc98e88988f4159fc1da5be481fd213a7b2f75627de379",
+  "schemaVersion": 1,
+  "selections": [
+    {
+      "closed": false,
+      "corridorRadiusPixels": 60,
+      "depth": 2,
+      "id": "depth-2-northern-arc",
+      "maximumGuideSnapPixels": 150,
+      "minimumExtractedPoints": 1000,
+      "sourceInkSeed": [1957, 2250],
+      "waypoints": [
+        [1957, 2250], [2028, 1950], [2200, 1720], [2500, 1660],
+        [2850, 1690], [3150, 1880], [3250, 2150], [3330, 2300]
+      ]
+    },
+    {
+      "closed": false,
+      "corridorRadiusPixels": 60,
+      "depth": 2,
+      "id": "depth-2-southern-arc",
+      "maximumGuideSnapPixels": 180,
+      "minimumExtractedPoints": 1300,
+      "sourceInkSeed": [1957, 2250],
+      "waypoints": [
+        [2100, 4900], [1950, 5250], [1950, 5500], [2250, 5400],
+        [2450, 5150], [2750, 5200], [3050, 5000]
+      ]
+    },
+    {
+      "closed": true,
+      "corridorRadiusPixels": 40,
+      "depth": 2,
+      "id": "depth-2-island",
+      "maximumGuideSnapPixels": 180,
+      "minimumExtractedPoints": 900,
+      "sourceInkSeed": [2460, 3500],
+      "waypoints": [
+        [2460, 3500], [2420, 3300], [2480, 3160], [2600, 3150],
+        [2760, 3310], [2690, 3500], [2850, 3650], [2720, 3700],
+        [2550, 3600]
+      ]
+    },
+    {
+      "closed": false,
+      "corridorRadiusPixels": 45,
+      "depth": 4,
+      "id": "depth-4-northwest-arc",
+      "maximumGuideSnapPixels": 90,
+      "minimumExtractedPoints": 150,
+      "sourceInkSeed": [2045, 2250],
+      "waypoints": [
+        [2110, 1963], [2200, 1875], [2300, 1795]
+      ]
+    },
+    {
+      "closed": false,
+      "corridorRadiusPixels": 45,
+      "depth": 4,
+      "id": "depth-4-northeast-arc",
+      "maximumGuideSnapPixels": 90,
+      "minimumExtractedPoints": 650,
+      "sourceInkSeed": [2045, 2250],
+      "waypoints": [
+        [2400, 1755], [2600, 1747], [2800, 1744], [2900, 1768],
+        [3100, 1940], [3180, 2150]
+      ]
+    },
+    {
+      "closed": false,
+      "corridorRadiusPixels": 45,
+      "depth": 6,
+      "id": "depth-6-northern-arc",
+      "maximumGuideSnapPixels": 90,
+      "minimumExtractedPoints": 650,
+      "sourceInkSeed": [2045, 2250],
+      "waypoints": [
+        [2155, 2050], [2300, 1900], [2500, 1840], [2750, 1840],
+        [2960, 1950], [3050, 2150]
+      ]
+    },
+    {
+      "closed": true,
+      "corridorRadiusPixels": 35,
+      "depth": 8,
+      "id": "depth-8-south",
+      "maximumGuideSnapPixels": 150,
+      "minimumExtractedPoints": 1700,
+      "sourceInkSeed": [2495, 4994],
+      "waypoints": [
+        [2850, 3900], [2900, 4150], [2850, 4500], [2700, 4800],
+        [2500, 5050], [2350, 5100], [2400, 4850], [2520, 4550],
+        [2650, 4200], [2750, 3950]
+      ]
+    },
+    {
+      "closed": false,
+      "corridorRadiusPixels": 35,
+      "depth": 10,
+      "id": "depth-10-main",
+      "maximumGuideSnapPixels": 180,
+      "minimumExtractedPoints": 1800,
+      "sourceInkSeed": [2350, 2500],
+      "waypoints": [
+        [2450, 3000], [2450, 2750], [2350, 2500], [2200, 2200],
+        [2180, 2050], [2350, 1950], [2600, 1900],
+        [2850, 1950], [2900, 2200], [2850, 2417], [2800, 2750],
+        [2960, 2800], [2940, 2920]
+      ]
+    },
+    {
+      "closed": true,
+      "corridorRadiusPixels": 35,
+      "depth": 10,
+      "id": "depth-10-north-sounding",
+      "maximumGuideSnapPixels": 120,
+      "minimumExtractedPoints": 500,
+      "sourceInkSeed": [2395, 2250],
+      "waypoints": [
+        [2250, 2100], [2300, 2030], [2420, 2070], [2520, 2150],
+        [2550, 2250], [2450, 2300], [2350, 2250]
+      ]
+    },
+    {
+      "closed": true,
+      "corridorRadiusPixels": 35,
+      "depth": 10,
+      "id": "depth-10-middle-west",
+      "maximumGuideSnapPixels": 120,
+      "minimumExtractedPoints": 500,
+      "sourceInkSeed": [2542, 2846],
+      "waypoints": [
+        [2550, 2850], [2555, 2767], [2600, 2660], [2700, 2680],
+        [2770, 2780], [2750, 2880], [2647, 2974]
+      ]
+    },
+    {
+      "closed": true,
+      "corridorRadiusPixels": 30,
+      "depth": 10,
+      "id": "depth-10-middle-east",
+      "maximumGuideSnapPixels": 100,
+      "minimumExtractedPoints": 300,
+      "sourceInkSeed": [2800, 2749],
+      "waypoints": [
+        [2800, 2750], [2840, 2700], [2900, 2740], [2920, 2820],
+        [2870, 2860], [2810, 2820]
+      ]
+    }
+  ],
+  "semanticExclusions": {
+    "soundingValues": [
+      11
+    ],
+    "soundingsAreContours": false
+  },
+  "sourceSha256": "9b1fc55d1d9f0fbb1063fc677779494062d8c0024d5e8583d73b15f1b12e30ed",
+  "transformationSha256": "a6d50e1ddea2ce660c358e51a38b0aa26f5185b29a572fda17bbb62d89d13b61"
+}

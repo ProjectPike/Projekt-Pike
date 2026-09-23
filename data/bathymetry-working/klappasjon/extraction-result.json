@@ -1,0 +1,52 @@
+{
+  "adapter": "reviewed-waypoint-line-art-v1",
+  "candidateCommitted": false,
+  "candidateLicenseStatus": "unresolved",
+  "candidateSha256": "045a6a77c15e662f871ad7881d1334c8641423046f6638b0205e6fa64f92acdd",
+  "clipping": {
+    "outsideModernWaterPercent": 0.111,
+    "outsideModernWaterPointCount": 19,
+    "postclipLandCrossingCount": 0,
+    "postclipPointCount": 17084,
+    "postclipSegmentCount": 12,
+    "preclipPointCount": 17101,
+    "sourceSegmentCount": 11,
+    "transformedSegmentCount": 11
+  },
+  "extractedDepths": [
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "humanReviewRequired": true,
+  "lakeId": "klappasjon",
+  "permittedDepths": [
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "postclipSegmentCountPerDepth": {
+    "10": 4,
+    "2": 4,
+    "4": 2,
+    "6": 1,
+    "8": 1
+  },
+  "recommendation": "review-extraction-candidate",
+  "referenceGeometrySha256": "80a6be001ca6313686fc98e88988f4159fc1da5be481fd213a7b2f75627de379",
+  "runtimePublished": false,
+  "schemaVersion": 1,
+  "sourceSegmentCountPerDepth": {
+    "10": 4,
+    "2": 3,
+    "4": 2,
+    "6": 1,
+    "8": 1
+  },
+  "sourceSha256": "9b1fc55d1d9f0fbb1063fc677779494062d8c0024d5e8583d73b15f1b12e30ed",
+  "transformationSha256": "a6d50e1ddea2ce660c358e51a38b0aa26f5185b29a572fda17bbb62d89d13b61"
+}
