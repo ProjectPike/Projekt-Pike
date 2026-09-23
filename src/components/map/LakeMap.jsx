@@ -24,6 +24,7 @@ import {
   getPikeMapColors,
   NATURAL_BASEMAP_STYLE_URL,
 } from "./mapTheme";
+import { getLakeMapZoom } from "./mapNavigation";
 
 setWorkerUrl(workerUrl);
 
@@ -39,35 +40,6 @@ const EMPTY_FEATURE_COLLECTION = {
   type: "FeatureCollection",
   features: [],
 };
-
-const LAKE_MAP_ZOOM_BY_ID = {
-  bolmen: 10,
-  "bunn-norra-mellersta": 11,
-  "bunn-sodra": 11,
-  gravsjon: 13.4,
-  hokesjon: 12.8,
-  knipesjon: 13.1,
-  landsjon: 11.8,
-  mullsjon: 12.4,
-  munksjon: 13.2,
-  nommen: 10.7,
-  risbrodammen: 13.2,
-  klappasjon: 13.1,
-  rocksjon: 13.4,
-  ryssbysjon: 12.5,
-  sandhemssjon: 12.8,
-  sommen: 9.2,
-  spexhultasjon: 12.4,
-  straken: 10.2,
-  svansjon: 12.8,
-  tenhultasjon: 12.3,
-  ulvstorpasjon: 14.2,
-  vattern: 8.3,
-};
-
-function getLakeMapZoom(lakeId) {
-  return LAKE_MAP_ZOOM_BY_ID[lakeId] ?? 12;
-}
 
 function createPopupContent(featureProperties) {
   const popupContent = document.createElement("div");

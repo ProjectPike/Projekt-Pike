@@ -8,6 +8,7 @@ import {
   getPikeMapColors,
   NATURAL_BASEMAP_STYLE_URL,
 } from "./mapTheme";
+import { getDiscoveryClusterTargetZoom } from "./mapNavigation";
 import { supportsInteractiveMap } from "../../utils/mapSupport";
 
 setWorkerUrl(workerUrl);
@@ -56,6 +57,7 @@ function MapView({
   const userMarkerRef = useRef(null);
   const selectedHighlightTimeoutRef = useRef(null);
   const selectedLabelTimeoutRef = useRef(null);
+  const pendingLakeSelectionRef = useRef(null);
   const [mapError, setMapError] = useState(false);
   const hasActiveFishingSelections = Object.values(lakeStatuses).some(
     (status) => status !== "neutral",
@@ -436,10 +438,7 @@ function MapView({
         const zoom = await source.getClusterExpansionZoom(
           Number(clusterFeature.properties.cluster_id),
         );
-        const targetZoom = Math.min(
-          Math.max(zoom + 1.2, map.getZoom() + 2),
-          14,
-        );
+        const targetZoom = getDiscoveryClusterTargetZoom(zoom, map.getZoom());
 
         map.easeTo({
           center: [longitude, latitude],
@@ -452,6 +451,15 @@ function MapView({
       }
     };
 
+    const cancelPendingLakeSelection = () => {
+      const pendingSelection = pendingLakeSelectionRef.current;
+
+      if (pendingSelection) {
+        map.off("moveend", pendingSelection);
+        pendingLakeSelectionRef.current = null;
+      }
+    };
+
     const handleLakeSelection = (lakeFeature) => {
       const lakeId = lakeFeature?.properties?.lakeId;
       const lake = lakes[lakeId];
@@ -460,17 +468,26 @@ function MapView({
         return;
       }
 
+      cancelPendingLakeSelection();
       showSelectedLakePreview(lake);
+
+      const completeSelection = () => {
+        if (pendingLakeSelectionRef.current !== completeSelection) {
+          return;
+        }
+
+        pendingLakeSelectionRef.current = null;
+        onSelectLake(lake.id);
+      };
+
+      pendingLakeSelectionRef.current = completeSelection;
+      map.once("moveend", completeSelection);
 
       map.flyTo({
         center: lake.coordinates,
         zoom: Math.max(map.getZoom(), 8.2),
         duration: 700,
         essential: true,
-      });
-
-      map.once("moveend", () => {
-        onSelectLake(lake.id);
       });
     };
 
@@ -486,6 +503,7 @@ function MapView({
       })[0];
 
       if (!clickedFeature) {
+        cancelPendingLakeSelection();
         return;
       }
 
@@ -493,6 +511,7 @@ function MapView({
         clickedFeature.layer.id === CLUSTER_CIRCLE_LAYER_ID ||
         clickedFeature.layer.id === CLUSTER_COUNT_LAYER_ID
       ) {
+        cancelPendingLakeSelection();
         await expandCluster(clickedFeature);
         return;
       }
@@ -510,6 +529,7 @@ function MapView({
 
     const bindLakeEvents = () => {
       map.on("click", handleMapClick);
+      map.on("dragstart", cancelPendingLakeSelection);
       map.on("mouseenter", CLUSTER_CIRCLE_LAYER_ID, handlePointerEnter);
       map.on("mouseenter", CLUSTER_COUNT_LAYER_ID, handlePointerEnter);
       map.on("mouseenter", UNCLUSTERED_CIRCLE_LAYER_ID, handlePointerEnter);
@@ -524,6 +544,8 @@ function MapView({
 
     const unbindLakeEvents = () => {
       map.off("click", handleMapClick);
+      map.off("dragstart", cancelPendingLakeSelection);
+      cancelPendingLakeSelection();
       map.off("mouseenter", CLUSTER_CIRCLE_LAYER_ID, handlePointerEnter);
       map.off("mouseenter", CLUSTER_COUNT_LAYER_ID, handlePointerEnter);
       map.off("mouseenter", UNCLUSTERED_CIRCLE_LAYER_ID, handlePointerEnter);
