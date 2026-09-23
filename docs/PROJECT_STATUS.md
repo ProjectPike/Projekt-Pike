@@ -132,15 +132,11 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   femmetodsmatchningen är oförändrad. En andra apply är verifierad som ett rent
   no-op. Gösens release-array-scope, legacy-städning av `fishing.ruleProfile`
   samt Bolmens bathymetri/georeferering förblir separata framtida frågor.
-- Bathymetry v2:s första georefereringspilot är genomförd för Klappasjön med
-  explicita GCP:er, separata holdouts och deterministisk affine-reproduktion.
-  Resultatet stödjer fortsatt konturextraktionsarbete, men inga konturer är
-  extraherade eller publicerade och runtime/ledger-status är oförändrad.
-- Bathymetry v2:s georefereringssteg är nu återanvändbart och manifestdrivet,
-  med batchkörning för redan förberedda jobb. Klappasjön reproducerar den
-  accepterade piloten byte-identiskt genom den generiska vägen; ingen ytterligare
-  sjö har bearbetats. Extraktion och publicering är separata nästa steg och
-  produktion/runtime är oförändrad.
+- Klappasjöns Bathymetry v2-georeferering med explicita GCP:er och oberoende
+  holdouts samt den deterministiska 2/4/6/8/10-meterskandidaten är tekniskt
+  accepterade. Den återanvändbara georefererings- och extraktionsvägen är
+  verifierad, men publicering inväntar klarlagda källrättigheter; ingen
+  kandidatvektor eller runtime-djupkarta är publicerad.
 
 ### Entitlement-arkitektur
 

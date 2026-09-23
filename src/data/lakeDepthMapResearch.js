@@ -552,11 +552,17 @@ export const lakeDepthMapResearch = {
     ],
     "bathymetry": {
       "sourceType": "historical TIFF contour map",
-      "processingState": "needs-review",
-      "georeferencingStatus": "rejected-bounding-box",
-      "qualityStatus": "failed",
+      "sourceMapNumber": "3-3402",
+      "processingState": "verified",
+      "georeferencingStatus": "affine-shoreline-fit",
+      "qualityStatus": "verified",
       "published": false,
-      "reviewNote": "Tidigare rektangulär passning är underkänd; kurvorna behöver riktiga kontrollpunkter runt öar, sund och uddar."
+      "verifiedAt": "2026-09-23",
+      "controlPointCount": 16,
+      "preclipOutsidePercent": 0.111,
+      "postclipLandPointCount": 0,
+      "postclipSampleCount": 17084,
+      "reviewNote": "Bathymetry v2 ersätter den underkända rektangulära passningen: explicit-GCP affine georeferering med oberoende holdouts samt den deterministiska, källstödda konturkandidaten för 2, 4, 6, 8 och 10 m har passerat teknisk validering (11 källsegment, 12 segment efter klippning, inga landkorsningar; 11 m-lodningar är inte konturer). Källskanningen och kandidatvektorn är inte committade eller runtime/publicerade. Publicering blockeras tills källrättigheter/licens har klarlagts."
     },
     "surveyYear": 1986,
     "maxDepthMeters": 11,
