@@ -1,4 +1,6 @@
 export const DEFAULT_LAKE_MAP_ZOOM = 12;
+export const LAKE_MAP_MIN_ZOOM_ALLOWANCE = 0.75;
+export const LAKE_MAP_BOUNDS_MARGIN = 0.4;
 
 export const LAKE_MAP_ZOOM_BY_ID = Object.freeze({
   bolmen: 10,
@@ -27,6 +29,21 @@ export const LAKE_MAP_ZOOM_BY_ID = Object.freeze({
 
 export function getLakeMapZoom(lakeId) {
   return LAKE_MAP_ZOOM_BY_ID[lakeId] ?? DEFAULT_LAKE_MAP_ZOOM;
+}
+
+export function getLakeMapMinZoom(initialZoom) {
+  return Math.max(0, initialZoom - LAKE_MAP_MIN_ZOOM_ALLOWANCE);
+}
+
+export function expandLakeMapBounds(bounds, margin = LAKE_MAP_BOUNDS_MARGIN) {
+  const [[west, south], [east, north]] = bounds;
+  const longitudeMargin = (east - west) * margin;
+  const latitudeMargin = (north - south) * margin;
+
+  return [
+    [west - longitudeMargin, south - latitudeMargin],
+    [east + longitudeMargin, north + latitudeMargin],
+  ];
 }
 
 export function getDiscoveryClusterTargetZoom(expansionZoom, currentZoom) {

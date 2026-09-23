@@ -156,7 +156,9 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
 
 - Kartnavigeringen har en gemensam, testad zoompolicy för samtliga 24 sjöar.
   Val av ny sjö avbryter nu en eventuell äldre väntande kartnavigation så att
-  ett sent `moveend` inte kan öppna fel sjö; klusterbeteendet är oförändrat.
+  ett sent `moveend` inte kan öppna fel sjö. Den dedikerade sjökartan begränsar
+  nu utzoomning och panorering till sjöns lokala startområde; discovery-kartan
+  och dess klusterbeteende är oförändrade.
 - Verifiera de senaste kart-, kluster- och statusändringarna visuellt.
 - Göra små mobil- och UX-fixar där de faktiskt behövs.
 - Granska kvarvarande formuleringar, exempelvis copy för saknad eller granskad djupdata.

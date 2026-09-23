@@ -24,7 +24,11 @@ import {
   getPikeMapColors,
   NATURAL_BASEMAP_STYLE_URL,
 } from "./mapTheme";
-import { getLakeMapZoom } from "./mapNavigation";
+import {
+  expandLakeMapBounds,
+  getLakeMapMinZoom,
+  getLakeMapZoom,
+} from "./mapNavigation";
 
 setWorkerUrl(workerUrl);
 
@@ -163,21 +167,29 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       applyNaturalBasemapPalette(map);
     });
 
+    const initialZoom = getLakeMapZoom(lake.id);
+
     const focusLake = () => {
       map.resize();
       map.jumpTo({
         center: lake.coordinates,
-        zoom: getLakeMapZoom(lake.id),
+        zoom: initialZoom,
       });
     };
 
-    map.once("load", focusLake);
+    const establishLocalLakeView = () => {
+      focusLake();
+      map.setMinZoom(getLakeMapMinZoom(initialZoom));
+      map.setMaxBounds(expandLakeMapBounds(map.getBounds().toArray()));
+    };
+
+    map.once("load", establishLocalLakeView);
     requestAnimationFrame(focusLake);
 
     mapRef.current = map;
 
     return () => {
-      map.off("load", focusLake);
+      map.off("load", establishLocalLakeView);
       map.remove();
       mapRef.current = null;
     };
