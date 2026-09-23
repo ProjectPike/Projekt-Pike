@@ -1,0 +1,57 @@
+{
+  "assessment": {
+    "affineSufficient": true,
+    "piecewiseRequired": false,
+    "piecewiseTested": false,
+    "reason": "Independent holdouts, including four island tips and the northern inlet, remain low and show no coherent local drift that would justify a more flexible transform.",
+    "recommendation": "proceed-to-extraction"
+  },
+  "candidateGate": {
+    "policy": "pilot-v1"
+  },
+  "displayName": "Klappasjön",
+  "inputs": {
+    "gcps": "data/bathymetry-working/klappasjon/gcps.json",
+    "referenceGeometry": "data/bathymetry-working/klappasjon/osm-geometry.geojson",
+    "sourceMetadata": "data/bathymetry-working/klappasjon/source.json"
+  },
+  "lakeId": "klappasjon",
+  "model": "affine",
+  "outputs": {
+    "residuals": "data/bathymetry-working/klappasjon/residuals.csv",
+    "result": "data/bathymetry-working/klappasjon/georeference-result.json",
+    "transformation": "data/bathymetry-working/klappasjon/transformation.json"
+  },
+  "qa": {
+    "behavior": "temporary",
+    "closeups": [
+      {
+        "marginMeters": 90,
+        "pointIds": [
+          "F01",
+          "F02",
+          "H01"
+        ],
+        "title": "Northern inlet"
+      },
+      {
+        "marginMeters": 100,
+        "pointIds": [
+          "H02",
+          "H03",
+          "H04",
+          "H05"
+        ],
+        "title": "Mapped islands"
+      },
+      {
+        "marginMeters": 120,
+        "pointIds": [
+          "F09"
+        ],
+        "title": "Largest fit residual"
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

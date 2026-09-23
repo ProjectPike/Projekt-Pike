@@ -1,0 +1,76 @@
+{
+  "candidateGate": {
+    "checks": {
+      "maximumHoldoutResidualMeters": true,
+      "maximumHoldoutRmseMeters": true,
+      "minimumFitCount": true,
+      "minimumHoldoutCount": true
+    },
+    "criteria": {
+      "maximumHoldoutResidualMeters": 50.0,
+      "maximumHoldoutRmseMeters": 25.0,
+      "minimumFitCount": 8,
+      "minimumHoldoutCount": 4
+    },
+    "humanReviewRequired": true,
+    "meaning": "candidate screening for the next bathymetry stage; not publication approval",
+    "numericGatePassed": true,
+    "policy": "pilot-v1"
+  },
+  "fitCount": 10,
+  "fitResiduals": {
+    "count": 10,
+    "maximumMeters": 31.631,
+    "meanMeters": 16.794,
+    "meanVectorEastMeters": -0.0,
+    "meanVectorNorthMeters": 0.0,
+    "medianMeters": 16.7,
+    "rmseMeters": 17.908
+  },
+  "geometryTopology": {
+    "componentCount": 1,
+    "geometryType": "Polygon",
+    "innerRingCount": 10,
+    "outerRingCount": 1
+  },
+  "holdoutCount": 6,
+  "holdoutResiduals": {
+    "count": 6,
+    "maximumMeters": 16.254,
+    "meanMeters": 11.746,
+    "meanVectorEastMeters": 6.173,
+    "meanVectorNorthMeters": -1.874,
+    "medianMeters": 11.149,
+    "rmseMeters": 12.25
+  },
+  "humanReviewRequired": true,
+  "lakeId": "klappasjon",
+  "largestResidual": {
+    "id": "F09",
+    "metres": 31.631,
+    "role": "fit"
+  },
+  "model": "affine",
+  "publicationImplication": "none",
+  "recommendation": "pass-georeferencing",
+  "runtimePublished": false,
+  "schemaVersion": 1,
+  "source": {
+    "mapNumber": "3-3402",
+    "sha256": "9b1fc55d1d9f0fbb1063fc677779494062d8c0024d5e8583d73b15f1b12e30ed"
+  },
+  "transformCoefficients": [
+    [
+      0.298367412735,
+      0.006142172337
+    ],
+    [
+      0.003059676838,
+      -0.288121554896
+    ],
+    [
+      -898.367661823338,
+      825.829330011755
+    ]
+  ]
+}

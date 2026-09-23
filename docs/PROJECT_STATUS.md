@@ -136,6 +136,11 @@ Detta är Project Pikes levande källa till nuläge, produktinriktning och tekni
   explicita GCP:er, separata holdouts och deterministisk affine-reproduktion.
   Resultatet stödjer fortsatt konturextraktionsarbete, men inga konturer är
   extraherade eller publicerade och runtime/ledger-status är oförändrad.
+- Bathymetry v2:s georefereringssteg är nu återanvändbart och manifestdrivet,
+  med batchkörning för redan förberedda jobb. Klappasjön reproducerar den
+  accepterade piloten byte-identiskt genom den generiska vägen; ingen ytterligare
+  sjö har bearbetats. Extraktion och publicering är separata nästa steg och
+  produktion/runtime är oförändrad.
 
 ### Entitlement-arkitektur
 
