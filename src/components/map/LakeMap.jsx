@@ -30,6 +30,10 @@ import {
   LAKE_FOCUS_MASK_OPACITY,
 } from "./lakeFocusMask";
 import {
+  LAKE_MAP_OVERLAY_LAYER_IDS,
+  normalizeLakeMapOverlayOrder,
+} from "./lakeMapOverlayOrder";
+import {
   getLakeMapBounds,
   getLakeMapFitPadding,
   getLakeMapLocalConstraint,
@@ -39,15 +43,15 @@ import {
 setWorkerUrl(workerUrl);
 
 const POINT_SOURCE_ID = "lake-map-points";
-const CLUSTER_CIRCLE_LAYER_ID = "lake-map-point-clusters";
-const CLUSTER_COUNT_LAYER_ID = "lake-map-point-cluster-count";
-const UNCLUSTERED_CIRCLE_LAYER_ID = "lake-map-point-unclustered-circle";
-const UNCLUSTERED_SYMBOL_LAYER_ID = "lake-map-point-unclustered-symbol";
+const CLUSTER_CIRCLE_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.pointClusters;
+const CLUSTER_COUNT_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.pointClusterCount;
+const UNCLUSTERED_CIRCLE_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.pointCircle;
+const UNCLUSTERED_SYMBOL_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.pointSymbol;
 const FOCUS_MASK_SOURCE_ID = "lake-focus-mask";
-const FOCUS_MASK_LAYER_ID = "lake-focus-mask-fill";
+const FOCUS_MASK_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.focusMask;
 const DEPTH_MAP_SOURCE_ID = "lake-depth-map";
-const DEPTH_MAP_CONTOUR_LAYER_ID = "lake-depth-map-contours";
-const DEPTH_MAP_LABEL_LAYER_ID = "lake-depth-map-labels";
+const DEPTH_MAP_CONTOUR_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.depthContours;
+const DEPTH_MAP_LABEL_LAYER_ID = LAKE_MAP_OVERLAY_LAYER_IDS.depthLabels;
 const EMPTY_FEATURE_COLLECTION = {
   type: "FeatureCollection",
   features: [],
@@ -263,6 +267,8 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
           },
         });
       }
+
+      normalizeLakeMapOverlayOrder(map);
     };
 
     if (map.isStyleLoaded()) {
@@ -384,6 +390,8 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
           },
         });
       }
+
+      normalizeLakeMapOverlayOrder(map);
     };
 
     if (map.isStyleLoaded()) {
@@ -581,6 +589,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       }
 
       source.setData(featureCollection);
+      normalizeLakeMapOverlayOrder(map);
       return true;
     };
 
