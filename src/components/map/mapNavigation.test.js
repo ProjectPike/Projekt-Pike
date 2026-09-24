@@ -9,6 +9,7 @@ import {
 } from "../../data/lakePoints.js";
 import {
   DEFAULT_LAKE_MAP_ZOOM,
+  LAKE_MAP_BOUNDS_BY_ID,
   LAKE_MAP_BOUNDS_MARGIN,
   LAKE_MAP_BOUNDS_PROVENANCE_BY_ID,
   LAKE_MAP_ZOOM_BY_ID,
@@ -22,7 +23,7 @@ import {
   hasPlausibleSwedishCoordinates,
 } from "./mapNavigation.js";
 
-test("all 24 production lakes have plausible ordered coordinates and safe map zooms", () => {
+test("all 24 production lakes have plausible ordered coordinates and safe framing", () => {
   assert.equal(Object.keys(lakes).length, 24);
 
   for (const lake of Object.values(lakes)) {
@@ -32,24 +33,26 @@ test("all 24 production lakes have plausible ordered coordinates and safe map zo
       `${lake.id} must use [longitude, latitude] inside Sweden`,
     );
 
-    const zoom = getLakeMapZoom(lake.id);
-    assert.equal(Number.isFinite(zoom), true, `${lake.id} must have a finite zoom`);
-    assert.equal(zoom >= 8 && zoom <= 15, true, `${lake.id} zoom must be useful and safe`);
+    if (!getLakeMapBounds(lake.id)) {
+      const zoom = getLakeMapZoom(lake.id);
+      assert.equal(Number.isFinite(zoom), true, `${lake.id} must have a finite zoom`);
+      assert.equal(zoom >= 8 && zoom <= 15, true, `${lake.id} zoom must be useful and safe`);
+    }
   }
 });
 
-test("lake zoom configuration keeps both current Bunn IDs and no legacy Bunn ID", () => {
+test("only unresolved Bunn entities retain explicit fallback zooms", () => {
+  assert.deepEqual(Object.keys(LAKE_MAP_ZOOM_BY_ID).sort(), [
+    "bunn-norra-mellersta",
+    "bunn-sodra",
+  ]);
   assert.equal(LAKE_MAP_ZOOM_BY_ID.bunn, undefined);
   assert.equal(getLakeMapZoom("bunn-norra-mellersta"), 11);
   assert.equal(getLakeMapZoom("bunn-sodra"), 11);
   assert.equal(getLakeMapZoom("unknown-lake"), DEFAULT_LAKE_MAP_ZOOM);
 });
 
-test("Ulvstorpasjön retains its small-lake focus override", () => {
-  assert.equal(getLakeMapZoom("ulvstorpasjon"), 14.2);
-});
-
-test("pilot lakes have valid real bounds containing their production coordinates", () => {
+test("approved pilot lake bounds remain exact", () => {
   assert.deepEqual(getLakeMapBounds("ulvstorpasjon"), [
     [14.0893048, 57.7557063],
     [14.0968151, 57.7583418],
@@ -58,25 +61,54 @@ test("pilot lakes have valid real bounds containing their production coordinates
     [13.5648438, 56.7612877],
     [13.8538054, 57.0789265],
   ]);
+});
 
-  for (const id of ["ulvstorpasjon", "bolmen"]) {
-    const [[west, south], [east, north]] = getLakeMapBounds(id);
+test("22 resolved production lakes have valid bounds and OSM provenance", () => {
+  const resolvedIds = Object.keys(LAKE_MAP_BOUNDS_BY_ID);
+
+  assert.equal(resolvedIds.length, 22);
+  assert.deepEqual(
+    Object.keys(lakes).filter((id) => !getLakeMapBounds(id)),
+    ["bunn-norra-mellersta", "bunn-sodra"],
+  );
+
+  for (const id of resolvedIds) {
+    const bounds = getLakeMapBounds(id);
+    const provenance = LAKE_MAP_BOUNDS_PROVENANCE_BY_ID[id];
+    assert.equal(bounds.length, 2, `${id} must have two bounds corners`);
+    assert.equal(bounds[0].length, 2, `${id} southwest corner must be a pair`);
+    assert.equal(bounds[1].length, 2, `${id} northeast corner must be a pair`);
+
+    const [[west, south], [east, north]] = bounds;
     const [longitude, latitude] = lakes[id].coordinates;
 
+    for (const value of [west, south, east, north]) {
+      assert.equal(Number.isFinite(value), true, `${id} bounds must be finite`);
+    }
     assert.equal(west < east, true, `${id} must have west before east`);
     assert.equal(south < north, true, `${id} must have south before north`);
+    assert.equal(west >= 10 && east <= 25, true, `${id} longitude must be plausible`);
+    assert.equal(south >= 55 && north <= 70, true, `${id} latitude must be plausible`);
     assert.equal(longitude >= west && longitude <= east, true);
     assert.equal(latitude >= south && latitude <= north, true);
-    assert.equal(
-      LAKE_MAP_BOUNDS_PROVENANCE_BY_ID[id].sourceUrl,
-      lakes[id].coordinateSource,
-    );
+    assert.equal(["way", "relation"].includes(provenance.osmObjectType), true);
+    assert.equal(Number.isInteger(provenance.osmObjectId), true);
+    assert.equal(provenance.osmObjectId > 0, true);
+    assert.match(provenance.sourceUrl, /^https:\/\/www\.openstreetmap\.org\/(way|relation)\/\d+$/);
+    assert.equal(provenance.retrievedAt, "2026-09-24");
+
+    if (lakes[id].coordinateSource.startsWith("https://www.openstreetmap.org/")) {
+      assert.equal(provenance.sourceUrl, lakes[id].coordinateSource);
+    }
   }
 });
 
-test("non-pilot lakes retain center-and-zoom fallback framing", () => {
-  assert.equal(getLakeMapBounds("klappasjon"), null);
-  assert.equal(getLakeMapZoom("klappasjon"), 13.1);
+test("Bunn split entities and unknown lakes retain center-and-zoom fallback framing", () => {
+  assert.equal(getLakeMapBounds("bunn"), null);
+  assert.equal(getLakeMapBounds("bunn-norra-mellersta"), null);
+  assert.equal(getLakeMapBounds("bunn-sodra"), null);
+  assert.equal(getLakeMapZoom("bunn-norra-mellersta"), 11);
+  assert.equal(getLakeMapZoom("bunn-sodra"), 11);
   assert.equal(getLakeMapBounds("unknown-lake"), null);
   assert.equal(getLakeMapZoom("unknown-lake"), DEFAULT_LAKE_MAP_ZOOM);
 });
@@ -88,8 +120,8 @@ test("lake bounds fitting uses modest responsive padding", () => {
 });
 
 test("lake maps allow only a modest zoom-out for small, large and fallback lakes", () => {
-  assert.equal(getLakeMapMinZoom(getLakeMapZoom("ulvstorpasjon")), 13.45);
-  assert.ok(Math.abs(getLakeMapMinZoom(getLakeMapZoom("vattern")) - 7.55) < 1e-9);
+  assert.equal(getLakeMapMinZoom(14.2), 13.45);
+  assert.ok(Math.abs(getLakeMapMinZoom(8.3) - 7.55) < 1e-9);
   assert.equal(getLakeMapMinZoom(getLakeMapZoom("unknown-lake")), 11.25);
 });
 
