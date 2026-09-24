@@ -25,10 +25,9 @@ import {
   NATURAL_BASEMAP_STYLE_URL,
 } from "./mapTheme";
 import {
-  expandLakeMapBounds,
   getLakeMapBounds,
   getLakeMapFitPadding,
-  getLakeMapMinZoom,
+  getLakeMapLocalConstraint,
   getLakeMapZoom,
 } from "./mapNavigation";
 
@@ -205,10 +204,13 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
 
     const establishLocalLakeView = () => {
       focusLake();
-      map.setMinZoom(getLakeMapMinZoom(lakeBounds ? map.getZoom() : initialZoom));
-      map.setMaxBounds(
-        expandLakeMapBounds(lakeBounds ?? map.getBounds().toArray()),
+      const localConstraint = getLakeMapLocalConstraint(
+        lakeBounds ? map.getZoom() : initialZoom,
+        map.getBounds().toArray(),
       );
+
+      map.setMinZoom(localConstraint.minZoom);
+      map.setMaxBounds(localConstraint.maxBounds);
     };
 
     map.once("load", establishLocalLakeView);

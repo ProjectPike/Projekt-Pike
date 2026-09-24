@@ -16,6 +16,7 @@ import {
   getDiscoveryClusterTargetZoom,
   getLakeMapBounds,
   getLakeMapFitPadding,
+  getLakeMapLocalConstraint,
   getLakeMapMinZoom,
   getLakeMapZoom,
   hasPlausibleSwedishCoordinates,
@@ -103,6 +104,31 @@ test("lake-map working bounds expand the rendered viewport symmetrically", () =>
       [13.6, 56.6],
       [15.4, 58.4],
     ],
+  );
+});
+
+test("wide-lake local constraints derive from the fitted portrait viewport", () => {
+  const realWideLakeBounds = [
+    [14, 57],
+    [15, 57.2],
+  ];
+  const fittedPortraitViewportBounds = [
+    [13.95, 56.2],
+    [15.05, 58],
+  ];
+  const constraint = getLakeMapLocalConstraint(
+    12.5,
+    fittedPortraitViewportBounds,
+  );
+
+  assert.equal(constraint.minZoom, 11.75);
+  assert.deepEqual(
+    constraint.maxBounds,
+    expandLakeMapBounds(fittedPortraitViewportBounds),
+  );
+  assert.notDeepEqual(
+    constraint.maxBounds,
+    expandLakeMapBounds(realWideLakeBounds),
   );
 });
 

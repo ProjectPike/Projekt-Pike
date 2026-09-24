@@ -86,6 +86,13 @@ export function expandLakeMapBounds(bounds, margin = LAKE_MAP_BOUNDS_MARGIN) {
   ];
 }
 
+export function getLakeMapLocalConstraint(fittedZoom, fittedViewportBounds) {
+  return {
+    minZoom: getLakeMapMinZoom(fittedZoom),
+    maxBounds: expandLakeMapBounds(fittedViewportBounds),
+  };
+}
+
 export function getDiscoveryClusterTargetZoom(expansionZoom, currentZoom) {
   return Math.min(Math.max(expansionZoom + 1.2, currentZoom + 2), 14);
 }
