@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   GeolocateControl,
   Map,
@@ -26,8 +26,10 @@ import {
 } from "./mapTheme";
 import {
   getLakeFocusMaskUrl,
+  isLakeFocusMaskRevealReady,
   LAKE_FOCUS_MASK_COLOR,
   LAKE_FOCUS_MASK_OPACITY,
+  loadLakeFocusMask,
 } from "./lakeFocusMask";
 import {
   LAKE_MAP_OVERLAY_LAYER_IDS,
@@ -106,6 +108,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const popupRef = useRef(null);
+  const revealRenderListenerRef = useRef(null);
   const availableLayers = useMemo(() => getLakePointLayers(lake.id), [lake.id]);
   const lakePoints = useMemo(() => getLakePoints(lake.id), [lake.id]);
   const depthMap = useMemo(() => getLakeDepthMap(lake.id), [lake.id]);
@@ -113,14 +116,53 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
     () => getLakeBathymetryStatus(lake.id),
     [lake.id],
   );
+  const focusMaskUrl = useMemo(() => getLakeFocusMaskUrl(lake.id), [lake.id]);
+  const hasFocusMask = Boolean(focusMaskUrl);
+  const revealReadinessRef = useRef({
+    camera: !hasFocusMask,
+    depth: !hasFocusMask || !depthMap || depthMapLocked,
+    mask: !hasFocusMask,
+    points: !hasFocusMask,
+  });
   const [isLayersOpen, setIsLayersOpen] = useState(false);
   const [mapError, setMapError] = useState(false);
+  const [isMapRevealed, setIsMapRevealed] = useState(!hasFocusMask);
   const [isDepthMapVisible, setIsDepthMapVisible] = useState(
     Boolean(depthMap) && !depthMapLocked,
   );
   const [activeLayerIds, setActiveLayerIds] = useState(() =>
     getLakePointLayers(lake.id).map((layer) => layer.id),
   );
+
+  const markRevealStepReady = useCallback((step) => {
+    if (!hasFocusMask || revealReadinessRef.current[step]) {
+      return;
+    }
+
+    revealReadinessRef.current[step] = true;
+
+    if (!isLakeFocusMaskRevealReady({
+      ...revealReadinessRef.current,
+      hasFocusMask,
+    })) {
+      return;
+    }
+
+    const map = mapRef.current;
+
+    if (!map || revealRenderListenerRef.current) {
+      return;
+    }
+
+    const revealAfterMaskedRender = () => {
+      revealRenderListenerRef.current = null;
+      setIsMapRevealed(true);
+    };
+
+    revealRenderListenerRef.current = revealAfterMaskedRender;
+    map.once("render", revealAfterMaskedRender);
+    map.triggerRepaint();
+  }, [hasFocusMask]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
@@ -223,6 +265,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
 
       map.setMinZoom(localConstraint.minZoom);
       map.setMaxBounds(localConstraint.maxBounds);
+      markRevealStepReady("camera");
     };
 
     map.once("load", establishLocalLakeView);
@@ -232,20 +275,26 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
 
     return () => {
       map.off("load", establishLocalLakeView);
+      if (revealRenderListenerRef.current) {
+        map.off("render", revealRenderListenerRef.current);
+        revealRenderListenerRef.current = null;
+      }
       map.remove();
       mapRef.current = null;
     };
-  }, [lake.coordinates, lake.id]);
+  }, [lake.coordinates, lake.id, markRevealStepReady]);
 
   useEffect(() => {
     const map = mapRef.current;
-    const focusMaskUrl = getLakeFocusMaskUrl(lake.id);
 
     if (!map || !focusMaskUrl) {
       return undefined;
     }
 
-    const ensureFocusMask = () => {
+    let isActive = true;
+    let stopFocusMaskInitialization = () => {};
+
+    const ensureFocusMask = (focusMaskData) => {
       if (!map.isStyleLoaded()) {
         return;
       }
@@ -253,7 +302,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       if (!map.getSource(FOCUS_MASK_SOURCE_ID)) {
         map.addSource(FOCUS_MASK_SOURCE_ID, {
           type: "geojson",
-          data: focusMaskUrl,
+          data: focusMaskData,
         });
       }
 
@@ -270,17 +319,29 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       }
 
       normalizeLakeMapOverlayOrder(map);
+      markRevealStepReady("mask");
     };
 
-    const stopFocusMaskInitialization = runWhenMapStyleReady(
-      map,
-      ensureFocusMask,
-    );
+    loadLakeFocusMask(lake.id).then((focusMaskData) => {
+      if (!isActive) {
+        return;
+      }
+
+      if (!focusMaskData) {
+        markRevealStepReady("mask");
+        return;
+      }
+
+      stopFocusMaskInitialization = runWhenMapStyleReady(map, () => {
+        ensureFocusMask(focusMaskData);
+      });
+    });
 
     return () => {
+      isActive = false;
       stopFocusMaskInitialization();
     };
-  }, [lake.id]);
+  }, [focusMaskUrl, lake.id, markRevealStepReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -392,6 +453,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       }
 
       normalizeLakeMapOverlayOrder(map);
+      markRevealStepReady("depth");
     };
 
     const stopDepthMapInitialization = runWhenMapStyleReady(
@@ -402,7 +464,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
     return () => {
       stopDepthMapInitialization();
     };
-  }, [depthMap, depthMapLocked, isDepthMapVisible]);
+  }, [depthMap, depthMapLocked, isDepthMapVisible, markRevealStepReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -589,6 +651,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
 
       source.setData(featureCollection);
       normalizeLakeMapOverlayOrder(map);
+      markRevealStepReady("points");
       return true;
     };
 
@@ -717,7 +780,7 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       popupRef.current?.remove();
       popupRef.current = null;
     };
-  }, [activeLayerIds, lake.id, lakePoints]);
+  }, [activeLayerIds, lake.id, lakePoints, markRevealStepReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -921,7 +984,12 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
           ) : null}
         </div>
       ) : (
-        <div ref={mapContainerRef} className="lake-map-view" />
+        <div
+          ref={mapContainerRef}
+          className={`lake-map-view${
+            hasFocusMask && !isMapRevealed ? " is-preparing-focus-mask" : ""
+          }`}
+        />
       )}
 
       {depthMap && isDepthMapVisible && !depthMapLocked && !mapError ? (

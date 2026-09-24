@@ -4,9 +4,13 @@ import { readFile } from "node:fs/promises";
 import { lakes } from "../../data/lakes.js";
 import {
   getLakeFocusMaskUrl,
+  isLakeFocusMaskRevealReady,
   LAKE_FOCUS_MASK_COLOR,
   LAKE_FOCUS_MASK_OPACITY,
   LAKE_FOCUS_MASK_URL_BY_ID,
+  loadLakeFocusMask,
+  preloadLakeFocusMask,
+  resetLakeFocusMaskCacheForTests,
 } from "./lakeFocusMask.js";
 import {
   getDiscoveryClusterTargetZoom,
@@ -16,6 +20,20 @@ import {
 } from "./mapNavigation.js";
 
 const PILOT_IDS = ["bolmen", "ulvstorpasjon"];
+
+function createFetchStub(dataByUrl) {
+  const calls = [];
+  const fetchStub = async (url) => {
+    calls.push(url);
+    const data = dataByUrl[url];
+
+    return data
+      ? { ok: true, status: 200, json: async () => data }
+      : { ok: false, status: 404, json: async () => null };
+  };
+
+  return { calls, fetchStub };
+}
 
 async function readMask(lakeId) {
   const url = getLakeFocusMaskUrl(lakeId);
@@ -65,6 +83,112 @@ test("focus-mask metadata enables exactly the two approved pilot lakes", () => {
   }
   assert.match(LAKE_FOCUS_MASK_COLOR, /^#[0-9a-f]{6}$/i);
   assert.equal(LAKE_FOCUS_MASK_OPACITY, 0.62);
+});
+
+test("unmasked lakes resolve null without fetching", async () => {
+  resetLakeFocusMaskCacheForTests();
+  const { calls, fetchStub } = createFetchStub({});
+
+  assert.equal(await preloadLakeFocusMask("sommen", fetchStub), null);
+  assert.equal(await loadLakeFocusMask("sommen", fetchStub), null);
+  assert.deepEqual(calls, []);
+});
+
+test("concurrent preload and load share one fetch and cache the parsed object", async () => {
+  resetLakeFocusMaskCacheForTests();
+  const bolmenMask = { type: "FeatureCollection", features: [] };
+  const { calls, fetchStub } = createFetchStub({
+    "/lake-focus/bolmen.geojson": bolmenMask,
+  });
+
+  const [preloadedMask, loadedMask] = await Promise.all([
+    preloadLakeFocusMask("bolmen", fetchStub),
+    loadLakeFocusMask("bolmen", fetchStub),
+  ]);
+  const reopenedMask = await loadLakeFocusMask("bolmen", fetchStub);
+
+  assert.equal(preloadedMask, bolmenMask);
+  assert.equal(loadedMask, bolmenMask);
+  assert.equal(reopenedMask, bolmenMask);
+  assert.deepEqual(calls, ["/lake-focus/bolmen.geojson"]);
+});
+
+test("masked lakes use independent cache entries", async () => {
+  resetLakeFocusMaskCacheForTests();
+  const bolmenMask = { lakeId: "bolmen" };
+  const ulvstorpasjonMask = { lakeId: "ulvstorpasjon" };
+  const { calls, fetchStub } = createFetchStub({
+    "/lake-focus/bolmen.geojson": bolmenMask,
+    "/lake-focus/ulvstorpasjon.geojson": ulvstorpasjonMask,
+  });
+
+  assert.equal(await loadLakeFocusMask("bolmen", fetchStub), bolmenMask);
+  assert.equal(
+    await loadLakeFocusMask("ulvstorpasjon", fetchStub),
+    ulvstorpasjonMask,
+  );
+  assert.deepEqual(calls, [
+    "/lake-focus/bolmen.geojson",
+    "/lake-focus/ulvstorpasjon.geojson",
+  ]);
+});
+
+test("failed mask loads resolve null and remain retryable", async () => {
+  resetLakeFocusMaskCacheForTests();
+  const originalConsoleError = console.error;
+  let callCount = 0;
+  const recoveredMask = { type: "FeatureCollection", features: [] };
+  const fetchStub = async () => {
+    callCount += 1;
+    return callCount === 1
+      ? { ok: false, status: 503, json: async () => null }
+      : { ok: true, status: 200, json: async () => recoveredMask };
+  };
+
+  console.error = () => {};
+  try {
+    assert.equal(await loadLakeFocusMask("bolmen", fetchStub), null);
+    assert.equal(
+      await loadLakeFocusMask("bolmen", fetchStub),
+      recoveredMask,
+    );
+  } finally {
+    console.error = originalConsoleError;
+  }
+
+  assert.equal(callCount, 2);
+});
+
+test("masked map reveal waits for camera, mask settlement, depth and points", () => {
+  const ready = {
+    camera: true,
+    depth: true,
+    hasFocusMask: true,
+    mask: true,
+    points: true,
+  };
+
+  assert.equal(isLakeFocusMaskRevealReady(ready), true);
+  assert.equal(
+    isLakeFocusMaskRevealReady({ ...ready, mask: false }),
+    false,
+  );
+  assert.equal(
+    isLakeFocusMaskRevealReady({ ...ready, points: false }),
+    false,
+  );
+  assert.equal(
+    isLakeFocusMaskRevealReady({ ...ready, camera: false }),
+    false,
+  );
+  assert.equal(
+    isLakeFocusMaskRevealReady({ ...ready, depth: false }),
+    false,
+  );
+  assert.equal(
+    isLakeFocusMaskRevealReady({ ...ready, hasFocusMask: false }),
+    true,
+  );
 });
 
 test("pilot artifacts provide a Sweden shell with a real lake opening", async () => {

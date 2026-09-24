@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import InformationCard from "../components/lake/InformationCard";
 import LakeHero from "../components/lake/LakeHero";
 import LakeMap from "../components/map/LakeMap";
+import { preloadLakeFocusMask } from "../components/map/lakeFocusMask";
 import { getLakePoints, getPointTypes } from "../data/lakePoints";
 import { getLakeFishingSelectionDetails } from "../services/lakeService";
 import {
@@ -1126,6 +1127,10 @@ function LakePage({
   const missingChoiceLabels = getUnknownChoiceLabels(fishingStatusDetails.categories);
   const warningChoiceLabels = getWarningChoiceLabels(fishingStatusDetails.categories);
   const hasSelectedChoices = Object.values(fishingChoices).some((choices) => choices.length > 0);
+
+  useEffect(() => {
+    preloadLakeFocusMask(lake.id);
+  }, [lake.id]);
 
   function openDirectConditions() {
     setShowDirectConditions(true);

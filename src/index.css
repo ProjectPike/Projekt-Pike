@@ -1420,6 +1420,28 @@ a:focus-visible {
   background: var(--color-background-soft);
 }
 
+.lake-map-view.is-preparing-focus-mask {
+  background: #07110f;
+}
+
+.lake-map-view > .maplibregl-canvas-container,
+.lake-map-view > .maplibregl-control-container {
+  opacity: 1;
+  transition: opacity 140ms ease;
+}
+
+.lake-map-view.is-preparing-focus-mask > .maplibregl-canvas-container,
+.lake-map-view.is-preparing-focus-mask > .maplibregl-control-container {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lake-map-view > .maplibregl-canvas-container,
+  .lake-map-view > .maplibregl-control-container {
+    transition: none;
+  }
+}
+
 .lake-map-layers {
   position: absolute;
   top: 70px;
