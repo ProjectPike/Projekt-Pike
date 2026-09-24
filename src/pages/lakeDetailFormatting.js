@@ -60,8 +60,28 @@ const PERMIT_TYPE_LABELS = {
   "ice-fishing": "isfiskekort",
 };
 
+const KNOWN_DETAIL_KEY_LABELS = Object.freeze({
+  access: Object.freeze({
+    membershipRequirement: "Medlemskap",
+  }),
+  methods: Object.freeze({
+    chumming: "Mäskning",
+    maxRodsPerPerson: "Spön per person",
+  }),
+  safety: Object.freeze({
+    winterFishingRisk: "Risk vid vinterfiske",
+  }),
+  watercraft: Object.freeze({
+    floatingCraft: "Flytande farkost",
+  }),
+});
+
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+export function getKnownLakeDetailLabel(section, key) {
+  return KNOWN_DETAIL_KEY_LABELS[section]?.[key] ?? null;
 }
 
 export function formatLakeDetailToken(value) {

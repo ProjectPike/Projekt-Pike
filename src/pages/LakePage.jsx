@@ -14,6 +14,7 @@ import {
   formatAccessDetailValue,
   formatLakeDetailToken as formatToken,
   formatLakeDetailValue as getStateLabel,
+  getKnownLakeDetailLabel,
 } from "./lakeDetailFormatting";
 
 const SOURCE_TYPE_LABELS = {
@@ -347,7 +348,8 @@ function getAccessRows(detailsAccess) {
   return Object.entries(detailsAccess)
     .filter(([, fact]) => isFactObject(fact))
     .map(([key, fact]) => {
-      const label = ACCESS_LABELS[key] ?? "Fiskekort";
+      const label =
+        ACCESS_LABELS[key] ?? getKnownLakeDetailLabel("access", key) ?? "Fiskekort";
       const valueLabel =
         key === "permitCost" && typeof fact.value === "number"
           ? fact.value === 0
@@ -392,7 +394,8 @@ function getMethodRows(detailsMethods, selectedMethods, showAll) {
         return null;
       }
 
-      const label = METHOD_LABELS[key] ?? prettifyKey(key);
+      const label =
+        METHOD_LABELS[key] ?? getKnownLakeDetailLabel("methods", key) ?? prettifyKey(key);
       const valueLabel =
         key === "maxFishingDepthMeters" && typeof fact.value === "number"
           ? `${fact.value} m`
@@ -631,7 +634,10 @@ function getBoatRows(details, selectedPlaces, selectedMethods, showAll) {
         }
 
         rows.push({
-          label: WATERCRAFT_LABELS[key] ?? prettifyKey(key),
+          label:
+            WATERCRAFT_LABELS[key] ??
+            getKnownLakeDetailLabel("watercraft", key) ??
+            prettifyKey(key),
           value: getStateLabel(fact.value),
           note: fact.note,
           conditions: getConditionText(fact.conditions),
@@ -840,7 +846,10 @@ function getSafetyRows(detailsSafety) {
       }
 
       rows.push({
-        label: SAFETY_LABELS[key] ?? prettifyKey(key),
+        label:
+          SAFETY_LABELS[key] ??
+          getKnownLakeDetailLabel("safety", key) ??
+          prettifyKey(key),
         value: getStateLabel(fact.value),
         note: fact.note,
         conditions: getConditionText(fact.conditions),
@@ -861,7 +870,9 @@ function getSafetyRows(detailsSafety) {
           label:
             key === "consumptionAdvisories"
               ? `Konsumtion${entry.substance ? ` · ${entry.substance}` : ""}`
-              : SAFETY_LABELS[key] ?? prettifyKey(key),
+              : SAFETY_LABELS[key] ??
+                getKnownLakeDetailLabel("safety", key) ??
+                prettifyKey(key),
           value: entry.authority ? entry.authority : getStateLabel(entry.value),
           note: entry.note,
           conditions: getConditionText(entry.conditions),

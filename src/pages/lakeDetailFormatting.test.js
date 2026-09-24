@@ -4,6 +4,7 @@ import {
   formatAccessDetailValue,
   formatLakeDetailValue,
   formatPermitMethodSupportValue,
+  getKnownLakeDetailLabel,
 } from "./lakeDetailFormatting.js";
 
 const permitMethodSupport = [
@@ -39,4 +40,25 @@ test("existing primitive and primitive-array detail values retain their labels",
   assert.equal(formatAccessDetailValue("other", "Egen text"), "Egen text");
   assert.equal(formatAccessDetailValue("permitCost", 3), "3");
   assert.equal(formatAccessDetailValue("permitProducts", ["day", "week"]), "Dagskort, Veckokort");
+});
+
+test("current production detail keys have deliberate Swedish labels", () => {
+  assert.equal(
+    getKnownLakeDetailLabel("methods", "maxRodsPerPerson"),
+    "Spön per person",
+  );
+  assert.equal(getKnownLakeDetailLabel("methods", "chumming"), "Mäskning");
+  assert.equal(
+    getKnownLakeDetailLabel("access", "membershipRequirement"),
+    "Medlemskap",
+  );
+  assert.equal(
+    getKnownLakeDetailLabel("watercraft", "floatingCraft"),
+    "Flytande farkost",
+  );
+  assert.equal(
+    getKnownLakeDetailLabel("safety", "winterFishingRisk"),
+    "Risk vid vinterfiske",
+  );
+  assert.equal(getKnownLakeDetailLabel("methods", "futureKey"), null);
 });
