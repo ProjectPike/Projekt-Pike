@@ -39,6 +39,7 @@ import {
   getLakeMapLocalConstraint,
   getLakeMapZoom,
 } from "./mapNavigation";
+import { runWhenMapStyleReady } from "./mapStyleReady";
 
 setWorkerUrl(workerUrl);
 
@@ -271,14 +272,13 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       normalizeLakeMapOverlayOrder(map);
     };
 
-    if (map.isStyleLoaded()) {
-      ensureFocusMask();
-    } else {
-      map.once("load", ensureFocusMask);
-    }
+    const stopFocusMaskInitialization = runWhenMapStyleReady(
+      map,
+      ensureFocusMask,
+    );
 
     return () => {
-      map.off("load", ensureFocusMask);
+      stopFocusMaskInitialization();
     };
   }, [lake.id]);
 
@@ -394,14 +394,13 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       normalizeLakeMapOverlayOrder(map);
     };
 
-    if (map.isStyleLoaded()) {
-      ensureDepthMap();
-    } else {
-      map.once("load", ensureDepthMap);
-    }
+    const stopDepthMapInitialization = runWhenMapStyleReady(
+      map,
+      ensureDepthMap,
+    );
 
     return () => {
-      map.off("load", ensureDepthMap);
+      stopDepthMapInitialization();
     };
   }, [depthMap, depthMapLocked, isDepthMapVisible]);
 
@@ -707,14 +706,13 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       bindLayerEvents();
     };
 
-    if (map.isStyleLoaded()) {
-      initializePointRendering();
-    } else {
-      map.once("load", initializePointRendering);
-    }
+    const stopPointInitialization = runWhenMapStyleReady(
+      map,
+      initializePointRendering,
+    );
 
     return () => {
-      map.off("load", initializePointRendering);
+      stopPointInitialization();
       unbindLayerEvents();
       popupRef.current?.remove();
       popupRef.current = null;

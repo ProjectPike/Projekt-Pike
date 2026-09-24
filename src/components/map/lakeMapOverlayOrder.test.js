@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getLakePoints } from "../../data/lakePoints.js";
+import {
+  getLakePointLayers,
+  getLakePoints,
+  getPointTypes,
+} from "../../data/lakePoints.js";
 import { getLakeFocusMaskUrl } from "./lakeFocusMask.js";
 import {
   LAKE_MAP_OVERLAY_LAYER_IDS,
@@ -24,7 +28,15 @@ function createMapLayerOrder(initialLayerIds) {
 }
 
 test("Bolmen retains ten stored points and its focus-mask assignment", () => {
-  assert.equal(getLakePoints("bolmen").length, 10);
+  const points = getLakePoints("bolmen");
+  const activeLayerIds = getLakePointLayers("bolmen").map((layer) => layer.id);
+  const visiblePoints = points.filter((point) =>
+    getPointTypes(point).some((type) => activeLayerIds.includes(type)),
+  );
+
+  assert.equal(points.length, 10);
+  assert.deepEqual(activeLayerIds, ["boat-ramp", "parking", "bathing-area"]);
+  assert.equal(visiblePoints.length, 10);
   assert.equal(getLakeFocusMaskUrl("bolmen"), "/lake-focus/bolmen.geojson");
   assert.equal(getLakeFocusMaskUrl("sommen"), null);
 });
