@@ -26,6 +26,8 @@ import {
 } from "./mapTheme";
 import {
   expandLakeMapBounds,
+  getLakeMapBounds,
+  getLakeMapFitPadding,
   getLakeMapMinZoom,
   getLakeMapZoom,
 } from "./mapNavigation";
@@ -119,14 +121,32 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       return undefined;
     }
 
+    const initialZoom = getLakeMapZoom(lake.id);
+    const lakeBounds = getLakeMapBounds(lake.id);
+    const getFitPadding = () =>
+      getLakeMapFitPadding(
+        mapContainerRef.current?.clientWidth,
+        mapContainerRef.current?.clientHeight,
+      );
+
     let map;
 
     try {
       map = new Map({
         container: mapContainerRef.current,
         style: NATURAL_BASEMAP_STYLE_URL,
-        center: lake.coordinates,
-        zoom: getLakeMapZoom(lake.id),
+        ...(lakeBounds
+          ? {
+              bounds: lakeBounds,
+              fitBoundsOptions: {
+                padding: getFitPadding(),
+                animate: false,
+              },
+            }
+          : {
+              center: lake.coordinates,
+              zoom: initialZoom,
+            }),
       });
     } catch (error) {
       console.error("Sjökartan kunde inte startas:", error);
@@ -167,20 +187,28 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       applyNaturalBasemapPalette(map);
     });
 
-    const initialZoom = getLakeMapZoom(lake.id);
-
     const focusLake = () => {
       map.resize();
-      map.jumpTo({
-        center: lake.coordinates,
-        zoom: initialZoom,
-      });
+
+      if (lakeBounds) {
+        map.fitBounds(lakeBounds, {
+          padding: getFitPadding(),
+          animate: false,
+        });
+      } else {
+        map.jumpTo({
+          center: lake.coordinates,
+          zoom: initialZoom,
+        });
+      }
     };
 
     const establishLocalLakeView = () => {
       focusLake();
-      map.setMinZoom(getLakeMapMinZoom(initialZoom));
-      map.setMaxBounds(expandLakeMapBounds(map.getBounds().toArray()));
+      map.setMinZoom(getLakeMapMinZoom(lakeBounds ? map.getZoom() : initialZoom));
+      map.setMaxBounds(
+        expandLakeMapBounds(lakeBounds ?? map.getBounds().toArray()),
+      );
     };
 
     map.once("load", establishLocalLakeView);

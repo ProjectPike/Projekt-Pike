@@ -159,6 +159,8 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
   ett sent `moveend` inte kan öppna fel sjö. Den dedikerade sjökartan begränsar
   nu utzoomning och panorering till sjöns lokala startområde; discovery-kartan
   och dess klusterbeteende är oförändrade.
+- Bounds-baserad sjöinramning är en tvåsjöpilot för Ulvstorpasjön och Bolmen;
+  övriga 22 sjöar använder fortsatt befintlig centrum- och zoominramning.
 - Verifiera de senaste kart-, kluster- och statusändringarna visuellt.
 - Göra små mobil- och UX-fixar där de faktiskt behövs.
 - Granska kvarvarande formuleringar, exempelvis copy för saknad eller granskad djupdata.

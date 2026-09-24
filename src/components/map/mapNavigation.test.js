@@ -10,9 +10,12 @@ import {
 import {
   DEFAULT_LAKE_MAP_ZOOM,
   LAKE_MAP_BOUNDS_MARGIN,
+  LAKE_MAP_BOUNDS_PROVENANCE_BY_ID,
   LAKE_MAP_ZOOM_BY_ID,
   expandLakeMapBounds,
   getDiscoveryClusterTargetZoom,
+  getLakeMapBounds,
+  getLakeMapFitPadding,
   getLakeMapMinZoom,
   getLakeMapZoom,
   hasPlausibleSwedishCoordinates,
@@ -43,6 +46,44 @@ test("lake zoom configuration keeps both current Bunn IDs and no legacy Bunn ID"
 
 test("Ulvstorpasjön retains its small-lake focus override", () => {
   assert.equal(getLakeMapZoom("ulvstorpasjon"), 14.2);
+});
+
+test("pilot lakes have valid real bounds containing their production coordinates", () => {
+  assert.deepEqual(getLakeMapBounds("ulvstorpasjon"), [
+    [14.0893048, 57.7557063],
+    [14.0968151, 57.7583418],
+  ]);
+  assert.deepEqual(getLakeMapBounds("bolmen"), [
+    [13.5648438, 56.7612877],
+    [13.8538054, 57.0789265],
+  ]);
+
+  for (const id of ["ulvstorpasjon", "bolmen"]) {
+    const [[west, south], [east, north]] = getLakeMapBounds(id);
+    const [longitude, latitude] = lakes[id].coordinates;
+
+    assert.equal(west < east, true, `${id} must have west before east`);
+    assert.equal(south < north, true, `${id} must have south before north`);
+    assert.equal(longitude >= west && longitude <= east, true);
+    assert.equal(latitude >= south && latitude <= north, true);
+    assert.equal(
+      LAKE_MAP_BOUNDS_PROVENANCE_BY_ID[id].sourceUrl,
+      lakes[id].coordinateSource,
+    );
+  }
+});
+
+test("non-pilot lakes retain center-and-zoom fallback framing", () => {
+  assert.equal(getLakeMapBounds("klappasjon"), null);
+  assert.equal(getLakeMapZoom("klappasjon"), 13.1);
+  assert.equal(getLakeMapBounds("unknown-lake"), null);
+  assert.equal(getLakeMapZoom("unknown-lake"), DEFAULT_LAKE_MAP_ZOOM);
+});
+
+test("lake bounds fitting uses modest responsive padding", () => {
+  assert.equal(getLakeMapFitPadding(1200, 800), 56);
+  assert.equal(getLakeMapFitPadding(360, 700), 29);
+  assert.equal(getLakeMapFitPadding(0, 0), 32);
 });
 
 test("lake maps allow only a modest zoom-out for small, large and fallback lakes", () => {
