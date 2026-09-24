@@ -162,6 +162,8 @@ Detta är aktuell produkt- och engineeringriktning, inte en fast leveransplan.
 - Bounds-baserad sjöinramning används för 22 av 24 produktionssjöar. Bunn –
   Norra/Mellersta och Bunn – Södra behåller centrum-/zoomfallback eftersom OSM
   endast representerar hela Bunn och inte de två separata fiskeenheterna.
+- Mörk fokusmask utanför vald sjö är en visuell tvåsjöpilot för Bolmen och
+  Ulvstorpasjön i väntan på användargranskning; övriga sjökartor är oförändrade.
 - Expansion av historiskt skannad batymetri är pausad; framtida djupkartor bör
   i första hand bygga på egen eller modern, tydligt användbar data.
 - Verifiera de senaste kart-, kluster- och statusändringarna visuellt.

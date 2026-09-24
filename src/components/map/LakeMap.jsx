@@ -25,6 +25,11 @@ import {
   NATURAL_BASEMAP_STYLE_URL,
 } from "./mapTheme";
 import {
+  getLakeFocusMaskUrl,
+  LAKE_FOCUS_MASK_COLOR,
+  LAKE_FOCUS_MASK_OPACITY,
+} from "./lakeFocusMask";
+import {
   getLakeMapBounds,
   getLakeMapFitPadding,
   getLakeMapLocalConstraint,
@@ -38,6 +43,8 @@ const CLUSTER_CIRCLE_LAYER_ID = "lake-map-point-clusters";
 const CLUSTER_COUNT_LAYER_ID = "lake-map-point-cluster-count";
 const UNCLUSTERED_CIRCLE_LAYER_ID = "lake-map-point-unclustered-circle";
 const UNCLUSTERED_SYMBOL_LAYER_ID = "lake-map-point-unclustered-symbol";
+const FOCUS_MASK_SOURCE_ID = "lake-focus-mask";
+const FOCUS_MASK_LAYER_ID = "lake-focus-mask-fill";
 const DEPTH_MAP_SOURCE_ID = "lake-depth-map";
 const DEPTH_MAP_CONTOUR_LAYER_ID = "lake-depth-map-contours";
 const DEPTH_MAP_LABEL_LAYER_ID = "lake-depth-map-labels";
@@ -224,6 +231,50 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
       mapRef.current = null;
     };
   }, [lake.coordinates, lake.id]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const focusMaskUrl = getLakeFocusMaskUrl(lake.id);
+
+    if (!map || !focusMaskUrl) {
+      return undefined;
+    }
+
+    const ensureFocusMask = () => {
+      if (!map.isStyleLoaded()) {
+        return;
+      }
+
+      if (!map.getSource(FOCUS_MASK_SOURCE_ID)) {
+        map.addSource(FOCUS_MASK_SOURCE_ID, {
+          type: "geojson",
+          data: focusMaskUrl,
+        });
+      }
+
+      if (!map.getLayer(FOCUS_MASK_LAYER_ID)) {
+        map.addLayer({
+          id: FOCUS_MASK_LAYER_ID,
+          type: "fill",
+          source: FOCUS_MASK_SOURCE_ID,
+          paint: {
+            "fill-color": LAKE_FOCUS_MASK_COLOR,
+            "fill-opacity": LAKE_FOCUS_MASK_OPACITY,
+          },
+        });
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      ensureFocusMask();
+    } else {
+      map.once("load", ensureFocusMask);
+    }
+
+    return () => {
+      map.off("load", ensureFocusMask);
+    };
+  }, [lake.id]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -670,6 +721,19 @@ function LakeMap({ lake, onBack, themeId, depthMapLocked = false }) {
 
     const updateOverlayTheme = () => {
       const colors = getPikeMapColors();
+
+      if (map.getLayer(FOCUS_MASK_LAYER_ID)) {
+        map.setPaintProperty(
+          FOCUS_MASK_LAYER_ID,
+          "fill-color",
+          LAKE_FOCUS_MASK_COLOR,
+        );
+        map.setPaintProperty(
+          FOCUS_MASK_LAYER_ID,
+          "fill-opacity",
+          LAKE_FOCUS_MASK_OPACITY,
+        );
+      }
 
       if (map.getLayer(CLUSTER_CIRCLE_LAYER_ID)) {
         map.setPaintProperty(CLUSTER_CIRCLE_LAYER_ID, "circle-color", colors.cluster);
