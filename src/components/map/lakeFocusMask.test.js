@@ -1,10 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { lakes } from "../../data/lakes.js";
 import {
   getLakeFocusMaskUrl,
   isLakeFocusMaskRevealReady,
+  LAKE_FOCUS_MASK_BLOCKED_IDS,
   LAKE_FOCUS_MASK_COLOR,
   LAKE_FOCUS_MASK_OPACITY,
   LAKE_FOCUS_MASK_URL_BY_ID,
@@ -12,6 +13,7 @@ import {
   preloadLakeFocusMask,
   resetLakeFocusMaskCacheForTests,
 } from "./lakeFocusMask.js";
+import { LAKE_MAP_FRAMING_BY_ID } from "./lakeMapBounds.js";
 import {
   getDiscoveryClusterTargetZoom,
   getLakeMapBounds,
@@ -19,7 +21,15 @@ import {
   getLakeMapLocalConstraint,
 } from "./mapNavigation.js";
 
-const PILOT_IDS = ["bolmen", "ulvstorpasjon"];
+const MASKED_IDS = Object.keys(LAKE_FOCUS_MASK_URL_BY_ID).sort();
+const BUNN_IDS = ["bunn-norra-mellersta", "bunn-sodra"];
+const MASK_SHELL = [
+  [5, 54],
+  [30, 54],
+  [30, 71],
+  [5, 71],
+  [5, 54],
+];
 
 function createFetchStub(dataByUrl) {
   const calls = [];
@@ -72,13 +82,48 @@ function pointInRing([longitude, latitude], ring) {
   return inside;
 }
 
-test("focus-mask metadata enables exactly the two approved pilot lakes", () => {
-  assert.deepEqual(Object.keys(LAKE_FOCUS_MASK_URL_BY_ID).sort(), PILOT_IDS);
-  assert.equal(getLakeFocusMaskUrl("bunn"), null);
-  assert.equal(getLakeFocusMaskUrl("bunn-norra-mellersta"), null);
-  assert.equal(getLakeFocusMaskUrl("sommen"), null);
+function getBounds(rings) {
+  const coordinates = rings.flat();
+  return [
+    [
+      Math.min(...coordinates.map(([longitude]) => longitude)),
+      Math.min(...coordinates.map(([, latitude]) => latitude)),
+    ],
+    [
+      Math.max(...coordinates.map(([longitude]) => longitude)),
+      Math.max(...coordinates.map(([, latitude]) => latitude)),
+    ],
+  ];
+}
 
-  for (const lakeId of PILOT_IDS) {
+function assertBoundsEqual(actual, expected, tolerance = 1e-7) {
+  for (let corner = 0; corner < 2; corner += 1) {
+    for (let axis = 0; axis < 2; axis += 1) {
+      assert.ok(
+        Math.abs(actual[corner][axis] - expected[corner][axis]) <= tolerance,
+        `${JSON.stringify(actual)} must match ${JSON.stringify(expected)}`,
+      );
+    }
+  }
+}
+
+test("focus-mask metadata covers every safe reviewed framing identity", () => {
+  assert.equal(MASKED_IDS.length, 21);
+  assert.deepEqual(LAKE_FOCUS_MASK_BLOCKED_IDS, ["attarpsdammen"]);
+  assert.deepEqual(
+    MASKED_IDS,
+    Object.keys(LAKE_MAP_FRAMING_BY_ID)
+      .filter((lakeId) => !LAKE_FOCUS_MASK_BLOCKED_IDS.includes(lakeId))
+      .sort(),
+  );
+  assert.deepEqual(Object.keys(LAKE_FOCUS_MASK_URL_BY_ID).sort(), MASKED_IDS);
+  assert.equal(getLakeFocusMaskUrl("attarpsdammen"), null);
+  assert.equal(getLakeFocusMaskUrl("bunn"), null);
+  for (const lakeId of BUNN_IDS) {
+    assert.equal(getLakeFocusMaskUrl(lakeId), null);
+  }
+
+  for (const lakeId of MASKED_IDS) {
     assert.match(getLakeFocusMaskUrl(lakeId), /^\/lake-focus\/[a-z0-9-]+\.geojson$/);
   }
   assert.match(LAKE_FOCUS_MASK_COLOR, /^#[0-9a-f]{6}$/i);
@@ -89,8 +134,9 @@ test("unmasked lakes resolve null without fetching", async () => {
   resetLakeFocusMaskCacheForTests();
   const { calls, fetchStub } = createFetchStub({});
 
-  assert.equal(await preloadLakeFocusMask("sommen", fetchStub), null);
-  assert.equal(await loadLakeFocusMask("sommen", fetchStub), null);
+  assert.equal(await preloadLakeFocusMask("bunn-norra-mellersta", fetchStub), null);
+  assert.equal(await loadLakeFocusMask("bunn-sodra", fetchStub), null);
+  assert.equal(await loadLakeFocusMask("attarpsdammen", fetchStub), null);
   assert.deepEqual(calls, []);
 });
 
@@ -191,12 +237,28 @@ test("masked map reveal waits for camera, mask settlement, depth and points", ()
   );
 });
 
-test("pilot artifacts provide a Sweden shell with a real lake opening", async () => {
-  for (const lakeId of PILOT_IDS) {
+test("every enabled artifact is valid, identity-bound and agrees with reviewed bounds", async () => {
+  const artifactNames = (await readdir(new URL("../../../public/lake-focus/", import.meta.url)))
+    .filter((name) => name.endsWith(".geojson"))
+    .sort();
+  assert.deepEqual(
+    artifactNames,
+    MASKED_IDS.map((lakeId) => `${lakeId}.geojson`).sort(),
+  );
+
+  for (const lakeId of MASKED_IDS) {
     const mask = await readMask(lakeId);
+    const framing = LAKE_MAP_FRAMING_BY_ID[lakeId];
     assert.equal(mask.type, "FeatureCollection");
     assert.equal(mask.pike.lakeId, lakeId);
+    assert.equal(mask.pike.schemaVersion, 1);
     assert.equal(mask.pike.runtimePublished, undefined);
+    assert.equal(mask.pike.osmObjectType, framing.osmObjectType);
+    assert.equal(mask.pike.osmObjectId, framing.osmObjectId);
+    assert.equal(
+      mask.pike.source,
+      `https://www.openstreetmap.org/${framing.osmObjectType}/${framing.osmObjectId}`,
+    );
     assert.equal(mask.features[0].properties.kind, "outside-lake-focus-mask");
     assert.equal(mask.features[0].geometry.type, "Polygon");
 
@@ -204,18 +266,28 @@ test("pilot artifacts provide a Sweden shell with a real lake opening", async ()
     assertClosedRing(shell);
     assert.ok(lakeOpenings.length >= 1);
     lakeOpenings.forEach(assertClosedRing);
+    assert.equal(mask.pike.outerRingCount, lakeOpenings.length);
     assert.equal(
       lakeOpenings.some((ring) => pointInRing(lakes[lakeId].coordinates, ring)),
       true,
       `${lakeId} production coordinate must be inside the transparent opening`,
     );
-    assert.deepEqual(shell, [
-      [5, 54],
-      [30, 54],
-      [30, 71],
-      [5, 71],
-      [5, 54],
-    ]);
+    assert.deepEqual(shell, MASK_SHELL);
+    assertBoundsEqual(getBounds(lakeOpenings), framing.bounds);
+
+    const islands = mask.features.find(
+      (feature) => feature.properties.kind === "lake-islands-focus-mask",
+    );
+    if (mask.pike.innerRingCount === 0) {
+      assert.equal(islands, undefined);
+    } else {
+      assert.equal(islands.geometry.type, "MultiPolygon");
+      assert.equal(islands.geometry.coordinates.length, mask.pike.innerRingCount);
+      for (const polygon of islands.geometry.coordinates) {
+        assert.equal(polygon.length, 1);
+        assertClosedRing(polygon[0]);
+      }
+    }
   }
 });
 

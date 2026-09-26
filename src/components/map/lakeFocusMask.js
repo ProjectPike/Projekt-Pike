@@ -1,10 +1,20 @@
+import { LAKE_MAP_FRAMING_BY_ID } from "./lakeMapBounds.js";
+
 export const LAKE_FOCUS_MASK_COLOR = "#07110f";
 export const LAKE_FOCUS_MASK_OPACITY = 0.62;
 
-export const LAKE_FOCUS_MASK_URL_BY_ID = Object.freeze({
-  bolmen: "/lake-focus/bolmen.geojson",
-  ulvstorpasjon: "/lake-focus/ulvstorpasjon.geojson",
-});
+// Its representative production coordinate is 15.5 m outside OSM relation 8035331.
+export const LAKE_FOCUS_MASK_BLOCKED_IDS = Object.freeze(["attarpsdammen"]);
+
+const blockedLakeIds = new Set(LAKE_FOCUS_MASK_BLOCKED_IDS);
+
+export const LAKE_FOCUS_MASK_URL_BY_ID = Object.freeze(
+  Object.fromEntries(
+    Object.keys(LAKE_MAP_FRAMING_BY_ID)
+      .filter((lakeId) => !blockedLakeIds.has(lakeId))
+      .map((lakeId) => [lakeId, `/lake-focus/${lakeId}.geojson`]),
+  ),
+);
 
 const focusMaskPromiseByLakeId = new Map();
 

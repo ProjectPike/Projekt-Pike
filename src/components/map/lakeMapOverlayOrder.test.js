@@ -38,7 +38,8 @@ test("Bolmen retains ten stored points and its focus-mask assignment", () => {
   assert.deepEqual(activeLayerIds, ["boat-ramp", "parking", "bathing-area"]);
   assert.equal(visiblePoints.length, 10);
   assert.equal(getLakeFocusMaskUrl("bolmen"), "/lake-focus/bolmen.geojson");
-  assert.equal(getLakeFocusMaskUrl("sommen"), null);
+  assert.equal(getLakeFocusMaskUrl("sommen"), "/lake-focus/sommen.geojson");
+  assert.equal(getLakeFocusMaskUrl("bunn-norra-mellersta"), null);
 });
 
 test("Pike overlay order keeps depth and every point layer above the focus mask", () => {
